@@ -15,7 +15,7 @@ const login = () => {
   })
 }
 onBeforeMount(() => {
-  login()
+  // login()
 })
 </script>
 <style scoped>
