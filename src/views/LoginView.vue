@@ -1,22 +1,36 @@
 <template>
-  <div class="user">
-    username:<el-input v-model="username" id="username"></el-input>
-    password:<el-input v-model="password" id="password"></el-input>
-  </div>
+  username:<el-input v-model="username" id="username-input" required></el-input>
+  password:<el-input type="password" v-model="password" id="password-input" required></el-input>
+  <el-button @click="login">登录</el-button>
+  <el-button @click="register">注册</el-button>
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
 import { toRefs, onBeforeMount } from 'vue';
-import { getInfoApi } from '@/api/login'
-let { username, password } = toRefs(useUserStore())
+import { getInfoApi, postInfoApi } from '@/api/login'
+let { username, password, capcha } = toRefs(useUserStore())
 const login = () => {
-  getInfoApi().then(res => {
+  postInfoApi({
+    username: username.value,
+    password: password.value
+  }).then(res => {
+    const token = res.data.token
+    console.log(res)
+    localStorage.setItem('token', token)
+  })
+    .catch(err => {
+      console.error(err)
+    })
+}
+const register = () => {
+  postInfoApi({
+    username: username.value,
+    password: password.value,
+    op: 'register'
+  }).then(res => {
     console.log(res)
   })
 }
-onBeforeMount(() => {
-  login()
-})
 </script>
 <style scoped>
 </style>

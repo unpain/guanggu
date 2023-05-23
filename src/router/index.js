@@ -5,14 +5,18 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: ()=>import('@/views/LoginView.vue'),
-      redirect:'/login'
-    },
-    {
-      path: '/login',
       name: 'login',
       component: ()=>import('@/views/LoginView.vue'),
+    },
+    {
+      path: '/home',
+      name: 'home',
+      component: ()=>import('@/views/HomeView.vue'),
+      props:true,
+      meta:{
+        requiresAuth:true,
+        role:'admin'
+      }
     },
   ]
 })

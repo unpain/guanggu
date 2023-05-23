@@ -1,7 +1,7 @@
 /** @format */
 
 const Mock = require('mockjs');
-
+const fs = require('fs')
 // 生成 8-16 位的随机密码数组
 const passwords = new Set();
 for (let i = 0; i < 10; i++) {
@@ -40,8 +40,8 @@ const types = [
   'user',
   'user',
 ];
-const state = [0,1,1,1,1,1,1,1,1,1,1,0];
-const state1 = [0,0,1,1,1,1,1,1,1,1,1,0];
+const state = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
+const state1 = [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
 const admin = {
   user_id: 1,
   user_name: Mock.Random.cname(),
@@ -60,13 +60,13 @@ const traffic = {
 };
 
 module.exports = () => {
-  const user = [admin, traffic];
+  const users = [admin, traffic];
   let i = 0;
   passwords.forEach((password, index) => {
     if (index < 2) {
       return;
     }
-    user.push({
+    users.push({
       user_id: ++i,
       user_name: Mock.Random.cname(),
       user_password: password,
@@ -75,5 +75,12 @@ module.exports = () => {
       user_other: Mock.Random.pick(state1),
     });
   });
-  return { user };
+  fs.writeFile('./src/data/data.json', JSON.stringify(users), 'utf8', (err) => {
+    if (err) {
+      console.error('写入文件发生错误', err)
+    } else {
+      console.log('数据写入成功')
+    }
+  })
+  return { users };
 };
