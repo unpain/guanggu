@@ -23,12 +23,12 @@ onMounted(() => {
       projection: 'EPSG:4326',
     }),
   })
-  setTimeout(() => {
-    map.getView().animate({
-      center: [114.40088809833583, 30.4663210497187],
-      zoom: 14,
-    })
-  }, 1000)
+  // setTimeout(() => {
+  //   map.getView().animate({
+  //     center: [114.40088809833583, 30.4663210497187],
+  //     zoom: 14,
+  //   })
+  // }, 1000)
   app.provide('$map', map)
 })
 </script>
