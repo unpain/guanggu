@@ -5,11 +5,16 @@ import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 import { useUserStore } from './stores/user'
 
 export const app = createApp(App)
 
 app.use(createPinia()).use(router).use(ElementPlus).mount('#app')
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 const { hasPermission } = useUserStore()
 app.directive('permission', {
