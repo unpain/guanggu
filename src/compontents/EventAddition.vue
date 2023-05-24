@@ -1,88 +1,86 @@
 <template>
   <button @click="showForm">点击添加事件</button>
- <div class="container" v-if="formVisible">
-  <div class="event-title">
-    <h3>报告路况</h3>
-    <i class="iconfont icon-close" @click="hideForm"></i>
-  </div>
-  <div class="event-main">
-    <el-form
-    ref="ruleFormRef"
-    label-width="120px"
-    :model="ruleForm"
-    :size="default"
-    status-icon
-    style="width: 95%"
-    :rules="rules"
-    class="add-event"
-  >
-    <el-form-item label="事件类型" prop="type">
-      <el-select v-model="ruleForm.type" placeholder="选择事件类型">
-        <el-option label="碰撞事故" value="01" />
-        <el-option label="单车事故" value="02" />
-        <el-option label="行人事故" value="03" />
-        <el-option label="自行车事故" value="04" />
-        <el-option label="机动车与非机动车事故" value="05" />
-        <el-option label="多车连环事故" value="06" />
-        <el-option label="侧翻事故" value="07" />
-        <el-option label="违规事故" value="08" />
-        <el-option label="酒驾事故" value="09" />
-        <el-option label="非机动车与行人事故" value="10" />
-      </el-select>
-    </el-form-item>
-    <el-form-item label="事件地址" prop="address">
-      <el-input
-        v-model="ruleForm.address"
-        placeholder="请输入路况地址，包含事故路段"
-      />
-    </el-form-item>
-    <el-form-item label="建筑标识" prop="architecture">
-      <el-input
-        v-model="ruleForm.architecture"
-        placeholder="请输入事故最近的建筑标识"
-      />
-    </el-form-item>
-    <el-form-item label="发生时间" required>
-      <el-col :span="11">
-        <el-form-item prop="date1">
-          <el-date-picker
-            v-model="ruleForm.date1"
-            type="date"
-            label="选择日期"
-            placeholder="选择日期"
-            style="width: 100%"
+  <div class="container" v-if="formVisible">
+    <div class="event-title">
+      <h3>报告路况</h3>
+      <i class="iconfont icon-close" @click="hideForm"></i>
+    </div>
+    <div class="event-main">
+      <el-form
+        ref="ruleFormRef"
+        label-width="120px"
+        :model="ruleForm"
+        :size="default"
+        status-icon
+        style="width: 95%"
+        :rules="rules"
+        class="add-event"
+      >
+        <el-form-item label="事件类型" prop="type">
+          <el-select v-model="ruleForm.type" placeholder="选择事件类型">
+            <el-option label="碰撞" value="01" />
+            <el-option label="刮擦" value="02" />
+            <el-option label="追尾" value="03" />
+            <el-option label="碾压" value="04" />
+            <el-option label="翻车" value="05" />
+            <el-option label="失火" value="06" />
+            <el-option label="其他" value="07" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="事件地址" prop="address">
+          <el-input
+            v-model="ruleForm.address"
+            placeholder="请输入路况地址，包含事故路段"
           />
         </el-form-item>
-      </el-col>
-      <el-col class="text-center" :span="2">
-        <span class="text-gray-500">-</span>
-      </el-col>
-      <el-col :span="11">
-        <el-form-item prop="date2">
-          <el-time-picker
-            v-model="ruleForm.date2"
-            label="选择时间"
-            placeholder="选择时间"
-            style="width: 100%"
+        <el-form-item label="建筑标识" prop="architecture">
+          <el-input
+            v-model="ruleForm.architecture"
+            placeholder="请输入事故最近的建筑标识"
           />
         </el-form-item>
-      </el-col>
-    </el-form-item>
-    <el-form-item label="事件描述" prop="desc">
-      <el-input v-model="ruleForm.desc" type="textarea" />
-    </el-form-item>
-  </el-form>
+        <el-form-item label="发生时间" required>
+          <el-col :span="11">
+            <el-form-item prop="date1">
+              <el-date-picker
+                v-model="ruleForm.date1"
+                type="date"
+                label="选择日期"
+                placeholder="选择日期"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col class="text-center" :span="2">
+            <span class="text-gray-500">-</span>
+          </el-col>
+          <el-col :span="11">
+            <el-form-item prop="date2">
+              <el-time-picker
+                v-model="ruleForm.date2"
+                label="选择时间"
+                placeholder="选择时间"
+                style="width: 100%"
+              />
+            </el-form-item>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="事件描述" prop="desc">
+          <el-input v-model="ruleForm.desc" type="textarea" />
+        </el-form-item>
+      </el-form>
+    </div>
+    <div class="event-footer">
+      <el-form-item>
+        <el-button type="primary" @click=" submitEvent"> 确认 </el-button>
+        <el-button @click="resetForm($refs.ruleFormRef)">重置</el-button>
+      </el-form-item>
+    </div>
   </div>
-  <div class="event-footer">
-    <el-form-item>
-      <el-button type="primary"> 确认 </el-button>
-      <el-button @click="resetForm($refs.ruleFormRef)">重置</el-button>
-    </el-form-item>
-  </div>
- </div>
 </template>
 <script setup>
-import { reactive ,ref} from 'vue'
+import { computed } from 'vue'
+import { reactive, ref } from 'vue'
 const ruleForm = reactive({
   type: '',
   address: '',
@@ -91,15 +89,38 @@ const ruleForm = reactive({
   date2: '',
   desc: '',
 })
+let eventList =ref([])
+function submitEvent(){
+  eventList.value.push({
+    event_id: 1,
+        user_id: 1,
+         event_type:ruleForm.type,
+        event_addr: ruleForm.address,
+        event_mark: ruleForm.architecture,
+        event_time: time,
+        event_describe: ruleForm.address,
+        event_status: 0
+      
+  })
+}
+var time = computed(() => {
+  const date = ruleForm.date2.getDate()
+  const year = ruleForm.date2.getFullYear()
+  const month = ruleForm.date2.getMonth()
+  const hour = ruleForm.date2.getHours()
+  const minute = ruleForm.date2.getMinutes()
+  const second = ruleForm.date2.getSeconds()
+  return `${year}-${month}-${date} ${hour}:${minute}:${second}`
+})
 const rules = reactive({
-  type:[
+  type: [
     {
-      required: true, message: '请选择事件类型', trigger: 'blur'
-    }
+      required: true,
+      message: '请选择事件类型',
+      trigger: 'blur',
+    },
   ],
-  address:[
-    {required:true,message:'请输入事故位置',trigger: 'blur'}
-  ]
+  address: [{ required: true, message: '请输入事故位置', trigger: 'blur' }],
 })
 // 重置表单
 const resetForm = (formEl) => {
@@ -114,40 +135,38 @@ const showForm = () => {
 const hideForm = () => {
   formVisible.value = false // 隐藏表单
 }
-
 </script>
 <style scoped>
 @import url(https://at.alicdn.com/t/c/font_4027375_y6nc9axxdw.css);
-.container{
-position:fixed;
-top: 50%;
-left: 50%;
-width: 400px;
-border-radius: 5px;
-transform: translate(-50%, -50%);
-background-color: #fff;
+.container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
   /* display: none; */
 }
-.container .event-title{
+.container .event-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   border-bottom: 1px solid #999;
 }
-.container .event-title h3{
+.container .event-title h3 {
   color: #666;
 }
-.container .event-title .iconfont{
+.container .event-title .iconfont {
   cursor: pointer;
 }
-.container .event-main{
-  padding:10px 10px 10px 0;
+.container .event-main {
+  padding: 10px 10px 10px 0;
   border-bottom: 1px solid #999;
 }
-.container .event-footer{
+.container .event-footer {
   padding: 15px 20px;
   padding-bottom: 0;
 }
-
 </style>

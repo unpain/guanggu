@@ -12,4 +12,6 @@ import AddControl from '../compontents/AddControl.vue'
 import EventAddition from '../compontents/EventAddition.vue'
 import MapToolbox from '../compontents/MapToolbox.vue';
 </script>
-<style scoped></style>
+<style scoped>
+
+</style>
