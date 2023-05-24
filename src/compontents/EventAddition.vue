@@ -1,14 +1,19 @@
 <template>
   <button>点击添加事件</button>
-  <el-form
+ <div class="container">
+  <div class="notice-title">
+    <h3>报告路况</h3>
+    <i class="iconfont icon-close"></i>
+  </div>
+  <div class="notice-main">
+    <el-form
     label-width="120px"
     :model="ruleForm"
     :size="default"
     status-icon
-    style="width: 40%"
+    style="width: 100%"
     :rules="rules"
     class="add-event"
-
   >
     <el-form-item label="事件类型" prop="type">
       <el-select v-model="ruleForm.region" placeholder="选择事件类型">
@@ -30,7 +35,7 @@
         placeholder="请输入路况地址，包含事故路段"
       />
     </el-form-item>
-    <el-form-item label="建筑标识" prop="name">
+    <el-form-item label="建筑标识" prop="architecture">
       <el-input
         v-model="ruleForm.architecture"
         placeholder="请输入事故最近的建筑标识"
@@ -65,11 +70,15 @@
     <el-form-item label="事件描述" prop="desc">
       <el-input v-model="ruleForm.desc" type="textarea" />
     </el-form-item>
+  </el-form>
+  </div>
+  <div class="notice-footer">
     <el-form-item>
       <el-button type="primary"> 确认 </el-button>
       <el-button>重置</el-button>
     </el-form-item>
-  </el-form>
+  </div>
+ </div>
 </template>
 <script setup>
 import { reactive } from 'vue'
@@ -94,12 +103,32 @@ const rules = reactive({
 })
 </script>
 <style scoped>
-.add-event{
+@import url(https://at.alicdn.com/t/c/font_4027375_y6nc9axxdw.css);
+.container{
 position:fixed;
 top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 background-color: #fff;
+
+
   /* display: none; */
 }
+.container .notice-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  border-bottom: 1px solid #999;
+}
+.container .notice-main{
+  padding:10px 10px 10px 0;
+  border-bottom: 1px solid #999;
+}
+.container .notice-footer{
+  padding: 10px 20px;
+  padding-bottom: 0;
+
+}
+
 </style>
