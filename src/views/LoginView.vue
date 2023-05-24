@@ -21,17 +21,14 @@ const login = () => {
   }).catch(err => {
     console.error(err)
   })
-  getInfoApi().then(res => {
-    console.log(res.data)
-  })
 }
 const register = () => {
   postInfoApi({
     username: username.value,
     password: password.value,
     op: "register"
-  }).then(res => {
-    console.log(res)
+  }).then((res) => {
+    console.log(res.data)
   })
 }
 </script>
