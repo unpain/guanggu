@@ -1,7 +1,7 @@
 /** @format */
 
 const Mock = require('mockjs');
-
+const fs = require('fs')
 // 生成 8-16 位的随机密码数组
 const passwords = new Set();
 for (let i = 0; i < 10; i++) {
@@ -40,33 +40,43 @@ const types = [
   'user',
   'user',
 ];
-const state = [0,1,1,1,1,1,1,1,1,1,1,0];
-const state1 = [0,0,1,1,1,1,1,1,1,1,1,0];
-const admin = {
-  user_id: 1,
-  user_name: Mock.Random.cname(),
-  user_password: [...passwords][0],
-  user_type: 'admin',
-  user_onlinestatus: 1,
-  user_other: 1,
-};
-const traffic = {
+const state = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
+const state1 = [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
+const admin = [
+  {
+    user_id: 0,
+    user_name: 'admin',
+    user_password: "123456",
+    user_type: 'admin',
+    user_onlinestatus: 1,
+    user_other: 1,
+  }
+  ,
+  {
+    user_id: 1,
+    user_name: Mock.Random.cname(),
+    user_password: [...passwords][0],
+    user_type: 'admin',
+    user_onlinestatus: 1,
+    user_other: 1,
+  }];
+const trafficDepartment = [{
   user_id: 2,
   user_name: Mock.Random.cname(),
   user_password: [...passwords][1],
   user_type: 'department',
   user_onlinestatus: 1,
   user_other: 1,
-};
+}];
 
 module.exports = () => {
-  const user = [admin, traffic];
+  const users = [];
   let i = 0;
   passwords.forEach((password, index) => {
     if (index < 2) {
       return;
     }
-    user.push({
+    users.push({
       user_id: ++i,
       user_name: Mock.Random.cname(),
       user_password: password,
@@ -75,5 +85,12 @@ module.exports = () => {
       user_other: Mock.Random.pick(state1),
     });
   });
-  return { user };
+  fs.writeFile('./src/data/data.json', JSON.stringify({ users: users, admin: admin, trafficDepartment: trafficDepartment }), 'utf8', (err) => {
+    if (err) {
+      console.error('写入文件发生错误', err)
+    } else {
+      console.log('数据写入成功')
+    }
+  })
+  return { users: users, admin: admin, trafficDepartment: trafficDepartment };
 };

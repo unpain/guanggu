@@ -2,8 +2,15 @@ import { opInfo } from "./request";
 
 const getInfoApi = () => {
   return opInfo({
-    url: '/user',
-    methods: 'GET'
+    url: '/users'||'/admin'||'/department',
+    method: 'GET'
   })
 }
-export { getInfoApi }
+const postInfoApi = (data) => {
+  return opInfo({
+    url: '/users'||'/admin'||'/department',
+    method: 'POST',
+    data: data
+  })
+}
+export { getInfoApi, postInfoApi }
