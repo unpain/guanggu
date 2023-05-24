@@ -42,14 +42,24 @@ const types = [
 ];
 const state = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
 const state1 = [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
-const admin = [{
-  user_id: 1,
-  user_name: Mock.Random.cname(),
-  user_password: [...passwords][0],
-  user_type: 'admin',
-  user_onlinestatus: 1,
-  user_other: 1,
-}];
+const admin = [
+  {
+    user_id: 0,
+    user_name: 'admin',
+    user_password: "123456",
+    user_type: 'admin',
+    user_onlinestatus: 1,
+    user_other: 1,
+  }
+  ,
+  {
+    user_id: 1,
+    user_name: Mock.Random.cname(),
+    user_password: [...passwords][0],
+    user_type: 'admin',
+    user_onlinestatus: 1,
+    user_other: 1,
+  }];
 const trafficDepartment = [{
   user_id: 2,
   user_name: Mock.Random.cname(),

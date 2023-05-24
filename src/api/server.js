@@ -42,7 +42,12 @@ server.get(`/users` || `/admin` || `/trafficDepartment`, (req, res, next) => {
   res.json({ data: mockData })
   next()
 });
-server.delete(`/users`, (req, res, next) => {
+server.delete(`/users/:id`, (req, res, next) => {
+  const userId = req.params.id
+  const userIndex = mockData.users.findIndex(item => item.user_id == userId)
+  mockData.users.splice(userIndex, 1)
+  res.json({ data: mockData })
+  next()
 });
 // 拦截需要验证的请求，并验证JWT令牌
 server.use((req, res, next) => {

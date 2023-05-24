@@ -8,6 +8,7 @@
   ></el-input>
   <el-button @click="handleLogin">登录</el-button>
   <el-button @click="register">注册</el-button>
+  <el-button @click="deleteUser(1)">删除</el-button>
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
@@ -43,6 +44,12 @@ const register = () => {
     password: password.value,
     op: 'register'
   }).then(res => {
+    console.log(res.data)
+  })
+}
+const deleteUser = (id) => {
+  deleteUserApi(id).then(res => {
+    console.log(id)
     console.log(res.data)
   })
 }
