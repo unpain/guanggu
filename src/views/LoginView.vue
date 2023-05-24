@@ -12,21 +12,24 @@ let { username, password, capcha } = toRefs(useUserStore())
 const login = () => {
   postInfoApi({
     username: username.value,
-    password: password.value
+    password: password.value,
+    op: "login"
   }).then(res => {
     const token = res.data.token
-    console.log(res)
+    // console.log(res)
     localStorage.setItem('token', token)
+  }).catch(err => {
+    console.error(err)
   })
-    .catch(err => {
-      console.error(err)
-    })
+  getInfoApi().then(res => {
+    console.log(res.data)
+  })
 }
 const register = () => {
   postInfoApi({
     username: username.value,
     password: password.value,
-    op: 'register'
+    op: "register"
   }).then(res => {
     console.log(res)
   })

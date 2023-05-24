@@ -42,25 +42,25 @@ const types = [
 ];
 const state = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
 const state1 = [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
-const admin = {
+const admin = [{
   user_id: 1,
   user_name: Mock.Random.cname(),
   user_password: [...passwords][0],
   user_type: 'admin',
   user_onlinestatus: 1,
   user_other: 1,
-};
-const traffic = {
+}];
+const trafficDepartment = [{
   user_id: 2,
   user_name: Mock.Random.cname(),
   user_password: [...passwords][1],
   user_type: 'department',
   user_onlinestatus: 1,
   user_other: 1,
-};
+}];
 
 module.exports = () => {
-  const users = [admin, traffic];
+  const users = [];
   let i = 0;
   passwords.forEach((password, index) => {
     if (index < 2) {
@@ -75,12 +75,12 @@ module.exports = () => {
       user_other: Mock.Random.pick(state1),
     });
   });
-  fs.writeFile('./src/data/data.json', JSON.stringify(users), 'utf8', (err) => {
+  fs.writeFile('./src/data/data.json', JSON.stringify({ users: users, admin: admin, trafficDepartment: trafficDepartment }), 'utf8', (err) => {
     if (err) {
       console.error('写入文件发生错误', err)
     } else {
       console.log('数据写入成功')
     }
   })
-  return { users };
+  return { users: users, admin: admin, trafficDepartment: trafficDepartment };
 };
