@@ -1,6 +1,6 @@
 <template>
-  <button>点击添加事件</button>
-  <el-form
+  <!-- <button>点击添加事件</button> -->
+  <el-form v-if="false"
     label-width="120px"
     :model="ruleForm"
     :size="default"

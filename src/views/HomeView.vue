@@ -1,26 +1,19 @@
 <template>
   <div>
+    <OpenMenu />
     <OpenMap />
     <AddControl />
     <EventAddition />
   </div>
 </template>
 <script setup>
-import OpenMap from '../compontents/OpenMap.vue'
-import AddControl from '../compontents/AddControl.vue'
-import EventAddition from '../compontents/EventAddition.vue'
-import { useUserStore } from '../stores/user'
-import { app } from '../main'
+import OpenMap from '../components/OpenMap.vue'
+import OpenMenu from '../components/OpenMenu.vue'
+import AddControl from '../components/AddControl.vue'
+import EventAddition from '../components/EventAddition.vue'
 
-const { hasPermission } = useUserStore()
-app.directive('permission', {
-  mounted(el, binding) {
-    // 判断是否有按钮权限
-    if (!hasPermission(binding.value)) {
-      el.style.display = 'none'
-    }
-  }
-})
+
+
+
 </script>
 <style scoped></style>
-
