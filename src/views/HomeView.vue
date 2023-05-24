@@ -1,12 +1,14 @@
 <template>
   <div>
-    <button>公共</button>
-    <button v-permission="['user']">user</button>
-    <button v-permission="['admin']">admin</button>
-    <button v-permission="['user', 'admin']">user+admin</button>
+    <OpenMap />
+    <AddControl />
+    <EventAddition />
   </div>
 </template>
 <script setup>
+import OpenMap from '../compontents/OpenMap.vue'
+import AddControl from '../compontents/AddControl.vue'
+import EventAddition from '../compontents/EventAddition.vue'
 import { useUserStore } from '../stores/user'
 import { app } from '../main'
 
