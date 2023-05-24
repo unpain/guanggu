@@ -3,11 +3,13 @@
   password:<el-input type="password" v-model="password" id="password-input" required></el-input>
   <el-button @click="login">登录</el-button>
   <el-button @click="register">注册</el-button>
+  <el-button @click="deleteUser(1)">删除</el-button>
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
 import { toRefs, onBeforeMount } from 'vue';
 import { getInfoApi, postInfoApi } from '@/api/login'
+import { deleteUserApi } from '@/api/opUser'
 let { username, password, capcha } = toRefs(useUserStore())
 const login = () => {
   postInfoApi({
@@ -16,7 +18,7 @@ const login = () => {
     op: "login"
   }).then(res => {
     const token = res.data.token
-    // console.log(res)
+    console.log(res)
     localStorage.setItem('token', token)
   }).catch(err => {
     console.error(err)
@@ -31,6 +33,15 @@ const register = () => {
     console.log(res.data)
   })
 }
+const deleteUser = (id) => {
+  deleteUserApi(id).then(res => {
+    console.log(id)
+    console.log(res.data)
+  })
+}
+onBeforeMount(() => {
+  // login()
+})
 </script>
 <style scoped>
 </style>
