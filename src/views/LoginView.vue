@@ -31,6 +31,9 @@ const register = () => {
     console.log(res.data)
   })
 }
+onBeforeMount(() => {
+  // login()
+})
 </script>
 <style scoped>
 </style>
