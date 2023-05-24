@@ -1,0 +1,104 @@
+{
+  "users": [
+    {
+      "user_id": 1,
+      "user_name": "贺霞",
+      "user_password": "vf832215707245",
+      "user_type": "user",
+      "user_onlinestatus": 0,
+      "user_other": 1
+    },
+    {
+      "user_id": 2,
+      "user_name": "谭秀兰",
+      "user_password": "Lq13135857064317",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 3,
+      "user_name": "易艳",
+      "user_password": "KA03444886155",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 4,
+      "user_name": "邹超",
+      "user_password": "mb5379275781",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 5,
+      "user_name": "傅杰",
+      "user_password": "yH1535241119252",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 0
+    },
+    {
+      "user_id": 6,
+      "user_name": "阎勇",
+      "user_password": "Cw0831278",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 7,
+      "user_name": "秦磊",
+      "user_password": "PS7157625",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 8,
+      "user_name": "武洋",
+      "user_password": "RJ14802659",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 9,
+      "user_name": "丁勇",
+      "user_password": "Mb66667587",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    },
+    {
+      "user_id": 10,
+      "user_name": "汤静",
+      "user_password": "US8589590861677",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    }
+  ],
+  "admin": [
+    {
+      "user_id": 1,
+      "user_name": "苏秀兰",
+      "user_password": "vf832215707245",
+      "user_type": "admin",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    }
+  ],
+  "trafficDepartment": [
+    {
+      "user_id": 2,
+      "user_name": "郑艳",
+      "user_password": "Lq13135857064317",
+      "user_type": "department",
+      "user_onlinestatus": 1,
+      "user_other": 1
+    }
+  ]
+}
