@@ -1,22 +1,23 @@
 <template>
-  <button>点击添加事件</button>
- <div class="container">
-  <div class="notice-title">
+  <button @click="showForm">点击添加事件</button>
+ <div class="container" v-if="formVisible">
+  <div class="event-title">
     <h3>报告路况</h3>
-    <i class="iconfont icon-close"></i>
+    <i class="iconfont icon-close" @click="hideForm"></i>
   </div>
-  <div class="notice-main">
+  <div class="event-main">
     <el-form
+    ref="ruleFormRef"
     label-width="120px"
     :model="ruleForm"
     :size="default"
     status-icon
-    style="width: 100%"
+    style="width: 95%"
     :rules="rules"
     class="add-event"
   >
     <el-form-item label="事件类型" prop="type">
-      <el-select v-model="ruleForm.region" placeholder="选择事件类型">
+      <el-select v-model="ruleForm.type" placeholder="选择事件类型">
         <el-option label="碰撞事故" value="01" />
         <el-option label="单车事故" value="02" />
         <el-option label="行人事故" value="03" />
@@ -72,17 +73,16 @@
     </el-form-item>
   </el-form>
   </div>
-  <div class="notice-footer">
+  <div class="event-footer">
     <el-form-item>
       <el-button type="primary"> 确认 </el-button>
-      <el-button>重置</el-button>
+      <el-button @click="resetForm($refs.ruleFormRef)">重置</el-button>
     </el-form-item>
   </div>
  </div>
 </template>
 <script setup>
-import { reactive } from 'vue'
-// import  { FormInstance, FormRules } from 'element-plus'
+import { reactive ,ref} from 'vue'
 const ruleForm = reactive({
   type: '',
   address: '',
@@ -101,6 +101,20 @@ const rules = reactive({
     {required:true,message:'请输入事故位置',trigger: 'blur'}
   ]
 })
+// 重置表单
+const resetForm = (formEl) => {
+  console.log(formEl)
+  if (!formEl) return
+  formEl.resetFields()
+}
+const formVisible = ref(false)
+const showForm = () => {
+  formVisible.value = true // 显示表单
+}
+const hideForm = () => {
+  formVisible.value = false // 隐藏表单
+}
+
 </script>
 <style scoped>
 @import url(https://at.alicdn.com/t/c/font_4027375_y6nc9axxdw.css);
@@ -108,27 +122,32 @@ const rules = reactive({
 position:fixed;
 top: 50%;
 left: 50%;
+width: 400px;
+border-radius: 5px;
 transform: translate(-50%, -50%);
 background-color: #fff;
-
-
   /* display: none; */
 }
-.container .notice-title{
+.container .event-title{
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   border-bottom: 1px solid #999;
 }
-.container .notice-main{
+.container .event-title h3{
+  color: #666;
+}
+.container .event-title .iconfont{
+  cursor: pointer;
+}
+.container .event-main{
   padding:10px 10px 10px 0;
   border-bottom: 1px solid #999;
 }
-.container .notice-footer{
-  padding: 10px 20px;
+.container .event-footer{
+  padding: 15px 20px;
   padding-bottom: 0;
-
 }
 
 </style>
