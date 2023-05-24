@@ -6,6 +6,6 @@ import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 
-const app = createApp(App)
+export const app = createApp(App)
 
 app.use(createPinia()).use(router).use(ElementPlus).mount('#app')
