@@ -47,7 +47,7 @@ const register = () => {
     console.log(res.data)
   })
 }
-const deleteUser = (id) => {
+const deleteUser = id => {
   deleteUserApi(id).then(res => {
     console.log(id)
     console.log(res.data)

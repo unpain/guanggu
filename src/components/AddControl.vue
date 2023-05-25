@@ -1,5 +1,5 @@
 <template>
-    <div id="mouse-position"></div>
+  <div id="mouse-position"></div>
 </template>
 <script setup>
 import { gaode_image, gaode_vector } from '../tianditu_libs/gaode'
@@ -54,7 +54,7 @@ function overviewMapControl() {
     //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
     className: 'ol-overviewmap ol-custom-overviewmap',
     //鹰眼中加载同坐标系下不同数据源的图层
-    layers: [ gaode_vector],
+    layers: [gaode_vector],
 
     //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
     collapseLabel: '\u00BB',
@@ -80,7 +80,6 @@ function overviewMapControl() {
   width: 200px;
   height: 20px;
   /*在地图容器中的层，要设置z-index的值让其显示在地图上层*/
-  z-index: 2000;
 }
 /* 鼠标位置信息自定义样式设置 */
 .custom-mouse-position {
@@ -90,7 +89,7 @@ function overviewMapControl() {
 }
 
 .ol-overviewmap {
-    right: 0.5em;
-    bottom: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
 }
 </style>

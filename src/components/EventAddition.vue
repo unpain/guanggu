@@ -1,5 +1,5 @@
 <template>
-  <button @click="showForm">点击添加事件</button>
+  <el-menu-item index="3" v-permission="['user']" @click="showForm">报告路况</el-menu-item>
   <div class="container" v-if="formVisible">
     <div class="event-title">
       <h3>报告路况</h3>
@@ -146,6 +146,7 @@ const hideForm = () => {
   border-radius: 5px;
   transform: translate(-50%, -50%);
   background-color: #fff;
+  z-index: 100;
   /* display: none; */
 }
 .container .event-title {

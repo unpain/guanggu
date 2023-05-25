@@ -10,18 +10,20 @@ import {
   TiandiMap_img,
   TiandiMap_cia,
   TiandiMap_ter,
-  TiandiMap_cta,
+  TiandiMap_cta
 } from '../tianditu_libs/tianditu'
 import { onMounted } from 'vue'
 onMounted(() => {
+  const docLayer = new Zondy.Map.Doc('', 'guanggu', {})
   const map = new ol.Map({
     target: 'map',
-    layers: [gaode_vector],
+    // layers: [gaode_vector, docLayer],
+    layers: [gaode_image, docLayer],
     view: new ol.View({
-      center: [114.40088809833583, 30.4663210497187],
-      zoom: 8,
-      projection: 'EPSG:4326',
-    }),
+      center: [114.38, 30.49],
+      zoom: 13,
+      projection: 'EPSG:4326'
+    })
   })
   // setTimeout(() => {
   //   map.getView().animate({
@@ -34,6 +36,8 @@ onMounted(() => {
 </script>
 <style scoped>
 #map {
+  position: fixed;
+  bottom: 0;
   width: 100vw;
   height: calc(100vh - 60px);
 }

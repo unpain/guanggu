@@ -9,15 +9,14 @@
     text-color="#fff"
     active-text-color="#ffd04b"
     @select="handleSelect"
+    :ellipsis="false"
+    menu-trigger="click"
   >
     <h4 class="log">光谷智慧交通系统</h4>
-
     <el-menu-item @click="getRoadConditions" index="1">实时路况</el-menu-item>
     <el-menu-item index="2" v-permission="['user']">查看公告</el-menu-item>
-    <el-menu-item index="3" v-permission="['user']">报告路况</el-menu-item>
-    <el-menu-item index="4" v-permission="['department', 'admin']"
-      >视频监控</el-menu-item
-    >
+    <EventAddition />
+    <VideoMonitor />
     <el-menu-item index="5" v-permission="['department', 'admin']"
       >事件添加</el-menu-item
     >
@@ -33,7 +32,6 @@
     <el-menu-item index="9" v-permission="['department', 'admin']"
       >路况信息</el-menu-item
     >
-
     <el-sub-menu index="10">
       <template #title>工具箱</template>
       <el-menu-item index="10-1">测量距离</el-menu-item>
@@ -66,33 +64,19 @@
   </el-menu>
 </template>
 
-<script lang="ts" setup>
-import { ref } from 'vue'
-const activeIndex2 = ref('1')
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, '0000', keyPath, '11111')
-}
-const getRoadConditions = () => {}
-
-import { useUserStore } from '../stores/user'
-import { app } from '../main'
-const { hasPermission } = useUserStore()
-app.directive('permission', {
-  mounted(el, binding) {
-    // 判断是否有按钮权
-    console.log(binding.value)
-    if (!hasPermission(binding.value)) {
-      el.style.display = 'none'
-    }
-  }
-})
+<script setup>
+import VideoMonitor from './coms/VideoMonitor.vue'
+import EventAddition from '../EventAddition.vue'
 </script>
 <style scoped>
 .el-menu-demo {
   align-items: center;
   white-space: nowrap;
 }
-.log {
+VideoMonitor.vueVideoMonitor.vueVideoMonitor.vue .log {
   margin: 0 0 0 20px;
+}
+::v-deep .el-sub-menu__title {
+  padding: 0 20px;
 }
 </style>
