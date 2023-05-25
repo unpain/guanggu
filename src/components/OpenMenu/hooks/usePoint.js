@@ -1,15 +1,15 @@
 export const usePoint = () => {
   const POINT_STYLE = {
     Angle: 0,
-    Color: 11, //子图颜色
+    Color: 6, //子图颜色
     Space: 0,
-    SymHeight: 6,
-    SymID: 31, //子图号
-    SymWidth: 6
+    SymHeight: 5,
+    SymID: 21, //子图号
+    SymWidth: 5
   }
   class Point {
     /* 向gdb数据库添加点要素 */
-    static add({ position, service, docLayer }) {
+    static add({ position, attr, service, docLayer }) {
       var gpoint = new Zondy.Object.GPoint(position[0], position[1])
       var fGeom = new Zondy.Object.FeatureGeometry({ PntGeom: [gpoint] })
       //样式信息
@@ -22,7 +22,8 @@ export const usePoint = () => {
       })
       /* 属性信息 */
       //设置添加点要素的属性信息
-      var attValue = []
+      var attValue = attr.map(item => item.value)
+      // var attValue = []
       //创建一个要素
       /* new ol.Feature({
                 geometry,
@@ -33,16 +34,23 @@ export const usePoint = () => {
         GraphicInfo: webGraphicInfo,
         AttValue: attValue
       })
+
       //设置要素为点要素
       feature.setFType(1)
       /* 2、创建要素集 --source */
       //创建一个要素数据集
       var featureSet = new Zondy.Object.FeatureSet()
       //设置属性结构
+      var fldNumber = attValue.length
+      var fldType = attr.map(item => item.type)
+      var fldName = attr.map(item => item.name)
+      console.log(fldNumber)
+      console.log(fldType)
+      console.log(fldName)
       var cAttStruct = new Zondy.Object.CAttStruct({
-        FldName: [],
-        FldNumber: 0,
-        FldType: []
+        FldName: fldName,
+        FldNumber: fldNumber,
+        FldType: fldType
       })
       featureSet.AttStruct = cAttStruct
       //添加要素到要素数据集
@@ -53,10 +61,7 @@ export const usePoint = () => {
       var editService = new Zondy.Service.EditDocFeature(
         service.name,
         service.layerId,
-        {
-          ip: 'localhost',
-          port: '6163' //访问IGServer的端口号，.net版为6163，Java版为8089
-        }
+        {}
       )
       //执行添加点要素功能
       editService.add(featureSet, this.onPntSuccess(docLayer))
@@ -72,5 +77,5 @@ export const usePoint = () => {
       }
     }
   }
-  return Point
+  return { Point }
 }

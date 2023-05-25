@@ -57,5 +57,5 @@ export const useQuery = () => {
       }
     }
   }
-  return Query
+  return { Query }
 }

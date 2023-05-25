@@ -64,7 +64,7 @@ const closePopup = () => {
   white-space: nowrap;
   /* overflow: hidden; */
   z-index: 999;
-  box-shadow: 1px 1px 1px ;
+  box-shadow: 3px 3px 10px #333;
 }
 header {
   padding: 8px;

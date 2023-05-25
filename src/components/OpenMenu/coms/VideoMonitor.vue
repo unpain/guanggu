@@ -42,7 +42,7 @@ onMounted(() => {
   $map = inject('$map')
 })
 
-const Query = useQuery()
+const { Query } = useQuery()
 //查看监控
 const checkMonitor = () => {
   $map.on('click', mapClick)
@@ -72,11 +72,12 @@ const handlePopup = popup => {
   $popup = popup
 }
 
-const queryRes = res => {
-  if (res) {
-    const position = res[0].getGeometry().flatCoordinates
+const queryRes = e => {
+  if (e) {
+    console.log(e)
+    const position = e[0].getGeometry().flatCoordinates
     $popup.setPosition(position)
-    const attr = res[0].values_.values_
+    const attr = e[0].values_.values_
     tableData.value[0] = {
       id: attr.ID,
       number: attr['编号'],
