@@ -72,7 +72,7 @@ import VideoMonitor from './coms/VideoMonitor.vue'
   align-items: center;
   white-space: nowrap;
 }
-VideoMonitor.vueVideoMonitor.vueVideoMonitor.vue .log {
+.log {
   margin: 0 0 0 20px;
 }
 ::v-deep .el-sub-menu__title {

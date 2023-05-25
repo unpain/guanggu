@@ -1,5 +1,5 @@
 <template>
-    <div id="mouse-position"></div>
+  <div id="mouse-position"></div>
 </template>
 <script setup>
 import { gaode_image, gaode_vector } from '../tianditu_libs/gaode'
@@ -16,7 +16,7 @@ onMounted(() => {
 // 添加导航控件
 function navControl() {
   const navControl = new ol.control.ZoomToExtent({
-    extent: [114.3364, 30.439, 114.4653, 30.4983],
+    extent: [114.3364, 30.439, 114.4653, 30.4983]
   })
   $map.addControl(navControl)
 }
@@ -32,7 +32,7 @@ function mousePositionControl() {
     //显示鼠标位置信息的目标容器
     target: document.getElementById('mouse-position'),
     //未定义坐标的标记
-    undefinedHTML: '&nbsp;',
+    undefinedHTML: '&nbsp;'
   })
   $map.addControl(mousePositionControl)
 }
@@ -45,7 +45,7 @@ function zoomslider() {
 function scaleLineControl() {
   var scaleLineControl = new ol.control.ScaleLine({
     //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
-    units: 'metric',
+    units: 'metric'
   })
   $map.addControl(scaleLineControl)
 }
@@ -54,7 +54,7 @@ function overviewMapControl() {
     //鹰眼控件样式（see in overviewmap-custom.html to see the custom CSS used）
     className: 'ol-overviewmap ol-custom-overviewmap',
     //鹰眼中加载同坐标系下不同数据源的图层
-    layers: [ gaode_vector],
+    layers: [gaode_vector],
 
     //鹰眼控件展开时功能按钮上的标识（网页的JS的字符编码）
     collapseLabel: '\u00BB',
@@ -65,8 +65,8 @@ function overviewMapControl() {
     view: new ol.View({
       projection: 'EPSG:4326',
       minZoom: 8,
-      maxZoom: 18,
-    }),
+      maxZoom: 18
+    })
   })
   $map.addControl(overviewMapControl)
 }
@@ -90,7 +90,7 @@ function overviewMapControl() {
 }
 
 .ol-overviewmap {
-    right: 0.5em;
-    bottom: 0.5em;
+  right: 0.5em;
+  bottom: 0.5em;
 }
 </style>

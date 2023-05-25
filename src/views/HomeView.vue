@@ -1,7 +1,7 @@
 <template>
   <div>
-    <OpenMenu />
     <OpenMap />
+    <OpenMenu />
     <AddControl />
     <EventAddition />
   </div>
@@ -12,4 +12,7 @@ import OpenMenu from '../components/OpenMenu/OpenMenu.vue'
 import AddControl from '../components/AddControl.vue'
 import EventAddition from '../components/EventAddition.vue'
 </script>
-<style scoped></style>
+<style scoped>
+
+
+</style>
