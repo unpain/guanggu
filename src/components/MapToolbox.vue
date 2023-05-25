@@ -1,56 +1,65 @@
 <template>
-  <div id="mapCon">
-    <div id="menu">
-      <label>Geometry type &nbsp;</label>
-      <button @click="measureLine">测量距离</button>
-      <button @click="measureArea">测量面积</button>
-      <select id="type">
-        <option value="length">Length</option>
-        <option value="area">Area</option>
-      </select>
-    </div>
-  </div>
+  <el-sub-menu index="10">
+    <template #title>工具箱</template>
+    <el-menu-item index="10-1" @click="measureLine">测量距离</el-menu-item>
+    <el-menu-item index="10-2" @click="measureArea">测量面积</el-menu-item>
+    <el-menu-item index="10-2" @click="closeMeasure">关闭测量</el-menu-item>
+    <el-menu-item index="10-2" @click="saveImage">导出图片</el-menu-item>
+    <el-sub-menu index="10-4">
+      <template #title>查询</template>
+      <el-menu-item index="10-4-1">item one</el-menu-item>
+      <el-menu-item index="10-4-2">item two</el-menu-item>
+      <el-menu-item index="10-4-3">item three</el-menu-item>
+    </el-sub-menu>
+  </el-sub-menu>
+  <!-- <div id="mapCon"></div> -->
 </template>
 <script setup>
-import { inject, onMounted, ref } from 'vue'
+import { inject, onMounted } from 'vue'
 var $map
 var source = new ol.source.Vector({})
 var vector = new ol.layer.Vector({
   source: source,
 })
+
 onMounted(() => {
   $map = inject('$map')
-  
+  console.log($map.getInteractions())
 
   $map.addLayer(vector)
 })
 function measureLine() {
   var type = 'LineString'
-  measure({ $map, source ,type})
+  measure({ $map, source, type })
 }
 function measureArea() {
   var type = 'Polygon'
-  measure({ $map, source,type })
+  measure({ $map, source, type })
+}
+function closeMeasure() {
+  source.clear()
+  const res = $map.getInteractions().array_[9]
+  $map.removeInteraction(res)
+  const element = document.querySelectorAll('.tooltip')
+  element.forEach(item=>item.remove())
+}
+function saveImage() {
+  $map.once('postcompose', function (event) {
+    var canvas = event.context.canvas
+    canvas.toBlob(function (blob) {
+      saveAs(blob, 'map.png')
+    })
+  })
+  $map.renderSync()
 }
 </script>
 
 <style scoped>
 #mapCon {
   width: 100%;
-  height: 95%;
-  position: relative;
-}
-
-#menu {
-  float: left;
+  height: 100%;
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  /* z-index: 2000; */
-}
-
-.checkbox {
-  left: 20px;
+  top: 60px;
 }
 /**
         * 提示框的样式信息
@@ -72,7 +81,7 @@ function measureArea() {
 
 .tooltip-static {
   background-color: #ffcc33;
-  color: black;
+  color: white;
   border: 1px solid white;
 }
 

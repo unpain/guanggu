@@ -14,7 +14,7 @@ import {
 } from '../tianditu_libs/tianditu'
 import { onMounted } from 'vue'
 onMounted(() => {
-  const docLayer = new Zondy.Map.Doc('', 'guanggu', {})
+  const docLayer = new Zondy.Map.Doc('', 'guanggu', {crossOrigin: "Anonymous"})
   const map = new ol.Map({
     target: 'map',
     // layers: [gaode_vector, docLayer],
@@ -22,7 +22,7 @@ onMounted(() => {
     view: new ol.View({
       center: [114.38, 30.49],
       zoom: 13,
-      projection: 'EPSG:4326'
+      projection: 'EPSG:4326',
     })
   })
   // setTimeout(() => {

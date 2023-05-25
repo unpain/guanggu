@@ -32,20 +32,8 @@
     <el-menu-item index="9" v-permission="['department', 'admin']"
       >路况信息</el-menu-item
     >
-    <el-sub-menu index="10">
-      <template #title>工具箱</template>
-      <el-menu-item index="10-1">测量距离</el-menu-item>
-      <el-menu-item index="10-2">测量面积</el-menu-item>
-      <el-menu-item index="10-2">关闭测量</el-menu-item>
-      <el-menu-item index="10-2">导出图片</el-menu-item>
-      <el-sub-menu index="10-4">
-        <template #title>查询</template>
-        <el-menu-item index="10-4-1">item one</el-menu-item>
-        <el-menu-item index="10-4-2">item two</el-menu-item>
-        <el-menu-item index="10-4-3">item three</el-menu-item>
-      </el-sub-menu>
-    </el-sub-menu>
-
+  
+    <MapToolbox />
     <el-menu-item class="scerch">
       <el-input
         placeholder="请输入查询的交通事故信息"
@@ -62,11 +50,13 @@
       <el-option v-permission="['admin']" label="用户管理" value="2" />
     </el-select>
   </el-menu>
+
 </template>
 
 <script setup>
 import VideoMonitor from './coms/VideoMonitor.vue'
 import EventAddition from '../EventAddition.vue'
+import MapToolbox from '../MapToolbox.vue'
 </script>
 <style scoped>
 .el-menu-demo {
