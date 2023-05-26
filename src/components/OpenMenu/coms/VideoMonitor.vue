@@ -9,10 +9,10 @@
     <el-menu-item index="4-1" @click="checkMonitor">查看监控</el-menu-item>
     <el-menu-item index="4-2" @click="offMonitor">取消查看</el-menu-item>
   </el-sub-menu>
-  <ThePopup @popup="handlePopup">
+  <ThePopup :popupId="'videoMonitor'" @popup="handlePopup">
     <template #title>摄像头:{{ tableData[0].number }}</template>
     <el-table :data="tableData" border style="width: 200px">
-      <el-table-column prop="id">
+      <el-table-column>
         <template #header>
           位置: <span>{{ tableData[0].location }}</span></template
         >
@@ -31,16 +31,21 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, computed } from 'vue'
+import { ref, inject, onMounted } from 'vue'
 import { useQuery } from '../hooks/useQuery'
 import ThePopup from './ThePopup.vue'
 
 let $map
-const tableData = ref([{ id: '', number: ' ', url: '', location: '' }])
+const tableData = ref([{ id: '', number: '', location: '' }])
 
 onMounted(() => {
   $map = inject('$map')
 })
+//popup子组件传过来的用来激活弹窗
+let $popup
+const handlePopup = popup => {
+  $popup = popup
+}
 
 const { Query } = useQuery()
 //查看监控
@@ -52,12 +57,12 @@ const offMonitor = () => {
   $map.un('click', mapClick)
 }
 
+const service = {
+  name: 'guanggu',
+  layerId: 3
+}
 const mapClick = e => {
   const position = e.coordinate
-  const service = {
-    name: 'guanggu',
-    layerId: 3
-  }
   //点查询
   Query.queryByPnt({
     position,
@@ -66,22 +71,15 @@ const mapClick = e => {
   })
 }
 
-//popup子组件传过来的用来激活弹窗
-let $popup
-const handlePopup = popup => {
-  $popup = popup
-}
-
 const queryRes = e => {
   if (e) {
-    console.log(e)
     const position = e[0].getGeometry().flatCoordinates
     $popup.setPosition(position)
+    // 点查询返回的数据
     const attr = e[0].values_.values_
     tableData.value[0] = {
       id: attr.ID,
       number: attr['编号'],
-      url: attr.URL,
       location: attr['位置']
     }
   } else {

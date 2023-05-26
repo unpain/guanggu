@@ -69,7 +69,6 @@ export const usePoint = () => {
     static onPntSuccess(docLayer) {
       return function (data) {
         if (data.succeed) {
-          alert('添加点要素成功！')
           docLayer.refresh()
         } else {
           alert('添加点要素失败！')

@@ -1,6 +1,5 @@
 <template>
-  <!-- popup弹窗 -->
-  <div id="popup" class="ol-popup">
+  <div :id="popupId" class="ol-popup">
     <header>
       <slot name="title"></slot>
       <a
@@ -11,20 +10,27 @@
       ></a>
     </header>
     <div id="popup-content">
-     
       <slot></slot>
     </div>
   </div>
 </template>
 
 <script setup>
-import { onMounted, inject, defineEmits } from 'vue'
+import { onMounted, inject, defineEmits, defineProps } from 'vue'
+
+// 父组件传过来的id
+const props = defineProps({
+  popupId: {
+    type: String,
+    required: true
+  }
+})
 
 let popup
 const emit = defineEmits(['popop'])
 onMounted(() => {
   const $map = inject('$map')
-  var container = document.getElementById('popup')
+  var container = document.getElementById(props.popupId)
   popup = new ol.Overlay({
     //要转换成overlay的HTML元素
     element: container,
@@ -72,7 +78,7 @@ header {
   font-size: 14px;
   font-family: '微软雅黑';
   color: #fff;
-  border-radius: 5px 5px 0 0 ;
+  border-radius: 5px 5px 0 0;
 }
 .ol-popup:after,
 .ol-popup:before {
