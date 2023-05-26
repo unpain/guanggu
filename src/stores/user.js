@@ -7,6 +7,7 @@ export const useUserStore = defineStore('auth', () => {
   let user = ref({})
   let userList = ref([])
   let trafficList = ref([])
+  let key = ref('')
   const userPermission = ref(
     localStorage.getItem('userPermission') === undefined ? JSON.parse(localStorage.getItem('userPermission')) : null
   )
@@ -39,6 +40,7 @@ export const useUserStore = defineStore('auth', () => {
     trafficList,
     username,
     password,
-    user
+    user,
+    key
   }
 })

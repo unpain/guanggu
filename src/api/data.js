@@ -4,7 +4,7 @@ const Mock = require('mockjs');
 const fs = require('fs')
 // 生成 8-16 位的随机密码数组
 const passwords = new Set();
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 104; i++) {
   let password = '';
   let letter = Mock.Random.character(
     'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -21,7 +21,7 @@ for (let i = 0; i < 10; i++) {
 const types = [
   'admin',
   'department',
-  'normal'
+  'user'
 ];
 const state = [true, false];
 const state1 = [0, 1];
@@ -99,7 +99,7 @@ module.exports = () => {
     user_id: 0,
     user_name: 'user',
     user_password: '123456',
-    user_type: 'normal',
+    user_type: 'user',
     user_onlinestatus: Mock.Random.pick(state),
     user_other: 1,
   }];

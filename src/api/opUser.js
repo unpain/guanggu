@@ -74,6 +74,13 @@ const modifyUserInfoApi = (id, user) => {
     }
   })
 }
+
+const searchInfoApi = (key,type)=>{
+  return opInfo({
+    url:`/all?params={"key":"${key}","type":"${type}"}`,
+    method:'GET'
+  })
+}
 export {
   deleteUserApi,
   deleteTrafficDepartmentApi,
@@ -82,5 +89,6 @@ export {
   setTrafficStatusApi,
   setUserStatusApi,
   modifyUserInfoApi,
-  modifyTrafficInfoApi
+  modifyTrafficInfoApi,
+  searchInfoApi
 }

@@ -5,13 +5,14 @@
     <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1500px' }"
       :header-cell-style="{ background: '#f5f7fa', color: '#333', 'font-size': '20px' }"
       :cell-style="{ height: '45px', width: '500px', 'font-size': '20px' }" border="true">
-      <el-table-column prop="user_id" label="用户id" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_name" label="用户姓名" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_type" label="用户类型" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_onlinestatus" label="用户在线状态" resizable="true" align="center">
+      <el-table-column prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
+      <el-table-column prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
+      <el-table-column prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
+        row.user_type == 'user' ? '普通用户' : null }}</template></el-table-column>
+      <el-table-column prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
         <template v-slot="{ row }">
           <el-switch v-model="row.user_onlinestatus" @change="switchStatus(row.user_id, row.user_onlinestatus)"
-            size="normal"></el-switch>
+            size="large"></el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="event_status" label="操作" align="center">
@@ -48,7 +49,7 @@
 import { getInfoApi } from '@/api/login'
 import { setUserStatusApi, upgradeUserApi, deleteUserApi, modifyUserInfoApi } from '@/api/opUser'
 import { useUserStore } from '@/stores/user'
-import { toRefs, onBeforeMount, ref } from 'vue';
+import { toRefs, onBeforeMount, ref, watch } from 'vue';
 
 let username = ref('')
 let password = ref('')
@@ -133,6 +134,10 @@ const modifyFinish = () => {
 const modifyCancle = () => {
   modifyFlag.value = false
 }
+watch(userList, () => {
+  totalItems.value = userList.value.length
+  fetchData()
+})
 onBeforeMount(() => {
   getInfoApi().then(res => {
     userList.value = res.data.user

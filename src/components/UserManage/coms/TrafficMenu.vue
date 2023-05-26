@@ -3,12 +3,13 @@
     :style="{ 'max-height': '1200px', width: '1600px', position: 'fixed', left: '50%', transform: 'translateX(' + '-50%' + ')' }">
     <div class="title"><span>交管部门信息表</span></div>
     <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1500px' }"
-      :header-cell-style="{ background: '#f5f7fa', color: '#333','font-size':'20px' }"
+      :header-cell-style="{ background: '#f5f7fa', color: '#333', 'font-size': '20px' }"
       :cell-style="{ height: '45px', width: '100px', 'font-size': '20px' }" border="true">
-      <el-table-column prop="user_id" label="用户id" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_name" label="用户姓名" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_type" label="用户类型" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_onlinestatus" label="用户在线状态" resizable="true" align="center">
+      <el-table-column prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
+      <el-table-column prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
+      <el-table-column prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
+        row.user_type == 'department' ? '交管部门' : null }}</template></el-table-column>
+      <el-table-column prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
         <template v-slot="{ row }">
           <el-switch v-model="row.user_onlinestatus" @change="switchStatus(row.user_id, row.user_onlinestatus)"
             size="large"></el-switch>
@@ -46,23 +47,23 @@
 </template>
 <script setup>
 import { getInfoApi } from '@/api/login'
-import { setUserStatusApi, degradeTrafficDepartmentApi, deleteTrafficDepartmentApi, modifyTrafficInfoApi } from '@/api/opUser'
+import { setTrafficStatusApi, degradeTrafficDepartmentApi, deleteTrafficDepartmentApi, modifyTrafficInfoApi } from '@/api/opUser'
 import { useUserStore } from '@/stores/user'
-import { toRefs, onBeforeMount, ref } from 'vue';
+import { toRefs, onBeforeMount, ref, watch } from 'vue';
+let { userList } = toRefs(useUserStore())
 let username = ref('')
 let password = ref('')
 let userId = ref(0)
-let { userList } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
 let totalItems = ref(0) // 总条数
 let tableData = ref([])// 表格数据
 let modifyFlag = ref(false)
 const switchStatus = (id, status) => {
-  setUserStatusApi(id, status).then((res) => {
+  setTrafficStatusApi(id, status).then((res) => {
     if (res.data.status === 'success') {
       getInfoApi().then(res => {
-        userList.value = res.data.user
+        userList.value = res.data.traffic
       })
     }
   })
@@ -86,7 +87,7 @@ const degradeTrafficDepartment = (id) => {
   degradeTrafficDepartmentApi(id).then(res => {
     if (res.data.status === 'success') {
       getInfoApi().then(res => {
-        userList.value = res.data.trafficDepartment
+        userList.value = res.data.traffic
         totalItems.value = userList.value.length
         fetchData()
       })
@@ -97,7 +98,7 @@ const deleteTrafficDepartment = (id) => {
   deleteTrafficDepartmentApi(id).then(res => {
     if (res.data.status == 'success') {
       getInfoApi().then(res => {
-        userList.value = res.data.trafficDepartment
+        userList.value = res.data.traffic
         totalItems.value = userList.value.length
         fetchData()
       })
@@ -118,7 +119,7 @@ const modifyFinish = () => {
   }).then(res => {
     if (res.data.status == 'success') {
       getInfoApi().then(res => {
-        userList.value = res.data.trafficDepartment
+        userList.value = res.data.traffic
         totalItems.value = userList.value.length
         fetchData()
       })
@@ -129,9 +130,13 @@ const modifyFinish = () => {
 const modifyCancle = () => {
   modifyFlag.value = false
 }
+watch(userList, () => {
+  totalItems.value = userList.value.length
+  fetchData()
+})
 onBeforeMount(() => {
   getInfoApi().then(res => {
-    userList.value = res.data.trafficDepartment
+    userList.value = res.data.traffic
     totalItems.value = userList.value.length
     fetchData()
   })

@@ -13,7 +13,7 @@ server.use(jsonServer.bodyParser);
 // 添加自定义路由处理
 /* user 请求 */
 //登录
-server.post(`/user` || `/admin` || `/trafficDepartment`, (req, res) => {
+server.post(`/all`, (req, res) => {
   const { username, password, op } = req.body;
   const user = database.user.find(
     (u) => u.user_name === username && u.user_password === password
@@ -32,14 +32,14 @@ server.post(`/user` || `/admin` || `/trafficDepartment`, (req, res) => {
   if (user && op === 'login') {
     // 登录成功，生成JWT令牌并返回给客户端
     const token = jsonwebtoken.sign({ username, role: user.user_role }, 'secret');
-    if (user.user_type == 'normal' && userIndex !== -1) {
+    if (user.user_type == 'user' && userIndex !== -1) {
       database.user[userIndex].user_onlinestatus = true
-    } else if (user.user_type == 'admin'&& userIndex !== -1) {
+    } else if (user.user_type == 'admin' && userIndex !== -1) {
       database.admin[userIndex].user_onlinestatus = true
-    } else if (user.user_type == 'trafficDepartment'&& userIndex !== -1) {
+    } else if (user.user_type == 'trafficDepartment' && userIndex !== -1) {
       database.trafficDepartment[userIndex].user_onlinestatus = true
     }
-    res.json({ token, user, data: database});
+    res.json({ token, user, data: database });
   } else if (!user && op === 'login') {
     // 登录失败，返回错误信息
     res.status(401).json({ error: 'Invalid credentials' });
@@ -48,7 +48,7 @@ server.post(`/user` || `/admin` || `/trafficDepartment`, (req, res) => {
       user_id: Math.max(...database.user.map(item => Number(item.user_id))) + 1,
       user_name: req.body.username,
       user_password: req.body.password,
-      user_type: 'normal',
+      user_type: 'user',
       user_onlinestatus: 1,
       user_other: 1
     })
@@ -56,9 +56,25 @@ server.post(`/user` || `/admin` || `/trafficDepartment`, (req, res) => {
   }
 });
 //获取用户信息
-server.get(`/user` || `/admin` || `/trafficDepartment`, (req, res, next) => {
-  res.json({ user: database.user, trafficDepartment: database.trafficDepartment })
-  next()
+server.get(`/all`, (req, res, next) => {
+  let keywords 
+  let type
+  if (req.query.params) {
+    keywords = JSON.parse(req.query.params).key
+    type = JSON.parse(req.query.params).type
+  }
+  if (keywords && type == 'user') {
+    const userArr = database.user.filter(item => (item.user_id.toString() + item.user_name.toString() + item.user_onlinestatus.toString()).includes(keywords))
+    res.json({ userArr: userArr })
+    next()
+  } else if (keywords && type == 'traffic') {
+    const userArr = database.trafficDepartment.filter(item => (item.user_id.toString() + item.user_name.toString() + item.user_onlinestatus.toString()).includes(keywords))
+    res.json({ userArr: userArr })
+    next()
+  } else {
+    res.json({ user: database.user, traffic: database.trafficDepartment })
+    next()
+  }
 });
 //普通用户升级
 server.patch(`/user/:id`, (req, res, next) => {
@@ -135,7 +151,7 @@ server.patch(`/trafficDepartment/:id`, (req, res, next) => {
       user_id: trafficDepartment.user_id,
       user_name: trafficDepartment.user_name,
       user_password: trafficDepartment.user_password,
-      user_type: 'normal',
+      user_type: 'user',
       user_onlinestatus: trafficDepartment.user_onlinestatus,
       user_other: trafficDepartment.user_other
     })
