@@ -23,26 +23,33 @@ var vector = new ol.layer.Vector({
 })
 
 onMounted(() => {
+  // 拿到注入的依赖￥map
   $map = inject('$map')
-  console.log($map.getInteractions())
-
+  // 加载矢量图层
   $map.addLayer(vector)
 })
+// 测量长度函数
 function measureLine() {
   var type = 'LineString'
   measure({ $map, source, type })
 }
+// 测量面基函数
 function measureArea() {
   var type = 'Polygon'
   measure({ $map, source, type })
 }
+// 关闭测量时执行的函数
 function closeMeasure() {
+  // 清除数据源
   source.clear()
   const res = $map.getInteractions().array_[9]
+  // 移除当前画笔
   $map.removeInteraction(res)
+  // 清除DOM
   const element = document.querySelectorAll('.tooltip')
   element.forEach(item=>item.remove())
 }
+// 导出图片的函数
 function saveImage() {
   $map.once('postcompose', function (event) {
     var canvas = event.context.canvas
@@ -55,12 +62,7 @@ function saveImage() {
 </script>
 
 <style scoped>
-#mapCon {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 60px;
-}
+
 /**
         * 提示框的样式信息
         */
