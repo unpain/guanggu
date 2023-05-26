@@ -44,9 +44,6 @@ export const usePoint = () => {
       var fldNumber = attValue.length
       var fldType = attr.map(item => item.type)
       var fldName = attr.map(item => item.name)
-      console.log(fldNumber)
-      console.log(fldType)
-      console.log(fldName)
       var cAttStruct = new Zondy.Object.CAttStruct({
         FldName: fldName,
         FldNumber: fldNumber,

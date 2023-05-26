@@ -18,12 +18,11 @@
     <el-menu-item index="3" v-permission="['user']">报告路况</el-menu-item>
     <VideoMonitor />
     <AddEvent />
+    <UpdateEvent />
     <el-menu-item index="6" v-permission="['department', 'admin']"
       >事件查询</el-menu-item
     >
-    <el-menu-item index="7" v-permission="['department', 'admin']"
-      >事件更新</el-menu-item
-    >
+
     <el-menu-item index="8" v-permission="['department', 'admin']"
       >发布公告</el-menu-item
     >
@@ -65,6 +64,7 @@
 <script setup>
 import VideoMonitor from './coms/VideoMonitor.vue'
 import AddEvent from './coms/AddEvent.vue'
+import UpdateEvent from './coms/UpdateEvent.vue'
 </script>
 <style scoped>
 .el-menu-demo {
