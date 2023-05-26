@@ -10,15 +10,26 @@ const postNewEventApi = (data) => {
   return opInfo({
     url: '/event',
     method: 'POST',
-    data: data
+    data: {
+      event: data
+    }
   })
 }
 
-const modifyEventStatusApi = (id, data) => {
+const modifyEventStatusApi = (id, status) => {
   return opInfo({
     url: `/event/${id}`,
     method: 'PATCH',
-    data: data
+    data: {
+      status: status
+    }
   })
 }
-export { getEventApi, modifyEventStatusApi, postNewEventApi }
+
+const deleteEventApi = (id) => {
+  return opInfo({
+    url: `/event/${id}`,
+    method: 'DELETE'
+  })
+}
+export { getEventApi, modifyEventStatusApi, postNewEventApi, deleteEventApi }

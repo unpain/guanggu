@@ -13,19 +13,74 @@ const deleteTrafficDepartmentApi = (id) => {
   })
 }
 
-const upgradeUserApi = (id, data) => {
+const upgradeUserApi = (id) => {
   return opInfo({
     url: `/user/${id}`,
     method: 'PATCH',
-    data: data
+    data: {
+      op: 'upgrade'
+    }
   })
 }
-const degradeUserApi = (id, data) => {
+const degradeTrafficDepartmentApi = (id) => {
   return opInfo({
     url: `/trafficDepartment/${id}`,
     method: 'PATCH',
-    data: data
+    data: {
+      op: 'degrade'
+    }
   })
 }
 
-export { deleteUserApi, deleteTrafficDepartmentApi, upgradeUserApi, degradeUserApi }
+const setTrafficStatusApi = (id, status) => {
+  return opInfo({
+    url: `/trafficDepartment/${id}`,
+    method: 'PATCH',
+    data: {
+      op: 'status',
+      status: status
+    }
+  })
+}
+const setUserStatusApi = (id, status) => {
+  return opInfo({
+    url: `/user/${id}`,
+    method: 'PATCH',
+    data: {
+      op: 'status',
+      status: status
+    }
+  })
+}
+
+const modifyTrafficInfoApi = (id, user) => {
+  return opInfo({
+    url: `/trafficDepartment/${id}`,
+    method: 'PATCH',
+    data: {
+      op: 'modify',
+      user: user
+    }
+  })
+}
+
+const modifyUserInfoApi = (id, user) => {
+  return opInfo({
+    url: `/user/${id}`,
+    method: 'PATCH',
+    data: {
+      op: 'modify',
+      user: user
+    }
+  })
+}
+export {
+  deleteUserApi,
+  deleteTrafficDepartmentApi,
+  upgradeUserApi,
+  degradeTrafficDepartmentApi,
+  setTrafficStatusApi,
+  setUserStatusApi,
+  modifyUserInfoApi,
+  modifyTrafficInfoApi
+}

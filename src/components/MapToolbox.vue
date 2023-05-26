@@ -1,6 +1,6 @@
 <template>
   <div id="mapCon">
-    <div id="menu">
+    <!-- <div id="menu">
       <label>Geometry type &nbsp;</label>
       <button @click="measureLine">测量距离</button>
       <button @click="measureArea">测量面积</button>
@@ -8,7 +8,7 @@
         <option value="length">Length</option>
         <option value="area">Area</option>
       </select>
-    </div>
+    </div> -->
   </div>
 </template>
 <script setup>

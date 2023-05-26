@@ -21,34 +21,17 @@ for (let i = 0; i < 10; i++) {
 const types = [
   'admin',
   'department',
-  'department',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
-  'user',
+  'normal'
 ];
-const state = [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
-const state1 = [0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0];
+const state = [true, false];
+const state1 = [0, 1];
 const admin = [
   {
     user_id: 0,
     user_name: 'admin',
     user_password: "123456",
     user_type: 'admin',
-    user_onlinestatus: 1,
+    user_onlinestatus: Mock.Random.pick(state),
     user_other: 1,
   }
   ,
@@ -56,24 +39,33 @@ const admin = [
     user_id: 1,
     user_name: Mock.Random.cname(),
     user_password: [...passwords][0],
-    user_type: 'admin',
-    user_onlinestatus: 1,
+    user_type: types[0],
+    user_onlinestatus: Mock.Random.pick(state),
     user_other: 1,
   }];
-const trafficDepartment = [{
-  user_id: 2,
-  user_name: Mock.Random.cname(),
-  user_password: [...passwords][1],
-  user_type: 'department',
-  user_onlinestatus: 1,
-  user_other: 1,
-}];
+const trafficDepartment = [
+  {
+    user_id: 0,
+    user_name: 'part',
+    user_password: "123456",
+    user_type: types[1],
+    user_onlinestatus: Mock.Random.pick(state),
+    user_other: 1,
+  },
+  {
+    user_id: 2,
+    user_name: Mock.Random.cname(),
+    user_password: [...passwords][1],
+    user_type: 'department',
+    user_onlinestatus: Mock.Random.pick(state),
+    user_other: 1,
+  }];
 const event = Mock.mock({
   'event|20': [
     {
       'event_id|+1': 1,
-      'user_id|1-100': 1,
-      ' event_type|+1': [
+      'user_id|1-20': 1,
+      'event_type|+1': [
         '碰撞',
         '刮擦',
         '追尾',
@@ -103,7 +95,14 @@ const notice = Mock.mock({
   ],
 })
 module.exports = () => {
-  const user = [];
+  const user = [{
+    user_id: 0,
+    user_name: 'user',
+    user_password: '123456',
+    user_type: 'normal',
+    user_onlinestatus: Mock.Random.pick(state),
+    user_other: 1,
+  }];
   let i = 2;
   passwords.forEach((password, index) => {
     if (index < 2) {
@@ -113,7 +112,7 @@ module.exports = () => {
       user_id: ++i,
       user_name: Mock.Random.cname(),
       user_password: password,
-      user_type: Mock.Random.pick(types),
+      user_type: types[2],
       user_onlinestatus: Mock.Random.pick(state),
       user_other: Mock.Random.pick(state1),
     });

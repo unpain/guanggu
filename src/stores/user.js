@@ -4,8 +4,11 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('auth', () => {
   let username = ref('')
   let password = ref('')
+  let user = ref({})
+  let userList = ref([])
+  let trafficList = ref([])
   const userPermission = ref(
-    localStorage.getItem('userPermission') === undefined?JSON.parse(localStorage.getItem('userPermission')):null
+    localStorage.getItem('userPermission') === undefined ? JSON.parse(localStorage.getItem('userPermission')) : null
   )
   // 判断是否用拥有权限
   const hasPermission = computed(() => {
@@ -32,7 +35,10 @@ export const useUserStore = defineStore('auth', () => {
     hasPermission,
     login,
     logout,
+    userList,
+    trafficList,
     username,
-    password
+    password,
+    user
   }
 })
