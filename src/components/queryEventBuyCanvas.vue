@@ -13,7 +13,7 @@
     @sourceClear="clearAllSource"
     :queryData="queryData[0]"
   ></EventList>
-  <el-dialog v-model="dialogTableVisible" title="事件统计图">
+  <el-dialog  v-model="dialogTableVisible" title="事件统计图">
     <EventDiagram  :eventTypes="eventTypes" :monthlyStatistics="monthlyStatistics"></EventDiagram>
   </el-dialog>
 </template>
@@ -162,4 +162,6 @@ function creatEventDiagram(a) {
   });
 }
 </script>
-<style scoped></style>
+<style scoped>
+
+</style>
