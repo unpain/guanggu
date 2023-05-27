@@ -16,7 +16,7 @@
       :modal="false"
       modal-class="cover"
       :show-close="false"
-      custom-class="draw"
+      class="draw"
       size="270px"
     >
       <el-tree
@@ -37,27 +37,26 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, inject } from 'vue';
-const catalogTree = ref([]);
-const drawer = ref(false);
-let $map;
+import { ref, watch, onMounted, inject } from 'vue'
+const catalogTree = ref([])
+const drawer = ref(false)
+let $map
 onMounted(() => {
-  $map = inject('$map');
-});
+  $map = inject('$map')
+})
 const defaultProps = {
   children: 'children',
-  label: 'name',
-};
+  label: 'name'
+}
 const docCatalog = new Zondy.Catalog.MapDoc({
-  docName: 'guanggu',
-});
-docCatalog.getLayersInfo((data) => {
-  var layer = data.value;
-  catalogTree.value = layer.map((item) => {
-    return { id: item.LayerIndex, name: item.Name };
-  });
-  
-});
+  docName: 'guanggu'
+})
+docCatalog.getLayersInfo(data => {
+  var layer = data.value
+  catalogTree.value = layer.map(item => {
+    return { id: item.LayerIndex, name: item.Name }
+  })
+})
 const data = ref([
   {
     id: 5,
@@ -66,24 +65,20 @@ const data = ref([
       {
         id: 6,
         name: '光谷智慧交通',
-        children: catalogTree,
-      },
-    ],
-  },
-]);
+        children: catalogTree
+      }
+    ]
+  }
+])
 function handelClick(a, b) {
-  console.log(a, b);
-  let active = b.checkedKeys.some((item) => item == a.id);
+  let active = b.checkedKeys.some(item => item == a.id)
   $map
     .getLayers()
-    .array_[2].setLayerStatus(a.id, active ? 'include' : 'exclude');
+    .array_[2].setLayerStatus(a.id, active ? 'include' : 'exclude')
   if (a.id == 6 || a.id == 5) {
     $map
       .getLayers()
-      .array_[2].setLayerStatus(
-        [0, 1, 2, 3, 4],
-        active ? 'include' : 'exclude'
-      );
+      .array_[2].setLayerStatus([0, 1, 2, 3, 4], active ? 'include' : 'exclude')
   }
 }
 </script>
