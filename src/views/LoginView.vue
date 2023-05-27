@@ -12,7 +12,7 @@
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
-import { toRefs, onBeforeMount } from 'vue'
+import { toRefs, ref, reactive } from 'vue'
 import { getInfoApi, postInfoApi } from '@/api/login'
 import { useRouter } from 'vue-router'
 
@@ -28,9 +28,11 @@ const handleLogin = () => {
     .then(res => {
       const token = res.data.token
       const permission = res.data.user.user_type
+      const userName = res.data.user.user_name
       login({
         permission,
-        token
+        token,
+        userName: userName.toString()
       })
       $router.push('/home')
     })
@@ -43,18 +45,15 @@ const register = () => {
     username: username.value,
     password: password.value,
     op: 'register'
-  }).then(res => {
-    console.log(res.data)
-  })
+  }).then(res => {})
 }
 const deleteUser = id => {
   deleteUserApi(id).then(res => {
     console.log(id)
-    console.log(res.data)
   })
 }
-onBeforeMount(() => {
-  // login()
-})
+// onBeforeMount(() => {
+//   login()
+// })
 </script>
 <style scoped></style>

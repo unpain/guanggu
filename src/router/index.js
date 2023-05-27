@@ -23,6 +23,27 @@ const router = createRouter({
         requiresAuth: true,
         role: 'admin'
       }
+    },
+    {
+      path: '/',
+      name: 'admin',
+      component: () => import('@/views/AdminView.vue'),
+      children: [
+        {
+          path: 'admin',
+          redirect:'admin/user'
+        },
+        {
+          path: 'admin/user',
+          name: 'user',
+          component: () => import('@/components/UserManage/coms/UserMenu.vue')
+        },
+        {
+          path: 'admin/traffic',
+          name: 'traffic',
+          component: () => import('@/components/UserManage/coms/TrafficMenu.vue')
+        }
+      ]
     }
   ]
 })

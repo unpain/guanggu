@@ -80,7 +80,6 @@ function overviewMapControl() {
   width: 200px;
   height: 20px;
   /*在地图容器中的层，要设置z-index的值让其显示在地图上层*/
-  z-index: 2000;
 }
 /* 鼠标位置信息自定义样式设置 */
 .custom-mouse-position {

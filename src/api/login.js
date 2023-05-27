@@ -2,13 +2,13 @@ import { opInfo } from "./request";
 
 const getInfoApi = () => {
   return opInfo({
-    url: '/users'||'/admin'||'/department',
+    url: '/all',
     method: 'GET'
   })
 }
 const postInfoApi = (data) => {
-  return opInfo({
-    url: '/users'||'/admin'||'/department',
+  return opInfo({ 
+    url: '/all',
     method: 'POST',
     data: data
   })
