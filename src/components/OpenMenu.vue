@@ -8,7 +8,7 @@
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
-    @select="handleSelect"
+    
     :ellipsis='false'
   >
     <div class="item">
@@ -23,9 +23,10 @@
       <el-menu-item index="5" v-permission="['department', 'admin']"
         >事件添加</el-menu-item
       >
-      <el-menu-item index="6" v-permission="['department', 'admin']"
+      <!-- <el-menu-item index="6" v-permission="['department', 'admin']"
         >事件查询</el-menu-item
-      >
+      > -->
+      <queryEventBuyCanvas ></queryEventBuyCanvas>
       <el-menu-item index="7" v-permission="['department', 'admin']"
         >事件更新</el-menu-item
       >
@@ -61,7 +62,7 @@
           </template>
         </el-input>
       </el-menu-item>
-      <el-select class="user" placeholder="用户" style="width: 73px">
+      <el-select class="user" :placeholder="username" style="width: 73px">
         <el-option label="退出登录" value="1" />
         <el-option label="修改密码" value="2" />
         <el-option v-permission="['admin']" label="用户管理" value="2" />
@@ -71,11 +72,16 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import queryEventBuyCanvas from './queryEventBuyCanvas.vue'
+import { ref,watch,toRefs } from 'vue';
+import { useUserStore } from '@/stores/user'
+let { username } = toRefs(useUserStore())
+
 const activeIndex2 = ref('1');
 const handleSelect = (key, keyPath) => {
   console.log(key, '0000', keyPath, '11111');
 };
+
 </script>
 <style scoped>
 .el-menu-demo {

@@ -26,6 +26,7 @@ const handleLogin = () => {
     op: 'login'
   })
     .then(res => {
+      
       const token = res.data.token
       const permission = res.data.user.user_type
       login({

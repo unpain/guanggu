@@ -2,83 +2,83 @@
   "users": [
     {
       "user_id": 1,
-      "user_name": "朱丽",
-      "user_password": "Eo71713171332",
+      "user_name": "范芳",
+      "user_password": "pn526882645863",
       "user_type": "user",
       "user_onlinestatus": 1,
-      "user_other": 1
+      "user_other": 0
     },
     {
       "user_id": 2,
-      "user_name": "黄丽",
-      "user_password": "cM673140411",
-      "user_type": "user",
+      "user_name": "谢明",
+      "user_password": "Wk2813775358109",
+      "user_type": "department",
       "user_onlinestatus": 1,
       "user_other": 1
     },
     {
       "user_id": 3,
-      "user_name": "任平",
-      "user_password": "Xm00651621",
+      "user_name": "郭秀英",
+      "user_password": "PE1962656218887",
       "user_type": "user",
       "user_onlinestatus": 1,
       "user_other": 1
     },
     {
       "user_id": 4,
-      "user_name": "曾娟",
-      "user_password": "lK028226935753",
+      "user_name": "蒋超",
+      "user_password": "CV41841872146",
       "user_type": "user",
       "user_onlinestatus": 1,
-      "user_other": 0
+      "user_other": 1
     },
     {
       "user_id": 5,
-      "user_name": "赖磊",
-      "user_password": "GK3803886764285",
+      "user_name": "赖芳",
+      "user_password": "Oo26383357540873",
       "user_type": "user",
       "user_onlinestatus": 1,
       "user_other": 1
     },
     {
       "user_id": 6,
-      "user_name": "孟伟",
-      "user_password": "ye75106525",
+      "user_name": "雷强",
+      "user_password": "gL535581156",
       "user_type": "user",
       "user_onlinestatus": 1,
       "user_other": 1
     },
     {
       "user_id": 7,
-      "user_name": "田艳",
-      "user_password": "jn2529449534115",
+      "user_name": "金丽",
+      "user_password": "OL2586645",
       "user_type": "user",
       "user_onlinestatus": 1,
       "user_other": 1
     },
     {
       "user_id": 8,
-      "user_name": "戴强",
-      "user_password": "Wj25287358",
+      "user_name": "于秀兰",
+      "user_password": "Uy505266",
       "user_type": "user",
       "user_onlinestatus": 0,
       "user_other": 1
     },
     {
       "user_id": 9,
-      "user_name": "周强",
-      "user_password": "zB79882834590",
+      "user_name": "陈秀英",
+      "user_password": "LD1327115",
       "user_type": "user",
       "user_onlinestatus": 1,
-      "user_other": 0
+      "user_other": 1
     },
     {
       "user_id": 10,
-      "user_name": "傅洋",
-      "user_password": "UU4566224",
-      "user_type": "department",
-      "user_onlinestatus": 0,
-      "user_other": 0
+      "user_name": "孔秀英",
+      "user_password": "bP11072924824",
+      "user_type": "user",
+      "user_onlinestatus": 1,
+      "user_other": 1
     }
   ],
   "admin": [
@@ -92,8 +92,8 @@
     },
     {
       "user_id": 1,
-      "user_name": "傅静",
-      "user_password": "Eo71713171332",
+      "user_name": "谭刚",
+      "user_password": "pn526882645863",
       "user_type": "admin",
       "user_onlinestatus": 1,
       "user_other": 1
@@ -102,8 +102,8 @@
   "trafficDepartment": [
     {
       "user_id": 2,
-      "user_name": "阎娟",
-      "user_password": "cM673140411",
+      "user_name": "蒋明",
+      "user_password": "Wk2813775358109",
       "user_type": "department",
       "user_onlinestatus": 1,
       "user_other": 1

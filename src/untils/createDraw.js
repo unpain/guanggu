@@ -10,7 +10,7 @@
  * @param {object} source
  * @param {string}  type
  */
-function createDraw({ source, type = 'Point', callback }) {
+export function createDraw({ source, type = 'Point', callback }) {
   let draw = null;
   let geometryFunction = null;
   let maxPoints = null;

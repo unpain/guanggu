@@ -9,15 +9,14 @@
       ><DArrowRight
     /></el-icon>
     <el-drawer
-      class="drawer"
       v-model="drawer"
       title="图层目录"
       direction="ltr"
-      close-on-click-modal="false"
-      custom-class="draw"
-      modal-class="cover"
+      :close-on-click-modal="false"
       :modal="false"
+      modal-class="cover"
       :show-close="false"
+      custom-class="draw"
       size="270px"
     >
       <el-tree
@@ -104,11 +103,12 @@ function handelClick(a, b) {
 }
 ::v-deep .draw {
   height: 80vh;
-  background-color: blanchedalmond;
+
   margin: auto 0;
 }
 ::v-deep .cover {
   width: 0;
+  background-color: aliceblue;
 }
 ::v-deep .tree {
   width: 225px;

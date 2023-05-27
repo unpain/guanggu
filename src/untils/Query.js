@@ -1,6 +1,6 @@
 /** @format */
 
-class Query {
+export class Query {
   static queryByGeom({ feature, service, callback }) {
     var geometry = feature.feature.values_.geometry;
     //初始化查询结构对象，设置查询结构包含几何信息
@@ -75,7 +75,7 @@ class Query {
     //设置查询分页号
     queryParam.pageIndex = 0;
     //设置查询要素数目
-    queryParam.recordNumber = 50;
+    queryParam.recordNumber = 1000;
     var queryService = new Zondy.Service.QueryDocFeature(
       queryParam,
       service.name,

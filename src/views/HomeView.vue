@@ -1,10 +1,13 @@
 <template>
   <div>
+    
     <OpenMap />
     <OpenMenu />
     <AddControl />
     <EventAddition />
-    <DirectoryTree/>
+    <DirectoryTree />
+    
+  
   </div>
 </template>
 <script setup>
@@ -13,6 +16,8 @@ import OpenMenu from '../components/OpenMenu.vue'
 import AddControl from '../components/AddControl.vue'
 import EventAddition from '../components/EventAddition.vue'
 import DirectoryTree from '../components/DirectoryTree.vue'
+
+
 
 
 /* 000 */
