@@ -1,6 +1,6 @@
 // 传入$map,数据源source，以及绘制类型
 function measure({$map,source,type}){
-
+// 获取上一次的画笔，将其移除
   const res = $map.getInteractions().array_[9]
 
   $map.removeInteraction(res) //移除绘制图形

@@ -1,5 +1,7 @@
 <template>
-  <el-menu-item index="3" v-permission="['user']" @click="showForm">报告路况</el-menu-item>
+  <el-menu-item index="3" v-permission="['user']" @click="showForm"
+    >报告路况</el-menu-item
+  >
   <div class="container" v-if="formVisible">
     <div class="event-title">
       <h3>报告路况</h3>
@@ -72,7 +74,7 @@
     </div>
     <div class="event-footer">
       <el-form-item>
-        <el-button type="primary" @click=" submitEvent"> 确认 </el-button>
+        <el-button type="primary" @click="submitEvent"> 确认 </el-button>
         <el-button @click="resetForm($refs.ruleFormRef)">重置</el-button>
       </el-form-item>
     </div>
@@ -81,6 +83,8 @@
 <script setup>
 import { computed } from 'vue'
 import { reactive, ref } from 'vue'
+import { ElMessage } from 'element-plus'
+const ruleFormRef = ref()
 const ruleForm = reactive({
   type: '',
   address: '',
@@ -89,18 +93,24 @@ const ruleForm = reactive({
   date2: '',
   desc: '',
 })
-let eventList =ref([])
-function submitEvent(){
-  eventList.value.push({
-    event_id: 1,
+let eventList = ref([])
+function submitEvent() {
+  ruleFormRef.value.validate((valid) => {
+    if (valid) {
+      eventList.value.push({
+        event_id: 1,
         user_id: 1,
-         event_type:ruleForm.type,
+        event_type: ruleForm.type,
         event_addr: ruleForm.address,
         event_mark: ruleForm.architecture,
         event_time: time,
         event_describe: ruleForm.address,
-        event_status: 0
-      
+        event_status: 0,
+      })
+      ElMessage.success('提交成功!')
+    } else {
+      console.log('提交失败，请确认表单内容!')
+    }
   })
 }
 var time = computed(() => {
@@ -123,16 +133,15 @@ const rules = reactive({
   address: [{ required: true, message: '请输入事故位置', trigger: 'blur' }],
 })
 // 重置表单
-const resetForm = (formEl) => {
-  console.log(formEl)
-  if (!formEl) return
-  formEl.resetFields()
+const resetForm = () => {
+  ruleFormRef.value.resetFields()
 }
 const formVisible = ref(false)
 const showForm = () => {
   formVisible.value = true // 显示表单
 }
 const hideForm = () => {
+  resetForm()
   formVisible.value = false // 隐藏表单
 }
 </script>

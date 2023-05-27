@@ -39,7 +39,7 @@
           </div>
           <div class="img__btn" @click="goToSignUp">
             <span class="m--up">注册</span>
-            <span class="m--in">登陆</span>
+            <span class="m--in">登录</span>
           </div>
         </div>
         <div class="form sign-up">

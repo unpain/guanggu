@@ -110,8 +110,8 @@ function toggleLayer() {
 /* 鼠标位置控件层样式设置 */
 #mouse-position {
   position: fixed;
-  left: 150px;
-  bottom: 5px;
+  left: 200px;
+  bottom: 15px;
   width: 200px;
   height: 20px;
   /*在地图容器中的层，要设置z-index的值让其显示在地图上层*/
