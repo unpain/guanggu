@@ -27,7 +27,7 @@ const props = defineProps({
 })
 
 let popup
-const emit = defineEmits(['popop'])
+const emit = defineEmits(['popop', 'closePopup'])
 onMounted(() => {
   const $map = inject('$map')
   var container = document.getElementById(props.popupId)
@@ -54,6 +54,7 @@ const closePopup = () => {
   popup.setPosition(undefined)
   //失去焦点
   //   closer.blur()
+  emit('closePopup', popup)
 }
 </script>
 

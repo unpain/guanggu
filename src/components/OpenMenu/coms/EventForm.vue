@@ -1,10 +1,18 @@
 <template>
   <el-form label-width="90px" ref="ruleForms" :model="evtForm" :rules="rules">
     <el-form-item label="事件编号" prop="evtNum">
-      <el-input placeholder="请输入事件编号" v-model="evtForm.evtNum" />
+      <el-input
+        placeholder="请输入事件编号"
+        v-model.trim="evtForm.evtNum"
+        :disabled="isBan"
+      />
     </el-form-item>
     <el-form-item label="事件类型" prop="evtType">
-      <el-select placeholder="请选择事件类型" v-model="evtForm.evtType">
+      <el-select
+        placeholder="请选择事件类型"
+        v-model="evtForm.evtType"
+        :disabled="isBan"
+      >
         <el-option
           v-for="item in evtTypes"
           :key="item"
@@ -14,7 +22,11 @@
       </el-select>
     </el-form-item>
     <el-form-item label="事件等级" prop="evtLevel">
-      <el-select placeholder="请选择事件等级" v-model.number="evtForm.evtLevel">
+      <el-select
+        placeholder="请选择事件等级"
+        v-model.number="evtForm.evtLevel"
+        :disabled="isBan"
+      >
         <el-option
           v-for="item in evtLevels"
           :key="item.id"
@@ -30,19 +42,32 @@
         format="YYYY.M.DD H:mm"
         value-format="YYYY.M.DD H:mm"
         v-model="evtForm.evtTime"
+        :disabled="isBan"
       />
     </el-form-item>
     <el-form-item label="发生地点" prop="evtScene">
-      <el-input placeholder="请输入发生地点" v-model="evtForm.evtScene" />
+      <el-input
+        placeholder="请输入发生地点"
+        v-model.trim="evtForm.evtScene"
+        :disabled="isBan"
+      />
     </el-form-item>
     <el-form-item label="车牌号" prop="evtCarNum">
-      <el-input placeholder="请输入车牌号" v-model="evtForm.evtCarNum" />
+      <el-input
+        placeholder="请输入车牌号"
+        v-model.trim="evtForm.evtCarNum"
+        :disabled="isBan"
+      />
     </el-form-item>
     <el-form-item label="驾驶员" prop="evtDriver">
-      <el-input placeholder="请输入驾驶员姓名" v-model="evtForm.evtDriver" />
+      <el-input
+        placeholder="请输入驾驶员姓名"
+        v-model.trim="evtForm.evtDriver"
+        :disabled="isBan"
+      />
     </el-form-item>
     <el-form-item label="处理状态" prop="evtState">
-      <el-select v-model.number="evtForm.evtState">
+      <el-select v-model.number="evtForm.evtState" :disabled="!isBan">
         <el-option
           v-for="item in evtStates"
           :key="item.id"
@@ -59,8 +84,28 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue'
+import { ref, watch, defineEmits, defineProps } from 'vue'
 import { ElMessage } from 'element-plus'
+
+const props = defineProps({
+  evtForm: {
+    type: Object,
+    required: true
+  }
+})
+const isBan = ref(false)
+watch(props, props => {
+  const res = props.evtForm
+  delete res.mpLayer
+  res['事件等级'] = Number(res['事件等级'])
+  res['处理状态'] = Number(res['处理状态'])
+  const resKey = Object.keys(res)
+  const evtFormKey = Object.keys(evtForm.value)
+  resKey.forEach((key, index) => {
+    evtForm.value[evtFormKey[index]] = res[key]
+  })
+  isBan.value = true
+})
 
 const evtForm = ref({
   evtNum: '',
@@ -107,12 +152,29 @@ const evtStates = ref([
     state: '已归档'
   }
 ])
+const validQC = (rule, value, callback) => {
+  if (value) {
+    if (/[\u4E00-\u9FA5]/g.test(value)) {
+      callback(new Error('不能输入汉字'))
+    } else {
+      // 验证通过
+      callback()
+    }
+    callback()
+  }
+}
+
 const rules = ref({
   evtNum: [
     {
       required: true,
       message: '不能为空',
       trigger: 'blur'
+    },
+    {
+      validator: validQC,
+      trigger: 'blur',
+      message: '不能为中文'
     }
   ],
   evtType: [
@@ -141,6 +203,11 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
+    },
+    {
+      validator: validQC,
+      trigger: 'blur',
+      message: '不能为中文'
     }
   ],
   evtCarNum: [
@@ -148,6 +215,11 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
+    },
+    {
+      validator: validQC,
+      trigger: 'blur',
+      message: '不能为中文'
     }
   ],
   evtDriver: [
@@ -155,6 +227,11 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
+    },
+    {
+      validator: validQC,
+      trigger: 'blur',
+      message: '不能为中文'
     }
   ],
   evtState: [
@@ -173,7 +250,7 @@ const submit = () => {
       emit('submit', evtForm.value)
       ruleForms.value.resetFields()
     } else {
-      ElMessage.success('添加失败')
+      ElMessage.error('添加失败')
     }
   })
 }
@@ -183,4 +260,11 @@ const cancel = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+::v-deep .el-input.is-disabled .el-input__wrapper {
+  background: #fff;
+}
+.el-select {
+  width: 220px;
+}
+</style>

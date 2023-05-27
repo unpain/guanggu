@@ -5,7 +5,7 @@
     @click="addEvent"
     >事件添加</el-menu-item
   >
-  <ThePopup :popupId="'addEvent'" @popup="handlePopup">
+  <ThePopup :popupId="'add'" @popup="handlePopup" @closePopup="closePopup">
     <template #title>添加事件</template>
     <EventForm @submit="submitAdd" @cancel="cancelAdd" />
   </ThePopup>
@@ -21,7 +21,7 @@ import { usePoint } from '../hooks/usePoint'
 import { ElMessage } from 'element-plus'
 
 let $map
-let $docLayer
+let docLayer
 //画布
 const source = new ol.source.Vector({})
 const layer = new ol.layer.Vector({
@@ -30,7 +30,7 @@ const layer = new ol.layer.Vector({
 onMounted(() => {
   $map = inject('$map')
   $map.addLayer(layer)
-  $docLayer = $map.getLayers().getArray()[1]
+  docLayer = $map.getLayers().getArray()[1]
 })
 
 // 拿到popup
@@ -81,13 +81,15 @@ const submitAdd = evtForm => {
     position,
     attr,
     service,
-    docLayer: $docLayer
+    docLayer
   })
+  $map.removeInteraction(draw)
   source.clear()
   $popup.setPosition(undefined)
   ElMessage.success('添加成功')
 }
 const cancelAdd = () => {
+  $map.removeInteraction(draw)
   $popup.setPosition(undefined)
   source.clear()
 }

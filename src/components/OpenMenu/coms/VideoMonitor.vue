@@ -9,7 +9,7 @@
     <el-menu-item index="4-1" @click="checkMonitor">查看监控</el-menu-item>
     <el-menu-item index="4-2" @click="offMonitor">取消查看</el-menu-item>
   </el-sub-menu>
-  <ThePopup :popupId="'videoMonitor'" @popup="handlePopup">
+  <ThePopup :popupId="'monitor'" @popup="handlePopup">
     <template #title>摄像头:{{ tableData[0].number }}</template>
     <el-table :data="tableData" border style="width: 200px">
       <el-table-column>
@@ -82,10 +82,11 @@ const queryRes = e => {
       number: attr['编号'],
       location: attr['位置']
     }
-  } else {
-    //点击空白处关闭弹窗
-    $popup.setPosition(undefined)
   }
+  // else {
+  //   //点击空白处关闭弹窗
+  //   $popup.setPosition(undefined)
+  // }
 }
 </script>
 
