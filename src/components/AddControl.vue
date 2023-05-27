@@ -22,7 +22,7 @@ onMounted(() => {
 // 添加导航控件
 function navControl() {
   const navControl = new ol.control.ZoomToExtent({
-    extent: [114.3364, 30.439, 114.4653, 30.4983],
+    extent: [114.3364, 30.439, 114.4653, 30.4983]
   })
   $map.addControl(navControl)
 }
@@ -38,7 +38,7 @@ function mousePositionControl() {
     //显示鼠标位置信息的目标容器
     target: document.getElementById('mouse-position'),
     //未定义坐标的标记
-    undefinedHTML: '&nbsp;',
+    undefinedHTML: '&nbsp;'
   })
   $map.addControl(mousePositionControl)
 }
@@ -51,7 +51,7 @@ function zoomslider() {
 function scaleLineControl() {
   var scaleLineControl = new ol.control.ScaleLine({
     //设置比例尺单位，degrees、imperial、us、nautical、metric（度量单位）
-    units: 'metric',
+    units: 'metric'
   })
   $map.addControl(scaleLineControl)
 }
@@ -71,8 +71,8 @@ function overviewMapControl() {
     view: new ol.View({
       projection: 'EPSG:4326',
       minZoom: 8,
-      maxZoom: 18,
-    }),
+      maxZoom: 18
+    })
   })
   $map.addControl(overviewMapControl)
 }

@@ -16,4 +16,5 @@ import OpenMenu from '@/components/OpenMenu/OpenMenu.vue';
 </script>
 <style scoped>
 
+
 </style>

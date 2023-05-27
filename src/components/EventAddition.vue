@@ -81,9 +81,14 @@
   </div>
 </template>
 <script setup>
-import { computed } from 'vue'
-import { reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
+import { computed } from 'vue'
+import { reactive, ref, toRefs, onBeforeMount } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useEventStore } from '@/stores/event'
+import { getEventApi, postNewEventApi } from '@/api/event'
+let { user } = toRefs(useUserStore())
+let { eventId } = toRefs(useEventStore())
 const ruleFormRef = ref()
 const ruleForm = reactive({
   type: '',
@@ -98,8 +103,8 @@ function submitEvent() {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       eventList.value.push({
-        event_id: 1,
-        user_id: 1,
+        event_id: eventId.value,
+        user_id: user.value.user_id,
         event_type: ruleForm.type,
         event_addr: ruleForm.address,
         event_mark: ruleForm.architecture,
@@ -144,9 +149,17 @@ const hideForm = () => {
   resetForm()
   formVisible.value = false // 隐藏表单
 }
+
+onBeforeMount(() => {
+  getEventApi().then((res) => {
+    eventId.value = Math.max(...res.data.event.map((item) => item.event_id)) + 1
+    // console.log(Math.max(...res.data.event.map(item => item.event_id)))
+  })
+})
 </script>
 <style scoped>
 @import url(https://at.alicdn.com/t/c/font_4027375_y6nc9axxdw.css);
+
 .container {
   position: fixed;
   top: 50%;
@@ -158,6 +171,7 @@ const hideForm = () => {
   z-index: 100;
   /* display: none; */
 }
+
 .container .event-title {
   display: flex;
   justify-content: space-between;
@@ -165,16 +179,20 @@ const hideForm = () => {
   padding: 10px 20px;
   border-bottom: 1px solid #999;
 }
+
 .container .event-title h3 {
   color: #666;
 }
+
 .container .event-title .iconfont {
   cursor: pointer;
 }
+
 .container .event-main {
   padding: 10px 10px 10px 0;
   border-bottom: 1px solid #999;
 }
+
 .container .event-footer {
   padding: 15px 20px;
   padding-bottom: 0;

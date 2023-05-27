@@ -17,6 +17,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 
 const { hasPermission } = useUserStore()
+// 自定义指令 全局v-permission
 app.directive('permission', {
   mounted(el, binding) {
     // 判断是否有按钮权限

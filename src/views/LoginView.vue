@@ -102,9 +102,11 @@ const handleLogin = () => {
     .then((res) => {
       const token = res.data.token
       const permission = res.data.user.user_type
+      const userName = res.data.user.user_name
       login({
         permission,
         token,
+        userName: userName.toString()
       })
       $router.push('/home')
     })
@@ -155,9 +157,6 @@ const goToSignUp = () => {
   username.value = ''
   password.value = ''
 }
-onBeforeMount(() => {
-  login()
-})
 onMounted(() => {
   // 获取DOM，实现登陆与注册左右滑动的效果
   document.querySelector('.img__btn').addEventListener('click', function () {
