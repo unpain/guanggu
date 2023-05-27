@@ -13,8 +13,11 @@
     @sourceClear="clearAllSource"
     :queryData="queryData[0]"
   ></EventList>
-  <el-dialog  v-model="dialogTableVisible" title="事件统计图">
-    <EventDiagram  :eventTypes="eventTypes" :monthlyStatistics="monthlyStatistics"></EventDiagram>
+  <el-dialog v-model="dialogTableVisible" title="事件统计图">
+    <EventDiagram
+      :eventTypes="eventTypes"
+      :monthlyStatistics="monthlyStatistics"
+    ></EventDiagram>
   </el-dialog>
 </template>
 <script setup>
@@ -33,7 +36,7 @@ var layer = new ol.layer.Vector({
 });
 let draw = null;
 let $map;
-const eventData=ref([])
+const eventData = ref([]);
 const eventTypes = ref([]);
 const monthlyStatistics = ref([]);
 let arr = ref([]);
@@ -74,14 +77,12 @@ function handleQuery(res) {
   } else {
     queryData.value.push(null);
   }
-
-  console.log(queryData.value);
 }
 function handleQueryFeature(res) {
   heatMapsource.addFeatures(res);
 }
 function handleAllFeature(res) {
-  eventData.value=res
+  eventData.value = res;
   let arr = eventData.value.map((item) => {
     item.values_.values_;
     return {
@@ -102,13 +103,9 @@ function handleAllFeature(res) {
     name,
     value,
   }));
-  console.log(result);
+
   eventTypes.value = result;
 
-
-
-
-  
   const result1 = arr.reduce((acc, curr) => {
     const date = new Date(curr.发生时间);
     const month = date.getMonth() + 1; // 因为月份是从0开始，需要加1
@@ -124,12 +121,11 @@ function handleAllFeature(res) {
     return { name, value };
   });
 
-  console.log(eventCountsArray);
   monthlyStatistics.value = eventCountsArray;
 }
 function clearAllSource() {
-  source.clear()
-  heatMapsource.clear()
+  source.clear();
+  heatMapsource.clear();
 }
 function creatHeatMap() {
   source.clear();
@@ -162,6 +158,4 @@ function creatEventDiagram(a) {
   });
 }
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

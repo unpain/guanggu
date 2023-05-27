@@ -56,7 +56,7 @@ docCatalog.getLayersInfo((data) => {
   catalogTree.value = layer.map((item) => {
     return { id: item.LayerIndex, name: item.Name };
   });
-  console.log(catalogTree.value);
+  
 });
 const data = ref([
   {
@@ -76,11 +76,11 @@ function handelClick(a, b) {
   let active = b.checkedKeys.some((item) => item == a.id);
   $map
     .getLayers()
-    .array_[1].setLayerStatus(a.id, active ? 'include' : 'exclude');
+    .array_[2].setLayerStatus(a.id, active ? 'include' : 'exclude');
   if (a.id == 6 || a.id == 5) {
     $map
       .getLayers()
-      .array_[1].setLayerStatus(
+      .array_[2].setLayerStatus(
         [0, 1, 2, 3, 4],
         active ? 'include' : 'exclude'
       );

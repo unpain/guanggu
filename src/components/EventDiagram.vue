@@ -72,8 +72,6 @@ onMounted(() => {
   myChart.setOption(option.value);
 });
 function setOption(a) {
-  console.log(a);
-
   option.value = {
     title: {
       text: '交通事故',

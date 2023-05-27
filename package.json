@@ -6,7 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "user": "json-server  --watch ./src/api/server.js"
+    "user": "node ./src/api/server.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
