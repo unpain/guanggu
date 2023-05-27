@@ -203,11 +203,6 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
-    },
-    {
-      validator: validQC,
-      trigger: 'blur',
-      message: '不能为中文'
     }
   ],
   evtCarNum: [
@@ -215,11 +210,6 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
-    },
-    {
-      validator: validQC,
-      trigger: 'blur',
-      message: '不能为中文'
     }
   ],
   evtDriver: [
@@ -227,11 +217,6 @@ const rules = ref({
       required: true,
       message: '不能为空',
       trigger: 'blur'
-    },
-    {
-      validator: validQC,
-      trigger: 'blur',
-      message: '不能为中文'
     }
   ],
   evtState: [
