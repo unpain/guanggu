@@ -1,4 +1,4 @@
-const { event } = require('jquery');
+// const { event } = require('jquery');
 const jsonServer = require('json-server');
 const database = require('./data.js')();
 const jsonwebtoken = require('jsonwebtoken')
@@ -13,7 +13,7 @@ server.use(jsonServer.bodyParser);
 // 添加自定义路由处理
 /* user 请求 */
 //登录
-server.post(`/all`, (req, res) => {
+server.post(`/all`, (req, res, next) => {
   const { username, password, op } = req.body;
   const user = database.user.find(
     (u) => u.user_name === username && u.user_password === password
@@ -49,15 +49,27 @@ server.post(`/all`, (req, res) => {
       user_name: req.body.username,
       user_password: req.body.password,
       user_type: 'user',
-      user_onlinestatus: 1,
+      user_onlinestatus: 0,
       user_other: 1
     })
     res.json({ data: database });
+  } else if (!user && req.body.type) {
+    let type = req.body.type
+    database[type].push({
+      user_id: Math.max(...database[type].map(item => Number(item.user_id))) + 1,
+      user_name: req.body.username,
+      user_password: req.body.password,
+      user_type: type ==='user'?type:'department',
+      user_onlinestatus: 0,
+      user_other: 1
+    })
+    res.json({ status: 'success' })
+    next()
   }
 });
 //获取用户信息
 server.get(`/all`, (req, res, next) => {
-  let keywords 
+  let keywords
   let type
   if (req.query.params) {
     keywords = JSON.parse(req.query.params).key
@@ -218,7 +230,6 @@ server.delete(`/trafficDepartment/:id`, (req, res, next) => {
   res.json({ status: 'success' })
   next()
 });
-
 
 
 /* event 请求 */

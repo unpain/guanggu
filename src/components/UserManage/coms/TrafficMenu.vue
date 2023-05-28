@@ -1,15 +1,15 @@
 <template>
   <el-card class="container"
-    :style="{ 'max-height': '1200px', width: '1600px', position: 'fixed', left: '50%', transform: 'translateX(' + '-50%' + ')' }">
+    :style="{ 'max-height': '1200px', width: '1200px', position: 'fixed', left: '50%', transform: 'translateX(' + '-50%' + ')' }">
     <div class="title"><span>交管部门信息表</span></div>
-    <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1500px' }"
+    <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1100px' }"
       :header-cell-style="{ background: '#f5f7fa', color: '#333', 'font-size': '20px' }"
       :cell-style="{ height: '45px', width: '100px', 'font-size': '20px' }" border="true">
-      <el-table-column prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
+      <el-table-column width="200" prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
+      <el-table-column width="200" prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
+      <el-table-column width="200" prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
         row.user_type == 'department' ? '交管部门' : null }}</template></el-table-column>
-      <el-table-column prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
+      <el-table-column width="200" prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
         <template v-slot="{ row }">
           <el-switch v-model="row.user_onlinestatus" @change="switchStatus(row.user_id, row.user_onlinestatus)"
             size="large"></el-switch>
@@ -30,7 +30,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination :current-page="currentPage" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize"
+    <el-pagination :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pageSize"
       layout="sizes, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
       @current-change="handleCurrentChange"></el-pagination>
   </el-card>
@@ -50,7 +50,8 @@ import { getInfoApi } from '@/api/login'
 import { setTrafficStatusApi, degradeTrafficDepartmentApi, deleteTrafficDepartmentApi, modifyTrafficInfoApi } from '@/api/opUser'
 import { useUserStore } from '@/stores/user'
 import { toRefs, onBeforeMount, ref, watch } from 'vue';
-let { userList } = toRefs(useUserStore())
+import { ElMessage } from 'element-plus'
+let { userList, addSuccess } = toRefs(useUserStore())
 let username = ref('')
 let password = ref('')
 let userId = ref(0)
@@ -90,6 +91,7 @@ const degradeTrafficDepartment = (id) => {
         userList.value = res.data.traffic
         totalItems.value = userList.value.length
         fetchData()
+        ElMessage.success('降级成功!')
       })
     }
   })
@@ -101,6 +103,7 @@ const deleteTrafficDepartment = (id) => {
         userList.value = res.data.traffic
         totalItems.value = userList.value.length
         fetchData()
+        ElMessage.success('删除成功!')
       })
     }
   })
@@ -123,6 +126,7 @@ const modifyFinish = () => {
         totalItems.value = userList.value.length
         fetchData()
       })
+      ElMessage.success('修改成功!')
     }
   })
   modifyFlag.value = false
@@ -133,6 +137,14 @@ const modifyCancle = () => {
 watch(userList, () => {
   totalItems.value = userList.value.length
   fetchData()
+})
+
+watch(addSuccess, () => {
+  getInfoApi().then(res => {
+    userList.value = res.data.traffic
+    totalItems.value = userList.value.length
+    fetchData()
+  })
 })
 onBeforeMount(() => {
   getInfoApi().then(res => {

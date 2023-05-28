@@ -1,7 +1,10 @@
+// 传入$map,数据源source，以及绘制类型
 function measure({$map,source,type}){
+// 获取上一次的画笔，将其移除
+  const res = $map.getInteractions().array_[9]
 
-  $map.removeInteraction(draw) //移除绘制图形
-   addInteraction() //添加绘图进行测量
+  $map.removeInteraction(res) //移除绘制图形
+  //  addInteraction() //添加绘图进行测量
  /**
    * 当前绘制的要素（Currently drawn feature.）
    * @type {ol.Feature}
@@ -31,7 +34,7 @@ function measure({$map,source,type}){
   *  当用户正在绘制多边形时的提示信息文本
   * @type {string}
   */
- var continuePolygonMsg = '单击继续绘制测量区域，双击结束绘制'
+ var continuePolygonMsg = 'Click to continue drawing the polygon'
  /**
   * 当用户正在绘制线时的提示信息文本
   * @type {string}
@@ -46,6 +49,7 @@ function measure({$map,source,type}){
    if (evt.dragging) {
      return
    }
+ 
    /** @type {string} */
    var helpMsg = 'Click to start drawing' //当前默认提示信息
    //判断绘制几何类型设置相应的帮助提示信息
@@ -94,7 +98,7 @@ function measure({$map,source,type}){
            color: 'rgba(0, 0, 0, 0.7)',
          }),
          fill: new ol.style.Fill({
-           color: 'rgba(255, 255, 255, 0.2)',
+           color: 'rgba(242, 89, 82, 0.8)',
          }),
        }),
      }),
