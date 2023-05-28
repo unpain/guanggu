@@ -84,8 +84,11 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue'
+import { ref, watch, defineEmits, defineProps, toRefs } from 'vue'
 import { ElMessage } from 'element-plus'
+import { usePopupStore } from '../../../stores/popup'
+
+
 
 const props = defineProps({
   evtForm: {
@@ -93,6 +96,7 @@ const props = defineProps({
     required: true
   }
 })
+
 const isBan = ref(false)
 watch(props, props => {
   const res = props.evtForm
@@ -106,6 +110,11 @@ watch(props, props => {
   })
   isBan.value = true
 })
+const { isReset } = toRefs(usePopupStore())
+watch(isReset, () => {
+  ruleForms.value.resetFields()
+})
+
 
 const evtForm = ref({
   evtNum: '',
@@ -239,6 +248,7 @@ const submit = () => {
     }
   })
 }
+
 const cancel = () => {
   emit('cancel')
   ruleForms.value.resetFields()

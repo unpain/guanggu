@@ -12,20 +12,21 @@ import {
   TiandiMap_ter,
   TiandiMap_cta
 } from '../tianditu_libs/tianditu'
-import { onMounted,ref,toRefs } from 'vue'
+import { onMounted, ref, toRefs } from 'vue'
 
-
-const  docLayer = new Zondy.Map.Doc('', 'guanggu', {});
+const docLayer = new Zondy.Map.Doc('', 'guanggu', {})
 onMounted(() => {
-  const docLayer = new Zondy.Map.Doc('', 'guanggu', {crossOrigin: "Anonymous"})
+  const docLayer = new Zondy.Map.Doc('', 'guanggu', {
+    crossOrigin: 'Anonymous'
+  })
   const map = new ol.Map({
     target: 'map',
-    // layers: [gaode_vector, docLayer],
-    layers: [gaode_image,gaode_vector, docLayer],
+    // layers: [gaode_image,gaode_vector, docLayer],
+    layers: [gaode_vector, gaode_image, docLayer],
     view: new ol.View({
       center: [114.38, 30.49],
       zoom: 13,
-      projection: 'EPSG:4326',
+      projection: 'EPSG:4326'
     })
   })
   // setTimeout(() => {
@@ -36,8 +37,6 @@ onMounted(() => {
   // }, 1000)
   app.provide('$map', map)
 })
-
-     
 </script>
 <style scoped>
 #map {
@@ -47,6 +46,5 @@ onMounted(() => {
   height: calc(100vh - 60px);
   position: fixed;
   bottom: 0;
-  
 }
 </style>

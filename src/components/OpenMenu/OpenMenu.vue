@@ -10,7 +10,6 @@
     active-text-color="#ffd04b"
     @select="handleSelect"
     :ellipsis="false"
-    menu-trigger="click"
   >
     <h4 class="log">光谷智慧交通系统</h4>
     <el-menu-item @click="getRoadConditions" index="1">实时路况</el-menu-item>
@@ -19,15 +18,18 @@
     <VideoMonitor />
     <AddEvent />
     <UpdateEvent />
-  <queryEventBuyCanvas ></queryEventBuyCanvas>
+    <queryEventBuyCanvas></queryEventBuyCanvas>
 
     <el-menu-item index="8" v-permission="['department', 'admin']"
       >发布公告</el-menu-item
     >
-    <el-menu-item index="9" v-permission="['department', 'admin']"
-      @click="showRoadCondition">路况信息</el-menu-item
+    <el-menu-item
+      index="9"
+      v-permission="['department', 'admin']"
+      @click="showRoadCondition"
+      >路况信息</el-menu-item
     >
-  
+
     <MapToolbox />
     <el-menu-item class="scerch">
       <el-input
@@ -194,6 +196,8 @@ import { useEventStore } from '@/stores/event'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { computed } from 'vue'
+import { onMounted } from 'vue'
+import { inject } from 'vue'
 
 const $router = useRouter()
 let roadFlag = ref(false)
@@ -311,6 +315,14 @@ onBeforeMount(() => {
     fetchData()
   })
 })
+let $map
+onMounted(() => {
+  $map = inject('$map')
+})
+const handleSelect = () => {
+  $map.removeEventListener('click')
+  $map.removeInteraction($map.interactions.array_[9])
+}
 </script>
 <style scoped>
 .el-menu-demo {

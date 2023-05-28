@@ -1,10 +1,14 @@
 <template>
-  <el-menu-item
+  <el-sub-menu
     index="7"
     v-permission="['department', 'admin']"
-    @click="updateEvent"
-    >事件更新</el-menu-item
+    expand-close-icon="none"
+    expand-open-icon="none"
   >
+    <template #title>事件更新</template>
+    <el-menu-item index="7-1" @click="checkEvent">选择事件</el-menu-item>
+    <el-menu-item index="7-2" @click="offUpdate">取消更新</el-menu-item>
+  </el-sub-menu>
   <ThePopup :popupId="'update'" @popup="handlePopup">
     <template #title>更新事件</template>
     <EventForm
@@ -35,8 +39,12 @@ const handlePopup = popup => {
   $popup = popup
 }
 
-const updateEvent = () => {
+const checkEvent = () => {
+  console.log(2)
   $map.on('click', mapClick)
+}
+const offUpdate = () => {
+  $map.un('click', mapClick)
 }
 
 const service = {
@@ -63,9 +71,6 @@ const queryRes = e => {
     fid = e[0].id_
     evtForm.value = e[0].values_.values_
     $popup.setPosition(position)
-  } else {
-    //点击空白处关闭弹窗
-    $popup.setPosition(undefined)
   }
 }
 const { Point } = usePoint()
@@ -81,11 +86,9 @@ const submitUpdate = evtForm => {
   })
   $popup.setPosition(undefined)
   ElMessage.success('更新成功')
-  $map.un('click', mapClick)
 }
 const cancelUpdate = () => {
   $popup.setPosition(undefined)
-  $map.un('click', mapClick)
 }
 </script>
 

@@ -83,10 +83,6 @@ const queryRes = e => {
       location: attr['位置']
     }
   }
-  // else {
-  //   //点击空白处关闭弹窗
-  //   $popup.setPosition(undefined)
-  // }
 }
 </script>
 
