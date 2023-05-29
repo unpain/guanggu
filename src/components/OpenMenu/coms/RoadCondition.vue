@@ -23,7 +23,8 @@ const service = {
 
 const source = new ol.source.Vector({})
 const layer = new ol.layer.Vector({
-  source
+  source,
+  // style
 })
 onMounted(() => {
   $map = inject('$map')
@@ -41,13 +42,13 @@ const getQueryRes = e => {
       color = 'rgb(34,139,34)'
     } else if (flow >= 1000 && flow < 1500) {
       color = 'rgb(255,127,36)'
-    } else if (flow >= 1500) {
+    } else if (flow >= 1500 ) {
       color = 'rgb(178,34,34)'
     }
     let stateStyle = new ol.style.Style({
       stroke: new ol.style.Stroke({
         color,
-        width: 6
+        width: 10
       })
     })
     e.setStyle(stateStyle)

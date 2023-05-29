@@ -30,9 +30,74 @@ import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
+
+const markStyleRed = new ol.style.Style({
+  image: new ol.style.Icon({
+    anchor: [0.5, 19],
+    anchorOrigin: 'center',
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    offsetOrigin: 'center',
+    // offset:[0,10],
+    //图标缩放比例
+    scale: 1.5,
+    //透明度
+    opacity: 0.75,
+    //图标的url
+    src: 'src/assets/images/map-marker-red.svg'
+  })
+})
+const markStyleYellow = new ol.style.Style({
+  image: new ol.style.Icon({
+    anchor: [0.5, 19],
+    anchorOrigin: 'center',
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    offsetOrigin: 'center',
+    // offset:[0,10],
+    //图标缩放比例
+    scale: 1.5,
+    //透明度
+    opacity: 0.75,
+    //图标的url
+    src: 'src/assets/images/map-marker-yellow.svg'
+  })
+})
+const markStyleGreen = new ol.style.Style({
+  image: new ol.style.Icon({
+    anchor: [0.5, 19],
+    anchorOrigin: 'center',
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    offsetOrigin: 'center',
+    // offset:[0,10],
+    //图标缩放比例
+    scale: 1.5,
+    //透明度
+    opacity: 0.75,
+    //图标的url
+    src: 'src/assets/images/map-marker-green.svg'
+  })
+})
+const source = new ol.source.Vector({})
+const layer = new ol.layer.Vector({
+  source
+})
+const { Query } = useQuery()
+const service = {
+  name: 'guanggu',
+  layerId: 2
+}
+
 onMounted(() => {
   $map = inject('$map')
   docLayer = $map.getLayers().getArray()[2]
+  Query.queryByLayer({
+    service,
+    callback: res => {
+      source.addFeatures(res)
+      source.fore
+  }})
 })
 
 let $popup
@@ -49,11 +114,6 @@ const offUpdate = () => {
   $map.un('click', mapClick)
 }
 
-const service = {
-  name: 'guanggu',
-  layerId: 2
-}
-const { Query } = useQuery()
 const mapClick = e => {
   const position = e.coordinate
   //点查询
