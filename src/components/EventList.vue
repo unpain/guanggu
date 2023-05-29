@@ -155,7 +155,7 @@ function creatEventDiagram() {
   border-top: 5px solid #86acd2;
 }
 
-::v-deep .covers1 {
+:deep .covers1 {
   position: absolute;
 }
 </style>

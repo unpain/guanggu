@@ -34,7 +34,7 @@
       <li :style="{ display: 'inline-block' }"><el-button color="#ff7eea" size="normal" :dark="isDark" plain
           @click="addUser">添加</el-button></li>
       <li :style="{ display: 'inline-block' }"><el-button color="#ff5353" size="normal" :dark="isDark" plain
-          @click="cancleAdd">取消</el-button></li>
+          @click="cancelAdd">取消</el-button></li>
     </ul>
   </el-card>
   <el-main>
@@ -71,7 +71,7 @@ const showAdd = () => {
   addSuccess.value = false
 }
 
-const cancleAdd = () => {
+const cancelAdd = () => {
   addFlag.value = false
   ElMessage.warning('取消添加用户!')
 }

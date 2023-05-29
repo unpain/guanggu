@@ -65,7 +65,7 @@ import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { checkout } from '../utils/checkout'
-const { login } = useUserStore()
+const { login, user } = useUserStore()
 let passwordVisible = ref(false)
 let { username, password } = toRefs(useUserStore())
 const $router = useRouter()
@@ -89,12 +89,14 @@ const handleLogin = () => {
       const token = res.data.token
       const permission = res.data.user.user_type
       const userName = res.data.user.user_name
+      const userId = res.data.user.user_id
       username.value = ''
       password.value = ''
       login({
         permission,
         token,
-        userName: userName.toString()
+        userName: userName,
+        userId: userId.toString()
       })
       $router.push('/home')
     })

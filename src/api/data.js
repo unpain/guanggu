@@ -23,7 +23,7 @@ const state = [true, false]
 const state1 = [0, 1]
 const admin = [
   {
-    user_id: 0,
+    user_id: 1001,
     user_name: 'admin',
     user_password: 'Admin123',
     user_type: 'admin',
@@ -41,7 +41,7 @@ const admin = [
 ]
 const trafficDepartment = [
   {
-    user_id: 0,
+    user_id: 1003,
     user_name: 'part',
     user_password: 'Part123',
     user_type: types[1],
@@ -85,7 +85,7 @@ const notice = Mock.mock({
 module.exports = () => {
   const user = [
     {
-      user_id: 0,
+      user_id: 1002,
       user_name: 'user',
       user_password: 'User123',
       user_type: 'user',

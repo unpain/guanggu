@@ -96,16 +96,16 @@ function handelClick(a, b) {
 .disappear {
   display: none;
 }
-::v-deep .draw {
+:deep .draw {
   height: 80vh;
 
   margin: auto 0;
 }
-::v-deep .cover {
+:deep .cover {
   width: 0;
   background-color: aliceblue;
 }
-::v-deep .tree {
+:deep .tree {
   width: 225px;
   float: left;
 }

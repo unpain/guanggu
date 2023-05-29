@@ -89,6 +89,15 @@ const addUserApi = (data) => {
     data: data
   })
 }
+
+const modifyUserApi = (data) => {
+  return opInfo({
+    url: '/all',
+    method: 'POST',
+    data: data
+  })
+}
+
 export {
   deleteUserApi,
   deleteTrafficDepartmentApi,
@@ -99,5 +108,6 @@ export {
   modifyUserInfoApi,
   modifyTrafficInfoApi,
   searchInfoApi,
-  addUserApi
+  addUserApi,
+  modifyUserApi
 }

@@ -41,7 +41,7 @@
     <div class="password">密码<el-input v-model="password" width="200px"></el-input></div>
     <div class="button-group">
       <el-button size="large" color="#faaaed" :dark="isDark" plain @click="modifyFinish">确定</el-button>
-      <el-button size="large" color="#ff5353" :dark="isDark" plain @click="modifyCancle">取消</el-button>
+      <el-button size="large" color="#ff5353" :dark="isDark" plain @click="modifyCancel">取消</el-button>
     </div>
   </el-card>
 </template>
@@ -131,7 +131,7 @@ const modifyFinish = () => {
   })
   modifyFlag.value = false
 }
-const modifyCancle = () => {
+const modifyCancel = () => {
   modifyFlag.value = false
 }
 watch(userList, () => {
