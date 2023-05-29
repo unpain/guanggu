@@ -102,11 +102,11 @@ const mapClick = e => {
     Query.queryByFID({
       fids,
       service,
-      callback: queryRes
+      callback: getQueryRes
     })
   }
 }
-const queryRes = e => {
+const getQueryRes = e => {
   // 点查询返回的数据
   const attr = e[0].values_.values_
   tableData.value[0] = {

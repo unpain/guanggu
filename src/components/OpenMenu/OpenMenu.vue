@@ -317,7 +317,10 @@ onMounted(() => {
 
 const handleSelect = () => {
   ol.Observable.unByKey(mapEvent.value)
-  $map.removeInteraction($map.interactions.array_[9])
+  const allDraws = $map.interactions.array_
+  const allLayers = $map.getLayers().getArray()
+  $map.removeInteraction(allDraws[allDraws.length - 1])
+  $map.removeLayer(allLayers[allLayers.length - 1])
 }
 </script>
 <style scoped>

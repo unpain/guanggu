@@ -30,55 +30,6 @@ import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
-
-const markStyleRed = new ol.style.Style({
-  image: new ol.style.Icon({
-    anchor: [0.5, 19],
-    anchorOrigin: 'center',
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    offsetOrigin: 'center',
-    // offset:[0,10],
-    //图标缩放比例
-    scale: 1.5,
-    //透明度
-    opacity: 0.75,
-    //图标的url
-    src: 'src/assets/images/map-marker-red.svg'
-  })
-})
-const markStyleYellow = new ol.style.Style({
-  image: new ol.style.Icon({
-    anchor: [0.5, 19],
-    anchorOrigin: 'center',
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    offsetOrigin: 'center',
-    // offset:[0,10],
-    //图标缩放比例
-    scale: 1.5,
-    //透明度
-    opacity: 0.75,
-    //图标的url
-    src: 'src/assets/images/map-marker-yellow.svg'
-  })
-})
-const markStyleGreen = new ol.style.Style({
-  image: new ol.style.Icon({
-    anchor: [0.5, 19],
-    anchorOrigin: 'center',
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-    offsetOrigin: 'center',
-    // offset:[0,10],
-    //图标缩放比例
-    scale: 1.5,
-    //透明度
-    opacity: 0.75,
-    //图标的url
-    src: 'src/assets/images/map-marker-green.svg'
-  })
-})
 const source = new ol.source.Vector({})
 const layer = new ol.layer.Vector({
   source
@@ -88,17 +39,45 @@ const service = {
   name: 'guanggu',
   layerId: 2
 }
-
 onMounted(() => {
   $map = inject('$map')
   docLayer = $map.getLayers().getArray()[2]
   Query.queryByLayer({
     service,
-    callback: res => {
-      source.addFeatures(res)
-      source.fore
-  }})
+    callback: setMarkStyle
+  })
 })
+const setMarkStyle = res => {
+  source.addFeatures(res)
+  source.forEachFeature(e => {
+    let src
+    let state = e.values_.values_['处理状态']
+    if (state == 0) {
+      src = 'src/assets/images/map-marker-red.svg'
+    } else if (state == 1) {
+      src = 'src/assets/images/map-marker-yellow.svg'
+    } else {
+      src = 'src/assets/images/map-marker-green.svg'
+    }
+    let markStyle = new ol.style.Style({
+      image: new ol.style.Icon({
+        anchor: [0.5, 19],
+        anchorOrigin: 'center',
+        anchorXUnits: 'fraction',
+        anchorYUnits: 'pixels',
+        offsetOrigin: 'center',
+        // offset:[0,10],
+        //图标缩放比例
+        scale: 1.5,
+        //透明度
+        opacity: 0.75,
+        //图标的url
+        src
+      })
+    })
+    e.setStyle(markStyle)
+  })
+}
 
 let $popup
 const handlePopup = popup => {
@@ -107,6 +86,7 @@ const handlePopup = popup => {
 
 const { getMapEvent } = useEventStore()
 const checkEvent = () => {
+  $map.addLayer(layer)
   let key = $map.on('click', mapClick)
   getMapEvent(key)
 }
@@ -115,25 +95,27 @@ const offUpdate = () => {
 }
 
 const mapClick = e => {
-  const position = e.coordinate
-  //点查询
-  Query.queryByPnt({
-    position,
-    service,
-    callback: getQueryRes
+  const feature = $map.forEachFeatureAtPixel(e.pixel, function (feature) {
+    return feature
   })
+  if (feature) {
+    const fids = [feature.id_]
+    Query.queryByFID({
+      fids,
+      service,
+      callback: getQueryRes
+    })
+  }
 }
 
 const evtForm = ref({})
 let fid
 let position
 const getQueryRes = e => {
-  if (e) {
-    position = e[0].getGeometry().flatCoordinates
-    fid = e[0].id_
-    evtForm.value = e[0].values_.values_
-    $popup.setPosition(position)
-  }
+  position = e[0].getGeometry().flatCoordinates
+  fid = e[0].id_
+  evtForm.value = e[0].values_.values_
+  $popup.setPosition(position)
 }
 const { Point } = usePoint()
 const attr = [{ name: '处理状态', value: 0, type: 'int' }]
