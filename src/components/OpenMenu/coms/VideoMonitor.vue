@@ -94,10 +94,10 @@ const queryRes = e => {
 .video {
   width: 100px;
 }
-::v-deep .el-table .cell {
+:deep .el-table .cell {
   color: #333;
 }
-::v-deep .el-table .cell span {
+:deep .el-table .cell span {
   font-weight: 500;
 }
 </style>

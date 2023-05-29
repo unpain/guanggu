@@ -96,7 +96,7 @@ const cancelAdd = () => {
 </script>
 
 <style scoped>
-::v-deep .el-form-item__label {
+:deep .el-form-item__label {
   justify-content: flex-start;
   padding: 0 0 0 15px;
 }

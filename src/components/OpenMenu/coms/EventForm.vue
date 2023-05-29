@@ -84,7 +84,7 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue'
+import { ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const props = defineProps({
@@ -246,7 +246,7 @@ const cancel = () => {
 </script>
 
 <style scoped>
-::v-deep .el-input.is-disabled .el-input__wrapper {
+:deep .el-input.is-disabled .el-input__wrapper {
   background: #fff;
 }
 .el-select {

@@ -11,8 +11,7 @@
     <AddEvent />
     <UpdateEvent />
     <queryEventBuyCanvas></queryEventBuyCanvas>
-
-    <el-menu-item index="8" v-permission="['department', 'admin']">发布公告</el-menu-item>
+    <AddNotice />
     <el-menu-item index="9" v-permission="['department', 'admin']" @click="showRoadCondition">路况信息</el-menu-item>
 
     <MapToolbox />
@@ -98,6 +97,7 @@ import VideoMonitor from './coms/VideoMonitor.vue'
 import AddEvent from './coms/AddEvent.vue'
 import UpdateEvent from './coms/UpdateEvent.vue'
 import EventAddition from '../EventAddition.vue'
+import AddNotice from './coms/AddNotice.vue'
 import { onBeforeMount, ref, toRefs } from 'vue'
 import MapToolbox from '../MapToolbox.vue'
 
