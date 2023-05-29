@@ -26,6 +26,7 @@ import ThePopup from './ThePopup.vue'
 import { useQuery } from '../hooks/useQuery'
 import { usePoint } from '../hooks/usePoint.JS'
 import { ElMessage } from 'element-plus'
+import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
@@ -39,9 +40,10 @@ const handlePopup = popup => {
   $popup = popup
 }
 
+const { getMapEvent } = useEventStore()
 const checkEvent = () => {
-  console.log(2)
-  $map.on('click', mapClick)
+  let key = $map.on('click', mapClick)
+  getMapEvent(key)
 }
 const offUpdate = () => {
   $map.un('click', mapClick)
@@ -58,14 +60,14 @@ const mapClick = e => {
   Query.queryByPnt({
     position,
     service,
-    callback: queryRes
+    callback: getQueryRes
   })
 }
 
 const evtForm = ref({})
 let fid
 let position
-const queryRes = e => {
+const getQueryRes = e => {
   if (e) {
     position = e[0].getGeometry().flatCoordinates
     fid = e[0].id_

@@ -34,6 +34,7 @@
 import { ref, inject, onMounted } from 'vue'
 import { useQuery } from '../hooks/useQuery'
 import ThePopup from './ThePopup.vue'
+import { useEventStore } from '../../../stores/event'
 
 let $map
 const tableData = ref([{ id: '', number: '', location: '' }])
@@ -48,9 +49,11 @@ const handlePopup = popup => {
 }
 
 const { Query } = useQuery()
+const { getMapEvent } = useEventStore()
 //查看监控
 const checkMonitor = () => {
-  $map.on('click', mapClick)
+  let key = $map.on('click', mapClick)
+  getMapEvent(key)
 }
 //取消查看
 const offMonitor = () => {

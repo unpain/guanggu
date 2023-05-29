@@ -12,14 +12,13 @@
     :ellipsis="false"
   >
     <h4 class="log">光谷智慧交通系统</h4>
-    <el-menu-item @click="getRoadConditions" index="1">实时路况</el-menu-item>
+    <RoadCondition />
     <el-menu-item index="2" v-permission="['user']">查看公告</el-menu-item>
     <EventAddition />
     <VideoMonitor />
     <AddEvent />
     <UpdateEvent />
     <queryEventBuyCanvas></queryEventBuyCanvas>
-
     <el-menu-item index="8" v-permission="['department', 'admin']"
       >发布公告</el-menu-item
     >
@@ -29,7 +28,6 @@
       @click="showRoadCondition"
       >路况信息</el-menu-item
     >
-
     <MapToolbox />
     <el-menu-item class="scerch">
       <el-input
@@ -182,10 +180,10 @@
 import VideoMonitor from './coms/VideoMonitor.vue'
 import AddEvent from './coms/AddEvent.vue'
 import UpdateEvent from './coms/UpdateEvent.vue'
+import RoadCondition from './coms/RoadCondition.vue'
 import EventAddition from '../EventAddition.vue'
-import { onBeforeMount, ref, toRefs } from 'vue'
+import { onBeforeMount, onMounted, ref, toRefs, inject } from 'vue'
 import MapToolbox from '../MapToolbox.vue'
-
 import queryEventBuyCanvas from '../queryEventBuyCanvas.vue'
 import {
   getEventApi,
@@ -195,13 +193,10 @@ import {
 import { useEventStore } from '@/stores/event'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
-import { onMounted } from 'vue'
-import { inject } from 'vue'
 
 const $router = useRouter()
 let roadFlag = ref(false)
-let { eventList } = toRefs(useEventStore())
+let { eventList, mapEvent } = toRefs(useEventStore())
 let { userPermission } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
@@ -319,8 +314,9 @@ let $map
 onMounted(() => {
   $map = inject('$map')
 })
+
 const handleSelect = () => {
-  $map.removeEventListener('click')
+  ol.Observable.unByKey(mapEvent.value)
   $map.removeInteraction($map.interactions.array_[9])
 }
 </script>

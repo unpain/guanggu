@@ -9,7 +9,6 @@
     :popupId="'add'"
     :source="source"
     @popup="handlePopup"
-    @closePopup="closePopup"
   >
     <template #title>添加事件</template>
     <EventForm @submit="submitAdd" @cancel="cancelAdd" />
@@ -18,8 +17,7 @@
 <script setup>
 import EventForm from './EventForm.vue'
 import ThePopup from './ThePopup.vue'
-import { inject, ref } from 'vue'
-import { onMounted } from 'vue'
+import { onMounted, inject, ref } from 'vue'
 import { useDraw } from '../hooks/useDraw'
 import { usePoint } from '../hooks/usePoint'
 import { ElMessage } from 'element-plus'
@@ -58,7 +56,7 @@ let position
 const handleDraw = e => {
   source.clear()
   $map.removeInteraction(draw)
-  position = e.feature.getGeometry().getCoordinates()
+  position = e.feature.getGeometry().flatCoordinates
   $popup.setPosition(position)
 }
 

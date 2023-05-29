@@ -88,8 +88,6 @@ import { ref, watch, defineEmits, defineProps, toRefs } from 'vue'
 import { ElMessage } from 'element-plus'
 import { usePopupStore } from '../../../stores/popup'
 
-
-
 const props = defineProps({
   evtForm: {
     type: Object,
@@ -114,7 +112,6 @@ const { isReset } = toRefs(usePopupStore())
 watch(isReset, () => {
   ruleForms.value.resetFields()
 })
-
 
 const evtForm = ref({
   evtNum: '',
