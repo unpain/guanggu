@@ -13,6 +13,7 @@
   <el-dialog
     style="width: 650px"
     v-model="dialogTableVisible"
+    :append-to-body="true"
     title="事件统计图"
   >
     <!-- Echarts图表组件 -->
@@ -150,6 +151,7 @@ function handleAllFeature(res) {
   let { eventType, monthlyStatistic } = getEchartsData(arr)
   eventTypes.value = eventType
   monthlyStatistics.value = monthlyStatistic
+  console.log(monthlyStatistics.value)
 }
 </script>
 <style scoped></style>

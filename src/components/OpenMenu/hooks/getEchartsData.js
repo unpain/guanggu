@@ -31,7 +31,6 @@ export function getEchartsData(arr) {
   });
 
   monthlyStatistic.sort((a, b) => {
-    console.log(a.name === 'NaN月');
 
     const nameA = a.name === 'NaN月' ? '未知月' : a.name;
     a.name = nameA;
