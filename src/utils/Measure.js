@@ -2,9 +2,7 @@
 function measure({$map,source,type}){
 // 获取上一次的画笔，将其移除
   const res = $map.getInteractions().array_[9]
-
   $map.removeInteraction(res) //移除绘制图形
-  //  addInteraction() //添加绘图进行测量
  /**
    * 当前绘制的要素（Currently drawn feature.）
    * @type {ol.Feature}
@@ -186,15 +184,6 @@ function measure({$map,source,type}){
  }
 
  /**
-  * 让用户切换选择测量类型（长度/面积）
-  * @param {Event} e Change event.
-  */
-//  typeSelect.onchange = function (e) {
-//    $map.removeInteraction(draw) //移除绘制图形
-//    addInteraction() //添加绘图进行测量
-//  }
-
- /**
   * 测量长度输出
   * @param {ol.geom.LineString} line
   * @return {string}
@@ -203,7 +192,7 @@ function measure({$map,source,type}){
    var length
    var sphere = new ol.Sphere()
 
-   //若使用测地学方法测量
+   //若使用测地学方法测量(这里默认就是采用测地学方法测量，去掉了普通的测量，普通测量显示的结果不是我们想要的)
    var sourceProj = $map.getView().getProjection() //地图数据源投影坐标系
    length = sphere.getLength(line, {
      projection: sourceProj,
@@ -226,8 +215,7 @@ function measure({$map,source,type}){
  var formatArea = function (polygon) {
    var area
    var sphere = new ol.Sphere()
-
-   //若使用测地学方法测量
+//若使用测地学方法测量(这里默认就是采用测地学方法测量，去掉了普通的测量，普通测量显示的结果不是我们想要的)
    var sourceProj = $map.getView().getProjection() //地图数据源投影坐标系
    var geom = /** @type {ol.geom.Polygon} */ (
      polygon.clone().transform(sourceProj, 'EPSG:4326')

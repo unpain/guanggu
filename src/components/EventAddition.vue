@@ -117,6 +117,7 @@ function submitEvent() {
       console.log('提交失败，请确认表单内容!')
     }
   })
+  hideForm()
 }
 var time = computed(() => {
   const date = ruleForm.date2.getDate()

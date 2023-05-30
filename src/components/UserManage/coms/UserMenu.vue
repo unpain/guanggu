@@ -1,15 +1,15 @@
 <template>
   <el-card class="container"
-    :style="{ 'max-height': '1200px', width: '1600px', position: 'fixed', left: '50%', transform: 'translateX(' + '-50%' + ')' }">
+    :style="{ 'max-height': '1200px', width: '1200px', position: 'fixed', left: '50%', transform: 'translateX(' + '-50%' + ')' }">
     <div class="title"><span>普通用户信息表</span></div>
-    <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1500px' }"
+    <el-table :data="tableData" :style="{ 'min-height': '300px', width: '1100px' }"
       :header-cell-style="{ background: '#f5f7fa', color: '#333', 'font-size': '20px' }"
-      :cell-style="{ height: '45px', width: '500px', 'font-size': '20px' }" border="true">
-      <el-table-column prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
-      <el-table-column prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
+      :cell-style="{ height: '45px', 'font-size': '20px' }" border="true">
+      <el-table-column width="200" prop="user_id" label="用户ID" resizable="true" align="center"></el-table-column>
+      <el-table-column width="200" prop="user_name" label="用户名" resizable="true" align="center"></el-table-column>
+      <el-table-column width="200" prop="user_type" label="权限" resizable="true" align="center"><template v-slot="{ row }">{{
         row.user_type == 'user' ? '普通用户' : null }}</template></el-table-column>
-      <el-table-column prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
+      <el-table-column width="200" prop="user_onlinestatus" label="在线状态" resizable="true" align="center">
         <template v-slot="{ row }">
           <el-switch v-model="row.user_onlinestatus" @change="switchStatus(row.user_id, row.user_onlinestatus)"
             size="large"></el-switch>
@@ -30,7 +30,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination :current-page="currentPage" :page-sizes="[5, 10, 15, 20]" :page-size="pageSize"
+    <el-pagination :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pageSize"
       layout="sizes, prev, pager, next, jumper" :total="totalItems" @size-change="handleSizeChange"
       @current-change="handleCurrentChange"></el-pagination>
   </el-card>
@@ -41,7 +41,7 @@
     <div class="password">密码<el-input v-model="password" width="200px"></el-input></div>
     <div class="button-group">
       <el-button size="normal" color="#faaaed" :dark="isDark" plain @click="modifyFinish">确定</el-button>
-      <el-button size="normal" color="#ff5353" :dark="isDark" plain @click="modifyCancle">取消</el-button>
+      <el-button size="normal" color="#ff5353" :dark="isDark" plain @click="modifyCancel">取消</el-button>
     </div>
   </el-card>
 </template>
@@ -50,11 +50,11 @@ import { getInfoApi } from '@/api/login'
 import { setUserStatusApi, upgradeUserApi, deleteUserApi, modifyUserInfoApi } from '@/api/opUser'
 import { useUserStore } from '@/stores/user'
 import { toRefs, onBeforeMount, ref, watch } from 'vue';
-
+import { ElMessage } from 'element-plus'
 let username = ref('')
 let password = ref('')
 let userId = ref(0)
-let { userList } = toRefs(useUserStore())
+let { userList, addSuccess } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
 let totalItems = ref(0) // 总条数
@@ -91,6 +91,7 @@ const upgradeUser = (id) => {
         userList.value = res.data.user
         totalItems.value = userList.value.length
         fetchData()
+        ElMessage.success('升级成功!')
       })
     }
   })
@@ -103,6 +104,7 @@ const deleteUser = (id) => {
         userList.value = res.data.user
         totalItems.value = userList.value.length
         fetchData()
+        ElMessage.success('删除成功!')
       })
     }
   })
@@ -125,18 +127,26 @@ const modifyFinish = () => {
         userList.value = res.data.user
         totalItems.value = userList.value.length
         fetchData()
+        ElMessage.success('修改成功!')
       })
     }
   })
   modifyFlag.value = false
 }
 
-const modifyCancle = () => {
+const modifyCancel = () => {
   modifyFlag.value = false
 }
 watch(userList, () => {
   totalItems.value = userList.value.length
   fetchData()
+})
+watch(addSuccess, () => {
+  getInfoApi().then(res => {
+    userList.value = res.data.user
+    totalItems.value = userList.value.length
+    fetchData()
+  })
 })
 onBeforeMount(() => {
   getInfoApi().then(res => {
