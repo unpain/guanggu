@@ -28,7 +28,8 @@
         <el-form-item label="发生时间" required>
           <el-col :span=" 11 ">
             <el-form-item prop="date1">
-              <el-date-picker v-model=" ruleForm.date1 " type="date" label="选择日期" placeholder="选择日期" style="width: 100%" />
+              <el-date-picker v-model=" ruleForm.date1 " type="date" label="选择日期" placeholder="选择日期"
+                style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col class="text-center" :span=" 2 ">
@@ -36,7 +37,8 @@
           </el-col>
           <el-col :span=" 11 ">
             <el-form-item prop="date2">
-              <el-time-picker v-model=" ruleForm.date2 " label="选择时间" placeholder="选择时间" style="width: 100%" />
+              <el-time-picker v-model=" ruleForm.date2 " format="YYYY.M.DD H:mm:ss" value-format="YYYY.M.DD H:mm:ss"
+                label="选择时间" placeholder="选择时间" style="width: 100%" />
             </el-form-item>
           </el-col>
         </el-form-item>
@@ -48,7 +50,7 @@
     <div class="event-footer">
       <el-form-item>
         <el-button type="primary" @click=" submitEvent "> 确认 </el-button>
-        <el-button @click="resetForm">重置</el-button>
+        <el-button @click=" resetForm ">重置</el-button>
       </el-form-item>
     </div>
   </div>
@@ -66,24 +68,25 @@ const ruleForm = reactive({
   type: '',
   address: '',
   architecture: '',
-  date1: new Date,
-  date2: new Date,
+  date1: '',
+  date2: '',
   desc: '',
 })
 function submitEvent() {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
       let id = Number(JSON.parse(localStorage.getItem('userPermission')).userId)
-      postNewEventApi({
+      let event = {
         event_id: eventId.value,
         user_id: id,
         event_type: ruleForm.type,
         event_addr: ruleForm.address,
         event_mark: ruleForm.architecture,
-        event_time: time.value,
+        event_time: ruleForm.date2,
         event_describe: ruleForm.address,
         event_status: 0,
-      }).then(res => {
+      }
+      postNewEventApi(event).then(res => {
         if (res.data.status === 'success') {
           hideForm()
         }
@@ -94,18 +97,18 @@ function submitEvent() {
     }
   })
 }
-watch(ruleForm, () => {
-  console.log(time.value)
-})
-var time = computed(() => {
-  const date = ruleForm.date2.getDate()
-  const year = ruleForm.date2.getFullYear()
-  const month = ruleForm.date2.getMonth()
-  const hour = ruleForm.date2.getHours()
-  const minute = ruleForm.date2.getMinutes()
-  const second = ruleForm.date2.getSeconds()
-  return `${year}-${month}-${date} ${hour}:${minute}:${second}`
-})
+// watch(ruleForm, () => {
+//   console.log(time.value)
+// })
+// var time = computed(() => {
+//   const date = ruleForm.date2.getDate()
+//   const year = ruleForm.date2.getFullYear()
+//   const month = ruleForm.date2.getMonth()
+//   const hour = ruleForm.date2.getHours()
+//   const minute = ruleForm.date2.getMinutes()
+//   const second = ruleForm.date2.getSeconds()
+//   return `${year}-${month}-${date} ${hour}:${minute}:${second}`
+// })
 const rules = reactive({
   type: [
     {

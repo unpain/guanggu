@@ -1,10 +1,14 @@
 <template>
-  <el-menu-item
+  <el-sub-menu
     index="7"
     v-permission="['department', 'admin']"
-    @click="updateEvent"
-    >事件更新</el-menu-item
+    expand-close-icon="none"
+    expand-open-icon="none"
   >
+    <template #title>事件更新</template>
+    <el-menu-item index="7-1" @click="checkEvent">选择事件</el-menu-item>
+    <el-menu-item index="7-2" @click="offUpdate">取消更新</el-menu-item>
+  </el-sub-menu>
   <ThePopup :popupId="'update'" @popup="handlePopup">
     <template #title>更新事件</template>
     <EventForm
@@ -20,11 +24,19 @@ import { ref, inject, onMounted } from 'vue'
 import EventForm from './EventForm.vue'
 import ThePopup from './ThePopup.vue'
 import { useQuery } from '../hooks/useQuery'
-import { usePoint } from '../hooks/usePoint.JS'
+import { usePoint } from '../hooks/usePoint'
+import { useMark } from '../hooks/useMark'
 import { ElMessage } from 'element-plus'
+import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
+const { markLayer, markSource, setStyle } = useMark()
+const service = {
+  name: 'guanggu',
+  layerId: 2
+}
+
 onMounted(() => {
   $map = inject('$map')
   docLayer = $map.getLayers().getArray()[2]
@@ -35,38 +47,48 @@ const handlePopup = popup => {
   $popup = popup
 }
 
-const updateEvent = () => {
-  $map.on('click', mapClick)
+const { getMapEvent } = useEventStore()
+const { Query } = useQuery()
+const checkEvent = () => {
+  Query.queryByLayer({
+    service,
+    callback: res => {
+      markSource.addFeatures(res)
+      setStyle()
+    }
+  })
+  $map.addLayer(markLayer)
+  let eventKey = $map.on('click', mapClick)
+  getMapEvent(eventKey)
 }
 
-const service = {
-  name: 'guanggu',
-  layerId: 2
+const offUpdate = () => {
+  $map.removeLayer(markLayer)
+  $map.un('click', mapClick)
 }
-const { Query } = useQuery()
+
 const mapClick = e => {
-  const position = e.coordinate
-  //点查询
-  Query.queryByPnt({
-    position,
-    service,
-    callback: queryRes
+  const feature = $map.forEachFeatureAtPixel(e.pixel, function (feature) {
+    return feature
   })
+  if (feature) {
+    const fids = [feature.id_]
+    Query.queryByFID({
+      fids,
+      service,
+      callback: getQueryRes
+    })
+  }
 }
 
 const evtForm = ref({})
 let fid
 let position
-const queryRes = e => {
-  if (e) {
-    position = e[0].getGeometry().flatCoordinates
-    fid = e[0].id_
-    evtForm.value = e[0].values_.values_
-    $popup.setPosition(position)
-  } else {
-    //点击空白处关闭弹窗
-    $popup.setPosition(undefined)
-  }
+const getQueryRes = e => {
+  evtForm.value = e[0].values_.values_
+  fid = e[0].id_
+  position = e[0].getGeometry().flatCoordinates
+  $popup.setPosition(position)
 }
 const { Point } = usePoint()
 const attr = [{ name: '处理状态', value: 0, type: 'int' }]
@@ -79,13 +101,12 @@ const submitUpdate = evtForm => {
     service,
     docLayer
   })
+  setStyle(evtForm.evtState, fid)
   $popup.setPosition(undefined)
   ElMessage.success('更新成功')
-  $map.un('click', mapClick)
 }
 const cancelUpdate = () => {
   $popup.setPosition(undefined)
-  $map.un('click', mapClick)
 }
 </script>
 
