@@ -12,7 +12,8 @@
      :append-to-body="false"
     style="width: 75%; margin: 0 auto; min-width: 1000px;"
   >
-    <div class="button">
+  <header>
+     <div class="button">
       <div class="item">
         <el-button
           @click="creatHeatMap"
@@ -54,6 +55,8 @@
         </el-button>
       </div>
     </div>
+  </header>
+   
     <div :class="active ? 'container' : 'dispppear'">
       <div class="example-pagination-block">
         <div class="example-demonstration">
