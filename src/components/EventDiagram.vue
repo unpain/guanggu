@@ -22,6 +22,9 @@ const props = defineProps({
   eventTypes: {
     type: Array,
   },
+  eventNumber: {
+    type: Number,
+  },
 });
 watch(
   option,
@@ -33,9 +36,8 @@ watch(
 watch(props, () => {
   option.value = {
     title: {
-      text: '交通事故',
-      subtext: 'Fake Data',
-      left: 'left',
+      text: `交通事故   (${props.eventNumber}起)`,
+      left: 'center',
     },
     tooltip: {
       trigger: 'item',
@@ -74,9 +76,8 @@ onMounted(() => {
 function setOption(a) {
   option.value = {
     title: {
-      text: '交通事故',
-      subtext: 'Fake Data',
-      left: 'left',
+      text: `交通事故   (${props.eventNumber}起)`,
+      left: 'center',
     },
     tooltip: {
       trigger: 'item',

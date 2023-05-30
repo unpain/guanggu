@@ -20,6 +20,7 @@
     <EventDiagram
       :eventTypes="eventTypes"
       :monthlyStatistics="monthlyStatistics"
+      :eventNumber="eventNumber"
     ></EventDiagram>
   </el-dialog>
 </template>
@@ -36,6 +37,7 @@ let queryData = ref([]);
 const dialogTableVisible = ref(false);
 var source = new ol.source.Vector({});
 var heatMapsource = new ol.source.Vector({});
+let eventNumber=ref(0)
 var layer = new ol.layer.Vector({
   source,
 });
@@ -138,6 +140,7 @@ function creatEventDiagram(a) {
 /* 获取所有的事件要素 */
 function handleAllFeature(res) {
   eventData.value = res;
+  eventNumber.value=res.length
   let arr = eventData.value.map((item) => {
     item.values_.values_;
     return {

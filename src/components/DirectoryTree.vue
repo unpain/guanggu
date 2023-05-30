@@ -10,7 +10,6 @@
     /></el-icon>
     <el-drawer
       v-model="drawer"
-      title="图层目录"
       direction="ltr"
       :close-on-click-modal="false"
       :modal="false"
@@ -18,7 +17,7 @@
       :show-close="false"
       class="draw"
       size="270px"
-    >
+    ><h3>图层目录</h3>
       <el-tree
         class="tree"
         :data="data"
