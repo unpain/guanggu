@@ -20,11 +20,12 @@ const service = {
   name: 'guanggu',
   layerId: 1
 }
-
 const source = new ol.source.Vector({})
 const layer = new ol.layer.Vector({
-  source
+  id: 666,
+  source,
 })
+
 onMounted(() => {
   $map = inject('$map')
   Query.queryByLayer({

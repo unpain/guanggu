@@ -29,7 +29,7 @@
       >路况信息</el-menu-item
     >
     <MapToolbox />
-    <el-menu-item class="scerch">
+    <el-menu-item class="search" index="10">
       <el-input
         placeholder="请输入查询的交通事故信息"
         class="input-with-select"
@@ -193,6 +193,7 @@ import {
 import { useEventStore } from '@/stores/event'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import { computed } from 'vue'
 
 const $router = useRouter()
 let roadFlag = ref(false)
@@ -318,9 +319,13 @@ onMounted(() => {
 const handleSelect = () => {
   ol.Observable.unByKey(mapEvent.value)
   const allDraws = $map.interactions.array_
+  $map.removeInteraction(allDraws[9])
   const allLayers = $map.getLayers().getArray()
-  $map.removeInteraction(allDraws[allDraws.length - 1])
-  $map.removeLayer(allLayers[allLayers.length - 1])
+  allLayers.forEach(layer => {
+    if (layer.values_.id == 666) {
+      $map.removeLayer(layer)
+    }
+  })
 }
 </script>
 <style scoped>
@@ -354,7 +359,13 @@ VideoMonitor.vueVideoMonitor.vueVideoMonitor.vue .log {
 ::v-deep .el-sub-menu__title {
   padding: 0 20px;
 }
-
+.el-menu--horizontal > .el-menu-item.is-active {
+  border-bottom: none;
+  color: var(--el-menu-active-color);
+}
+.search {
+  padding: 0;
+}
 .close-button {
   position: fixed;
   right: 40px;

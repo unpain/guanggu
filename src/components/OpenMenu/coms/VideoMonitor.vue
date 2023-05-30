@@ -33,6 +33,7 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue'
 import { useQuery } from '../hooks/useQuery'
+import { useMark } from '../hooks/useMark'
 import ThePopup from './ThePopup.vue'
 import { useEventStore } from '../../../stores/event'
 
@@ -53,11 +54,7 @@ const markStyle = new ol.style.Style({
     src: 'src/assets/images/monitoring.svg'
   })
 })
-const source = new ol.source.Vector({})
-const layer = new ol.layer.Vector({
-  source,
-  style: markStyle
-})
+const { layer, source } = useMark()
 const tableData = ref([{ id: '', number: '', location: '' }])
 const { Query } = useQuery()
 const service = {
@@ -69,6 +66,7 @@ onMounted(() => {
   Query.queryByLayer({
     service,
     callback: res => {
+      layer.setStyle(markStyle)
       source.addFeatures(res)
     }
   })
