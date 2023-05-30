@@ -1,11 +1,11 @@
 import { ref } from 'vue'
 
 export const useMark = () => {
-  const markSource = new ol.source.Vector({});
+  const markSource = new ol.source.Vector({})
   const markLayer = new ol.layer.Vector({
     class: 666,
-    source: markSource,
-  });
+    source: markSource
+  })
   const src = ref('')
   const setSrc = state => {
     if (state == 0) {
@@ -17,7 +17,7 @@ export const useMark = () => {
     }
   }
   const setStyle = (state, fid) => {
-    markSource.forEachFeature((e) => {
+    markSource.forEachFeature(e => {
       if (e.id_ == fid) {
         setSrc(state);
         let markStyle = ref(
@@ -66,6 +66,6 @@ export const useMark = () => {
   return {
     markLayer,
     markSource,
-    setStyle,
-  };
+    setStyle
+  }
 }

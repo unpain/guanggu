@@ -54,7 +54,7 @@ const markStyle = new ol.style.Style({
     src: 'src/assets/images/monitoring.svg'
   })
 })
-const { layer, source } = useMark()
+const { markLayer, markSource } = useMark()
 const tableData = ref([{ id: '', number: '', location: '' }])
 const { Query } = useQuery()
 const service = {
@@ -66,8 +66,8 @@ onMounted(() => {
   Query.queryByLayer({
     service,
     callback: res => {
-      layer.setStyle(markStyle)
-      source.addFeatures(res)
+      markLayer.setStyle(markStyle)
+      markSource.addFeatures(res)
     }
   })
 })
@@ -80,14 +80,14 @@ const handlePopup = popup => {
 const { getMapEvent } = useEventStore()
 //查看监控
 const checkMonitor = () => {
-  $map.addLayer(layer)
+  $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)
 }
 //取消查看
 const offMonitor = () => {
   $map.un('click', mapClick)
-  $map.removeLayer(layer)
+  $map.removeLayer(markLayer)
 }
 const mapClick = e => {
   const feature = $map.forEachFeatureAtPixel(e.pixel, function (feature) {

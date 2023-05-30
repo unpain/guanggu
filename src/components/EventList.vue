@@ -8,7 +8,7 @@
     :modal="false"
     :show-close="false"
     :with-header="false"
-    :size="active ? '55%' : '11%'"
+    :size="active ? '55%' : '12%'"
      :append-to-body="false"
     style="width: 75%; margin: 0 auto; min-width: 1000px;"
   >

@@ -48,7 +48,7 @@ let arr = ref([]);
 onMounted(() => {
   $map = inject('$map');
   $map.addLayer(layer);
-  $map.addLayer(markLayer);
+
 });
 /* 激活查询事件创建画笔 */
 function queryEvent() {
@@ -88,6 +88,7 @@ function handleQuery(res) {
     queryData.value.push(res.map((item) => item.values_.values_));
     markSource.addFeatures(res)
     setStyle()
+      $map.addLayer(markLayer);
   } else {
     queryData.value.push(null);
   }
@@ -95,6 +96,7 @@ function handleQuery(res) {
 function clearAllSource() {
   source.clear();
   heatMapsource.clear();
+  markSource.clear();
 }
 /* 创建热力图 */
 function creatHeatMap() {
