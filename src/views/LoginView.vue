@@ -4,30 +4,23 @@
       <div class="form sign-in">
         <h2>光谷智慧交通</h2>
         <label>
-          <span>username</span>
+          <span>用户名</span>
           <div class="username">
             <input type="text" v-model="username" />
           </div>
         </label>
         <label>
-          <span>Password</span>
+          <span>密码</span>
           <div class="password">
-            <input
-              :type="passwordVisible ? 'text' : 'password'"
-              v-model="password"
-            />
-            <i
-              :class="
-                passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
-              "
-              @click="togglePasswordVisibility"
-            ></i>
+            <input :type="passwordVisible ? 'text' : 'password'" v-model="password" />
+            <i :class="passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
+              " @click="togglePasswordVisibility"></i>
           </div>
         </label>
         <label>
-          <span>captcha</span>
+          <span>验证码</span>
           <div class="captcha">
-            <input type="text" v-model="userCaptcha" @blur="checkoutCaptcha" />
+            <input type="text" v-model="userCaptcha" placeholder="请输入验证码" />
             <canvas id="login-captchaCanvas" @click="drawCaptcha"></canvas>
           </div>
         </label>
@@ -60,16 +53,9 @@
           <label>
             <span>Password</span>
             <div class="password">
-              <input
-                :type="passwordVisible ? 'text' : 'password'"
-                v-model="password"
-              />
-              <i
-                :class="
-                  passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
-                "
-                @click="togglePasswordVisibility"
-              ></i>
+              <input :type="passwordVisible ? 'text' : 'password'" v-model="password" />
+              <i :class="passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
+                " @click="togglePasswordVisibility"></i>
             </div>
           </label>
           <label>
@@ -78,7 +64,6 @@
               <input
                 type="text"
                 v-model="userCaptcha"
-                @blur="checkoutCaptcha"
               />
               <canvas id="singup-captchaCanvas" @click="drawCaptcha"></canvas>
             </div>
@@ -126,10 +111,14 @@ const handleLogin = () => {
       const token = res.data.token
       const permission = res.data.user.user_type
       const userName = res.data.user.user_name
+      const userId = res.data.user.user_id
+      username.value = ''
+      password.value = ''
       login({
         permission,
         token,
-        userName: userName.toString(),
+        userName: userName,
+        userId: userId.toString(),
       })
       $router.push('/home')
     })
@@ -216,6 +205,7 @@ const goToSignUp = () => {
 <style scoped>
 @import url(../assets/style.css);
 @import url('https://at.alicdn.com/t/c/font_4027375_qbadyjgwaun.css');
+
 .login {
   width: 100vw;
   height: 100vh;
@@ -227,14 +217,17 @@ const goToSignUp = () => {
   background-size: cover;
   background-position: center;
 }
+
 .password {
   display: flex;
   align-items: center;
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }
+
 .password .iconfont {
   font-size: 20px;
 }
+
 .username {
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }

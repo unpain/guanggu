@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('auth', () => {
   let username = ref('')
   let password = ref('')
+  let usertype = ref('')
+  let addSuccess = ref(false)
   let user = ref({})
   let userList = ref([])
   let trafficList = ref([])
@@ -39,6 +41,8 @@ export const useUserStore = defineStore('auth', () => {
     trafficList,
     username,
     password,
+    usertype,
+    addSuccess,
     user,
     key
   }

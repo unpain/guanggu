@@ -6,11 +6,12 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "user": "node ./src/api/server.js"
+    "data": "node ./src/api/server.js"
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.1.0",
     "axios": "^1.4.0",
+    "echarts": "^5.4.2",
     "element-plus": "^2.3.5",
     "json-server": "^0.17.3",
     "jsonwebtoken": "^9.0.0",

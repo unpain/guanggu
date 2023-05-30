@@ -17,11 +17,16 @@
 
 <script setup>
 import { onMounted, inject, defineEmits, defineProps } from 'vue'
+import { usePopupStore } from '../../../stores/popup'
 
 // 父组件传过来的id
 const props = defineProps({
   popupId: {
     type: String,
+    required: true
+  },
+  source: {
+    type: Object,
     required: true
   }
 })
@@ -51,9 +56,13 @@ onMounted(() => {
 
 // 添加关闭按钮的单击事件（隐藏popup）
 const closePopup = () => {
+  if (props.source) {
+    props.source.clear()
+  }
   popup.setPosition(undefined)
   //失去焦点
-  //   closer.blur()
+  const { setIsReset } = usePopupStore()
+  setIsReset()
   emit('closePopup', popup)
 }
 </script>

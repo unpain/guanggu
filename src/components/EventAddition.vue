@@ -102,23 +102,24 @@ let eventList = ref([])
 function submitEvent() {
   ruleFormRef.value.validate((valid) => {
     if (valid) {
-      eventList.value.push({
+      let id = Number(JSON.parse(localStorage.getItem('userPermission')).userId)
+      postNewEventApi({
         event_id: eventId.value,
-        user_id: user.value.user_id,
+        user_id: id,
         event_type: ruleForm.type,
         event_addr: ruleForm.address,
         event_mark: ruleForm.architecture,
-        event_time: time,
+        event_time: ruleForm.date2,
         event_describe: ruleForm.address,
         event_status: 0,
+      }).then(res => {
+        hideForm()
+        ElMessage.success('提交成功!')
       })
-      
-      ElMessage.success('提交成功!')
     } else {
       console.log('提交失败，请确认表单内容!')
     }
   })
-  hideForm()
 }
 var time = computed(() => {
   const date = ruleForm.date2.getDate()

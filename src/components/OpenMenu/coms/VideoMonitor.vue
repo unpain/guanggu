@@ -33,13 +33,43 @@
 <script setup>
 import { ref, inject, onMounted } from 'vue'
 import { useQuery } from '../hooks/useQuery'
+import { useMark } from '../hooks/useMark'
 import ThePopup from './ThePopup.vue'
+import { useEventStore } from '../../../stores/event'
 
 let $map
+const markStyle = new ol.style.Style({
+  image: new ol.style.Icon({
+    anchor: [0.5, 19],
+    anchorOrigin: 'center',
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    offsetOrigin: 'center',
+    // offset:[0,10],
+    //图标缩放比例
+    scale: 1.5,
+    //透明度
+    opacity: 1,
+    //图标的url
+    src: 'src/assets/images/monitoring.svg'
+  })
+})
+const { markLayer, markSource } = useMark()
 const tableData = ref([{ id: '', number: '', location: '' }])
-
+const { Query } = useQuery()
+const service = {
+  name: 'guanggu',
+  layerId: 3
+}
 onMounted(() => {
   $map = inject('$map')
+  Query.queryByLayer({
+    service,
+    callback: res => {
+      markLayer.setStyle(markStyle)
+      markSource.addFeatures(res)
+    }
+  })
 })
 //popup子组件传过来的用来激活弹窗
 let $popup
@@ -47,46 +77,41 @@ const handlePopup = popup => {
   $popup = popup
 }
 
-const { Query } = useQuery()
+const { getMapEvent } = useEventStore()
 //查看监控
 const checkMonitor = () => {
-  $map.on('click', mapClick)
+  $map.addLayer(markLayer)
+  let eventKey = $map.on('click', mapClick)
+  getMapEvent(eventKey)
 }
 //取消查看
 const offMonitor = () => {
   $map.un('click', mapClick)
-}
-
-const service = {
-  name: 'guanggu',
-  layerId: 3
+  $map.removeLayer(markLayer)
 }
 const mapClick = e => {
-  const position = e.coordinate
-  //点查询
-  Query.queryByPnt({
-    position,
-    service,
-    callback: queryRes
+  const feature = $map.forEachFeatureAtPixel(e.pixel, function (feature) {
+    return feature
   })
-}
-
-const queryRes = e => {
-  if (e) {
-    const position = e[0].getGeometry().flatCoordinates
+  if (feature) {
+    const position = feature.getGeometry().flatCoordinates
     $popup.setPosition(position)
-    // 点查询返回的数据
-    const attr = e[0].values_.values_
-    tableData.value[0] = {
-      id: attr.ID,
-      number: attr['编号'],
-      location: attr['位置']
-    }
+    const fids = [feature.id_]
+    Query.queryByFID({
+      fids,
+      service,
+      callback: getQueryRes
+    })
   }
-  // else {
-  //   //点击空白处关闭弹窗
-  //   $popup.setPosition(undefined)
-  // }
+}
+const getQueryRes = e => {
+  // 点查询返回的数据
+  const attr = e[0].values_.values_
+  tableData.value[0] = {
+    id: attr.ID,
+    number: attr['编号'],
+    location: attr['位置']
+  }
 }
 </script>
 
@@ -94,10 +119,10 @@ const queryRes = e => {
 .video {
   width: 100px;
 }
-::v-deep .el-table .cell {
+:deep .el-table .cell {
   color: #333;
 }
-::v-deep .el-table .cell span {
+:deep .el-table .cell span {
   font-weight: 500;
 }
 </style>

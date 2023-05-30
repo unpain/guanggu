@@ -1,5 +1,5 @@
 export const usePoint = () => {
-  const POINT_STYLE= {
+  const POINT_STYLE = {
     Angle: 0,
     Color: 6, //子图颜色
     Space: 0,
@@ -7,7 +7,6 @@ export const usePoint = () => {
     SymID: 21, //子图号
     SymWidth: 5
   }
-
 
   class Point {
     /* 向gdb数据库添加点要素 */
@@ -28,9 +27,9 @@ export const usePoint = () => {
       // var attValue = []
       //创建一个要素
       /* new ol.Feature({
-                  geometry,
-                  style
-              }) */
+                    geometry,
+                    style
+                }) */
       var feature = new Zondy.Object.Feature({
         fGeom: fGeom,
         GraphicInfo: webGraphicInfo,
@@ -103,10 +102,10 @@ export const usePoint = () => {
         AttValue: attValue //属性
       })
       /* 设置要素为点要素 
-            点 -->1
-            线 -->2
-            面 -->3
-            */
+              点 -->1
+              线 -->2
+              面 -->3
+              */
       feature.setFType(1)
       feature.setFID(fid) //++
       /* 5、设置要素集,添加要素 */
@@ -123,9 +122,9 @@ export const usePoint = () => {
       featureSet.addFeature(feature)
       /* 6、调用服务,执行更新 */
       /* 
-        创建一个编辑服务类 
-        第一个参数：服务的名称 第二参数：图层的名称
-        */
+          创建一个编辑服务类 
+          第一个参数：服务的名称 第二参数：图层的名称
+          */
       var editService = new Zondy.Service.EditDocFeature(
         service.name,
         service.layerId,

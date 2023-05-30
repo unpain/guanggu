@@ -32,11 +32,11 @@ if (password.value.length < 6 || password.value.length > 16) {
   ElMessage.error(errorMessage)
   return false;
   }
-  // if (!/[A-Z]/.test(password.value) || !/[a-z]/.test(password.value)) {
-  //   errorMessage="密码应包含大小写字母" 
-  //   ElMessage.error(errorMessage)
-  //   return false;
-  // }
- 
-  return true; // 返回 true 表示校验通过
+  if (!/[A-Z]/.test(password.value) || !/[a-z]/.test(password.value)) {
+    errorMessage = '密码应包含大小写字母'
+    ElMessage.error(errorMessage)
+    return false
+  }
+
+  return true // 返回 true 表示校验通过
 }
