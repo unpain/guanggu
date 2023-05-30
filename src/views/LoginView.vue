@@ -182,9 +182,6 @@ onMounted(() => {
   // 进入页面时生成一次二维码
   drawCaptcha()
 })
-function test() {
-  console.log(111)
-}
 // 实现密码显隐的函数
 const togglePasswordVisibility = () => {
   passwordVisible.value = !passwordVisible.value

@@ -112,6 +112,7 @@ function submitEvent() {
         event_describe: ruleForm.address,
         event_status: 0,
       })
+      
       ElMessage.success('提交成功!')
     } else {
       console.log('提交失败，请确认表单内容!')
