@@ -8,11 +8,17 @@
       >清除路况</el-menu-item
     >
   </el-sub-menu>
+  <div class="road-tag" v-if="roadTag">
+    <el-tag type="info" effect="dark" color="#b22222">拥堵</el-tag>
+    <el-tag type="info" effect="dark" color="#ff7f24">缓行</el-tag>
+    <el-tag type="info" effect="dark" color="#228b22">畅通</el-tag>
+  </div>
 </template>
 
 <script setup>
-import { onMounted, inject } from 'vue'
+import { ref, onMounted, inject, toRefs } from 'vue'
 import { useQuery } from '../hooks/useQuery'
+import { useEventStore } from '../../../stores/event'
 
 let $map
 const { Query } = useQuery()
@@ -22,10 +28,10 @@ const service = {
 }
 const source = new ol.source.Vector({})
 const layer = new ol.layer.Vector({
-  id: 666,
-  source,
+  class: 666,
+  name: 'roadCondition',
+  source
 })
-
 onMounted(() => {
   $map = inject('$map')
   Query.queryByLayer({
@@ -54,12 +60,25 @@ const getQueryRes = e => {
     e.setStyle(stateStyle)
   })
 }
+const { roadTag } = toRefs(useEventStore())
+const { setRoadTag } = useEventStore()
 const checkRoadConditions = () => {
+  setRoadTag(true)
   $map.addLayer(layer)
 }
 const clearRoadConditions = () => {
+  setRoadTag(false)
   $map.removeLayer(layer)
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.road-tag {
+  display: flex;
+  gap: 10px;
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+</style>

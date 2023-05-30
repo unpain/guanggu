@@ -31,13 +31,12 @@ import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
-
-const { Query } = useQuery()
 const { layer, source, setStyle } = useMark()
 const service = {
   name: 'guanggu',
   layerId: 2
 }
+
 onMounted(() => {
   $map = inject('$map')
   docLayer = $map.getLayers().getArray()[2]
@@ -49,6 +48,7 @@ const handlePopup = popup => {
 }
 
 const { getMapEvent } = useEventStore()
+const { Query } = useQuery()
 const checkEvent = () => {
   Query.queryByLayer({
     service,
@@ -58,8 +58,8 @@ const checkEvent = () => {
     }
   })
   $map.addLayer(layer)
-  let key = $map.on('click', mapClick)
-  getMapEvent(key)
+  let eventKey = $map.on('click', mapClick)
+  getMapEvent(eventKey)
 }
 
 const offUpdate = () => {

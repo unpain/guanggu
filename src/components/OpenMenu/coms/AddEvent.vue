@@ -5,11 +5,7 @@
     @click="addEvent"
     >事件添加</el-menu-item
   >
-  <ThePopup
-    :popupId="'add'"
-    :source="source"
-    @popup="handlePopup"
-  >
+  <ThePopup :popupId="'add'" :source="source" @popup="handlePopup">
     <template #title>添加事件</template>
     <EventForm @submit="submitAdd" @cancel="cancelAdd" />
   </ThePopup>
@@ -93,8 +89,8 @@ const submitAdd = evtForm => {
 }
 const cancelAdd = () => {
   $map.removeInteraction(draw)
-  $popup.setPosition(undefined)
   source.clear()
+  $popup.setPosition(undefined)
 }
 </script>
 

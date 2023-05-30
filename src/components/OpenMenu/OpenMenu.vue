@@ -193,11 +193,11 @@ import {
 import { useEventStore } from '@/stores/event'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
-import { computed } from 'vue'
 
 const $router = useRouter()
 let roadFlag = ref(false)
 let { eventList, mapEvent } = toRefs(useEventStore())
+let { setRoadTag } = useEventStore()
 let { userPermission } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
@@ -317,12 +317,13 @@ onMounted(() => {
 })
 
 const handleSelect = () => {
+  setRoadTag(false)
   ol.Observable.unByKey(mapEvent.value)
   const allDraws = $map.interactions.array_
   $map.removeInteraction(allDraws[9])
   const allLayers = $map.getLayers().getArray()
   allLayers.forEach(layer => {
-    if (layer.values_.id == 666) {
+    if (layer.values_.class == 666) {
       $map.removeLayer(layer)
     }
   })

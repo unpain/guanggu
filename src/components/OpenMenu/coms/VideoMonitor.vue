@@ -49,7 +49,7 @@ const markStyle = new ol.style.Style({
     //图标缩放比例
     scale: 1.5,
     //透明度
-    opacity: 0.75,
+    opacity: 1,
     //图标的url
     src: 'src/assets/images/monitoring.svg'
   })
@@ -81,8 +81,8 @@ const { getMapEvent } = useEventStore()
 //查看监控
 const checkMonitor = () => {
   $map.addLayer(layer)
-  let key = $map.on('click', mapClick)
-  getMapEvent(key)
+  let eventKey = $map.on('click', mapClick)
+  getMapEvent(eventKey)
 }
 //取消查看
 const offMonitor = () => {

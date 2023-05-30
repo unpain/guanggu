@@ -3,7 +3,7 @@ import { ref } from 'vue'
 export const useMark = () => {
   const source = new ol.source.Vector({})
   const layer = new ol.layer.Vector({
-    id: 666,
+    class: 666,
     source
   })
   const src = ref('')
@@ -32,7 +32,7 @@ export const useMark = () => {
               //图标缩放比例
               scale: 1.2,
               //透明度
-              opacity: 0.9,
+              opacity: 1,
               //图标的url
               src: src.value
             })
@@ -53,7 +53,7 @@ export const useMark = () => {
               //图标缩放比例
               scale: 1.2,
               //透明度
-              opacity: 0.9,
+              opacity: 1,
               //图标的url
               src: src.value
             })
