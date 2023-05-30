@@ -9,10 +9,11 @@
     :show-close="false"
     :with-header="false"
     :size="active ? '55%' : '12%'"
-     :append-to-body="false"
-    style="width: 75%; margin: 0 auto; min-width: 1000px;"
+    :append-to-body="true"
+    style="width: 75%; margin: 0 auto; min-width: 1000px"
   >
-    <div class="button">
+  <header>
+     <div class="button">
       <div class="item">
         <el-button
           @click="creatHeatMap"
@@ -54,6 +55,8 @@
         </el-button>
       </div>
     </div>
+  </header>
+   
     <div :class="active ? 'container' : 'dispppear'">
       <div class="example-pagination-block">
         <div class="example-demonstration">
@@ -79,77 +82,73 @@
 </template>
 
 <script setup>
-const drawer = ref(false);
+const drawer = ref(false)
 
-import { onMounted, ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue'
 const props = defineProps({
   queryData: {
-    type: Array,
-  },
-});
-const dialogTableVisible = ref(null);
+    type: Array
+  }
+})
+const dialogTableVisible = ref(null)
 
-let active = ref(1);
-const tableData = ref([]);
-const arr = ref({});
-const currentPage = ref(1);
-const pageSize = 5;
-const totalItems = ref(null);
-const mockDate = ref([]);
+let active = ref(1)
+const tableData = ref([])
+const arr = ref({})
+const currentPage = ref(1)
+const pageSize = 5
+const totalItems = ref(null)
+const mockDate = ref([])
 watch(props, () => {
   if (props.queryData) {
-    tableData.value = props.queryData;
-    mockDate.value = tableData.value;
-    
-    totalItems.value = mockDate.value.length;
-    props.queryData.map((item) => {
-      arr.value = item;
-      return arr.value;
-    });
+    tableData.value = props.queryData
+    mockDate.value = tableData.value
 
-    fetchDate();
-    drawer.value = true;
+    totalItems.value = mockDate.value.length
+    props.queryData.map(item => {
+      arr.value = item
+      return arr.value
+    })
+
+    fetchDate()
+    drawer.value = true
   }
-});
+})
 
 function handleSizeChange(val) {
-  currentPage.value = val;
-  fetchDate();
+  currentPage.value = val
+  fetchDate()
 }
 function handleCurrentChange(val) {
-  currentPage.value = val;
-  fetchDate();
+  currentPage.value = val
+  fetchDate()
 }
 
 function fetchDate() {
-  const start = (currentPage.value - 1) * pageSize;
-  const end = start + pageSize;
-  const items = mockDate.value.slice(start, end);
-  tableData.value = items;
+  const start = (currentPage.value - 1) * pageSize
+  const end = start + pageSize
+  const items = mockDate.value.slice(start, end)
+  tableData.value = items
 }
 function setActive() {
   if (active.value) {
-    active.value = 0;
+    active.value = 0
   } else {
-    active.value = 1;
+    active.value = 1
   }
 }
 /* 定义自定义事件 */
-const emit = defineEmits([
-  'sourceClear',
-  'handleHeatMap',
-  'handleEventDiagram',
-]);
+const emit = defineEmits(['sourceClear', 'handleHeatMap', 'handleEventDiagram'])
 function setTableDisappear() {
-  drawer.value = false;
-  emit('sourceClear');
+  drawer.value = false
+  emit('sourceClear')
 }
 function creatHeatMap() {
-  emit('handleHeatMap');
+  emit('handleHeatMap')
 }
 function creatEventDiagram() {
-  dialogTableVisible.value = true;
-  emit('handleEventDiagram', dialogTableVisible.value);
+  dialogTableVisible.value = true
+  emit('handleEventDiagram', dialogTableVisible.value)
 }
 </script>
 <style scoped>
@@ -163,5 +162,4 @@ function creatEventDiagram() {
   padding: 5px 200px 3px 200px;
   border-top: 5px solid #86acd2;
 }
-
 </style>

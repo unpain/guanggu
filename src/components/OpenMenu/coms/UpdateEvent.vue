@@ -1,14 +1,5 @@
 <template>
-  <el-sub-menu
-    index="7"
-    v-permission="['department', 'admin']"
-    expand-close-icon="none"
-    expand-open-icon="none"
-  >
-    <template #title>事件更新</template>
-    <el-menu-item index="7-1" @click="checkEvent">选择事件</el-menu-item>
-    <el-menu-item index="7-2" @click="offUpdate">取消更新</el-menu-item>
-  </el-sub-menu>
+  <el-menu-item index="5-2" @click="checkEvent">事件更新</el-menu-item>
   <ThePopup :popupId="'update'" @popup="handlePopup">
     <template #title>更新事件</template>
     <EventForm
@@ -60,11 +51,6 @@ const checkEvent = () => {
   $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)
-}
-
-const offUpdate = () => {
-  $map.removeLayer(markLayer)
-  $map.un('click', mapClick)
 }
 
 const mapClick = e => {

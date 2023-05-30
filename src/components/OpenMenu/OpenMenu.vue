@@ -16,9 +16,17 @@
     <RoadCondition />
     <EventAddition />
     <VideoMonitor />
-    <AddEvent />
-    <UpdateEvent />
-    <queryEventBuyCanvas />
+    <el-sub-menu
+      v-permission="['department', 'admin']"
+      index="5"
+      expand-close-icon="none"
+      expand-open-icon="none"
+    >
+      <template #title>事件管理</template>
+      <AddEvent />
+      <UpdateEvent />
+      <queryEventBuyCanvas />
+    </el-sub-menu>
     <AddNotice />
     <el-menu-item
       index="9"
@@ -26,14 +34,14 @@
       @click="showRoadCondition"
       >路况信息</el-menu-item
     >
-    <el-menu-item index="9" v-permission="['department', 'admin']"
-      @click="showRoadCondition">路况信息</el-menu-item
+    <el-menu-item
+      index="9"
+      v-permission="['department', 'admin']"
+      @click="showRoadCondition"
+      >路况信息</el-menu-item
     >
-  
     <MapToolbox />
-
     <queryEventBuyInput></queryEventBuyInput>
-
     <el-select :placeholder="userPermission.userName" style="width: 90px">
       <el-option label="退出登录" value="1" @click="toLogin" />
       <el-option label="修改密码" value="2" @click="modifyPassword" />
@@ -83,7 +91,7 @@
             { text: '碾压', value: '碾压' },
             { text: '翻车', value: '翻车' },
             { text: '失火', value: '失火' },
-            { text: '其他', value: '其他' },
+            { text: '其他', value: '其他' }
           ]"
           :filter-method="filterHandler"
           resizable="true"
@@ -119,7 +127,7 @@
           :filters="[
             { text: '未处理', value: '未处理' },
             { text: '已完成', value: '已完成' },
-            { text: '已忽略', value: '已忽略' },
+            { text: '已忽略', value: '已忽略' }
           ]"
           :filter-method="filterHandler"
           resizable="true"
@@ -245,16 +253,16 @@
 </template>
 
 <script setup>
-import VideoMonitor from './coms/VideoMonitor.vue';
-import AddEvent from './coms/AddEvent.vue';
-import UpdateEvent from './coms/UpdateEvent.vue';
+import VideoMonitor from './coms/VideoMonitor.vue'
+import AddEvent from './coms/AddEvent.vue'
+import UpdateEvent from './coms/UpdateEvent.vue'
 import RoadCondition from './coms/RoadCondition.vue'
-import EventAddition from '../EventAddition.vue';
+import EventAddition from '../EventAddition.vue'
 import AddNotice from './coms/AddNotice.vue'
-import { inject, onMounted, onBeforeMount, ref, toRefs } from 'vue';
-import MapToolbox from '../MapToolbox.vue';
-import queryEventBuyCanvas from '../queryEventBuyCanvas.vue';
-import queryEventBuyInput from '../queryEventBuyInput.vue';
+import { inject, onMounted, onBeforeMount, ref, toRefs } from 'vue'
+import MapToolbox from '../MapToolbox.vue'
+import queryEventBuyCanvas from '../queryEventBuyCanvas.vue'
+import queryEventBuyInput from '../queryEventBuyInput.vue'
 import {
   getEventApi,
   modifyEventStatusApi,
@@ -266,15 +274,15 @@ import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 
-const $router = useRouter();
-let roadFlag = ref(false);
-let { eventList,clickEvent, mapEvent } = toRefs(useEventStore());
+const $router = useRouter()
+let roadFlag = ref(false)
+let { eventList, clickEvent, mapEvent } = toRefs(useEventStore())
 let { setRoadTag } = useEventStore()
-let { userPermission } = toRefs(useUserStore());
-let currentPage = ref(1); // 当前页数
-let pageSize = ref(5); // 每页显示的条数
-let totalItems = ref(0); // 总条数
-let tableData = ref([]); // 表格数据
+let { userPermission } = toRefs(useUserStore())
+let currentPage = ref(1) // 当前页数
+let pageSize = ref(5) // 每页显示的条数
+let totalItems = ref(0) // 总条数
+let tableData = ref([]) // 表格数据
 
 let modifyFlag = ref(false)
 let password = ref('')
@@ -282,12 +290,12 @@ let confirmPassword = ref('')
 let color = ref('#3E83CC')
 
 const showRoadCondition = () => {
-  roadFlag.value = true;
-};
+  roadFlag.value = true
+}
 const changeEventStatus = (id, status) => {
   modifyEventStatusApi(id, status).then(() => {
-    getEventApi().then((res) => {
-      eventList.value = res.data.event.map((item) => {
+    getEventApi().then(res => {
+      eventList.value = res.data.event.map(item => {
         return {
           event_id: item.event_id,
           user_id: item.user_id,
@@ -303,35 +311,35 @@ const changeEventStatus = (id, status) => {
               ? '已完成'
               : item.event_status == 2
               ? '已忽略'
-              : null,
-        };
-      });
-      totalItems.value = eventList.value.length;
-      fetchData();
-    });
-  });
-};
-const handleSizeChange = (val) => {
-  pageSize.value = val;
-  fetchData();
-};
-const handleCurrentChange = (val) => {
-  currentPage.value = val;
-  fetchData();
-};
+              : null
+        }
+      })
+      totalItems.value = eventList.value.length
+      fetchData()
+    })
+  })
+}
+const handleSizeChange = val => {
+  pageSize.value = val
+  fetchData()
+}
+const handleCurrentChange = val => {
+  currentPage.value = val
+  fetchData()
+}
 const fetchData = () => {
-  const start = (currentPage.value - 1) * pageSize.value;
-  const end = start + pageSize.value;
-  const items = eventList.value.slice(start, end);
-  tableData.value = items;
-};
+  const start = (currentPage.value - 1) * pageSize.value
+  const end = start + pageSize.value
+  const items = eventList.value.slice(start, end)
+  tableData.value = items
+}
 const filterHandler = (value, row, column) => {
-  const property = column['property'];
-  return row[property] === value;
-};
+  const property = column['property']
+  return row[property] === value
+}
 const closeRoadTable = () => {
-  roadFlag.value = false;
-};
+  roadFlag.value = false
+}
 const toManage = () => {
   $router.push('/admin')
 }
@@ -374,8 +382,8 @@ const modifyPassword = () => {
 const deleteEvent = id => {
   deleteEventApi(id).then(res => {
     if (res.data.status === 'success') {
-      getEventApi().then((res) => {
-        eventList.value = res.data.event.map((item) => {
+      getEventApi().then(res => {
+        eventList.value = res.data.event.map(item => {
           return {
             event_id: item.event_id,
             user_id: item.user_id,
@@ -391,18 +399,18 @@ const deleteEvent = id => {
                 ? '已完成'
                 : item.event_status == 2
                 ? '已忽略'
-                : null,
-          };
-        });
-        totalItems.value = eventList.value.length;
-        fetchData();
-      });
+                : null
+          }
+        })
+        totalItems.value = eventList.value.length
+        fetchData()
+      })
     }
-  });
-};
+  })
+}
 onBeforeMount(() => {
-  getEventApi().then((res) => {
-    eventList.value = res.data.event.map((item) => {
+  getEventApi().then(res => {
+    eventList.value = res.data.event.map(item => {
       return {
         event_id: item.event_id,
         user_id: item.user_id,
@@ -418,13 +426,13 @@ onBeforeMount(() => {
             ? '已完成'
             : item.event_status == 2
             ? '已忽略'
-            : null,
-      };
-    });
-    totalItems.value = eventList.value.length;
-    fetchData();
-  });
-});
+            : null
+      }
+    })
+    totalItems.value = eventList.value.length
+    fetchData()
+  })
+})
 let $map
 onMounted(() => {
   $map = inject('$map')
@@ -440,11 +448,11 @@ const handleSelect = () => {
     if (layer.values_.class == 666) {
       $map.removeLayer(layer)
     }
-     if (layer.values_.id == 777) {
-      layer.getSource().clear();
+    if (layer.values_.id == 777) {
+      layer.getSource().clear()
     }
   })
-   ol.Observable.unByKey(clickEvent.value)
+  ol.Observable.unByKey(clickEvent.value)
 }
 </script>
 <style scoped>
