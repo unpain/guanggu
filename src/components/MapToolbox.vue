@@ -23,7 +23,7 @@ var vector = new ol.layer.Vector({
 })
 
 onMounted(() => {
-  // 拿到注入的依赖￥map
+  // 拿到注入的依赖$map
   $map = inject('$map')
   // 加载矢量图层
   $map.addLayer(vector)

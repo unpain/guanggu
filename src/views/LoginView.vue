@@ -24,6 +24,13 @@
             ></i>
           </div>
         </label>
+        <label>
+          <span>captcha</span>
+          <div class="captcha">
+            <input type="text" v-model="userCaptcha" @blur="checkoutCaptcha" />
+            <canvas id="login-captchaCanvas" @click="drawCaptcha"></canvas>
+          </div>
+        </label>
         <p class="forgot-pass">忘记密码?</p>
         <button type="button" class="submit" @click="handleLogin">登录</button>
       </div>
@@ -65,6 +72,17 @@
               ></i>
             </div>
           </label>
+          <label>
+            <span>captcha</span>
+            <div class="captcha">
+              <input
+                type="text"
+                v-model="userCaptcha"
+                @blur="checkoutCaptcha"
+              />
+              <canvas id="singup-captchaCanvas" @click="drawCaptcha"></canvas>
+            </div>
+          </label>
           <button type="button" class="submit" @click="register">注册</button>
         </div>
       </div>
@@ -73,22 +91,27 @@
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
-import { toRefs, onBeforeMount, ref } from 'vue'
-import { getInfoApi, postInfoApi } from '@/api/login'
+import { toRefs, ref } from 'vue'
+import { postInfoApi } from '@/api/login'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { checkout } from '../utils/checkout'
+import { UseCaptcha } from '../utils/captcha.js'
 const { login } = useUserStore()
 let passwordVisible = ref(false)
+let captcha = ref('')
+let userCaptcha = ref('')
 let { username, password } = toRefs(useUserStore())
 const $router = useRouter()
 // 登陆函数
 const handleLogin = () => {
-  // 校验账号与密码是否符合要求
+  // 校验账号、密码和验证码是否符合要求
   const isValid = checkout({
     username,
     password,
+    captcha,
+    userCaptcha,
   })
   if (!isValid) {
     // 校验不通过，直接返回，不执行 postInfoApi
@@ -106,7 +129,7 @@ const handleLogin = () => {
       login({
         permission,
         token,
-        userName: userName.toString()
+        userName: userName.toString(),
       })
       $router.push('/home')
     })
@@ -122,6 +145,8 @@ const register = () => {
   const isValid = checkout({
     username,
     password,
+    captcha,
+    userCaptcha,
   })
 
   if (!isValid) {
@@ -152,20 +177,43 @@ const register = () => {
       console.error(err)
     })
 }
+
+onMounted(() => {
+  // 进入页面时生成一次二维码
+  drawCaptcha()
+})
+function test() {
+  console.log(111)
+}
+// 实现密码显隐的函数
+const togglePasswordVisibility = () => {
+  passwordVisible.value = !passwordVisible.value
+}
+// 生成验证码
+const { Captcha } = UseCaptcha()
+const drawCaptcha = () => {
+  var canvas
+  var type = document.querySelector('.cont').classList.value
+  // 判断一下是在登录界面还是在注册界面
+  if (type == 'cont') {
+    canvas = document.getElementById('login-captchaCanvas')
+  } else {
+    canvas = document.getElementById('singup-captchaCanvas')
+  }
+  Captcha.creatCaptcha({
+    captcha,
+    canvas,
+  })
+}
 // 注册与登陆切换时，将值清空
 const goToSignUp = () => {
   username.value = ''
   password.value = ''
-}
-onMounted(() => {
-  // 获取DOM，实现登陆与注册左右滑动的效果
-  document.querySelector('.img__btn').addEventListener('click', function () {
-    document.querySelector('.cont').classList.toggle('s--signup')
-  })
-})
-// 实现密码显隐的函数
-const togglePasswordVisibility = () => {
-  passwordVisible.value = !passwordVisible.value
+  userCaptcha.value = ''
+  // 实现登录界面与注册界面的切换
+  var cont = document.querySelector('.cont')
+  cont.classList.toggle('s--signup') //s--signup类的切换
+  drawCaptcha()
 }
 </script>
 <style scoped>
@@ -191,6 +239,17 @@ const togglePasswordVisibility = () => {
   font-size: 20px;
 }
 .username {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+#singup-captchaCanvas,
+#login-captchaCanvas {
+  width: 100;
+  height: 30px;
+  background: rgba(255, 255, 255, 1);
+}
+.captcha {
+  display: flex;
+  align-items: center;
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }
 </style>
