@@ -1,7 +1,7 @@
 <!-- @format -->
 
 <template>
-  <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" background-color="#545c64"
+  <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" :background-color="color"
     text-color="#fff" active-text-color="#ffd04b" @select="handleSelect" :ellipsis="false" menu-trigger="click">
     <h4 class="log">光谷智慧交通系统</h4>
     <el-menu-item @click="getRoadConditions" index="1">实时路况</el-menu-item>
@@ -27,6 +27,7 @@
       <el-option label="修改密码" value="2" @click="modifyPassword" />
       <el-option v-permission="['admin']" label="用户管理" value="2" @click="toManage" />
     </el-select>
+    <el-color-picker v-model="color" />
   </el-menu>
   <transition name="fade">
     <el-card class="container" v-if="roadFlag" :style="{ 'max-height': '1000px' }">
@@ -116,7 +117,7 @@ import { ElMessage } from 'element-plus'
 const $router = useRouter()
 let roadFlag = ref(false)
 let { eventList } = toRefs(useEventStore())
-let { userPermission, user } = toRefs(useUserStore())
+let { userPermission } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
 let totalItems = ref(0) // 总条数
@@ -124,7 +125,7 @@ let tableData = ref([]) // 表格数据
 let modifyFlag = ref(false)
 let password = ref('')
 let confirmPassword = ref('')
-
+let color = ref('#3E83CC')
 
 const showRoadCondition = () => {
   roadFlag.value = true

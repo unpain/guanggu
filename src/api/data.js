@@ -3,6 +3,7 @@
 const Mock = require('mockjs')
 const fs = require('fs')
 // 生成 8-16 位的随机密码数组
+const randomPhone = Mock.mock(/^1[3456789]\d{9}$/)
 const passwords = new Set()
 for (let i = 0; i < 104; i++) {
   let password = ''
@@ -76,8 +77,9 @@ const notice = Mock.mock({
     {
       'notice_id|+1': 2,
       'user_id|1-100': 1,
-      notice_title: '@title()',
-      notice_content: '@cparagraph()',
+      notice_title: '@ctitle()',
+      notice_content: '@cparagraph(3)',
+      'notice_addr|5': [{ name: '@csentence(8)', tel: randomPhone }],
       notice_time: '@datetime()'
     }
   ]

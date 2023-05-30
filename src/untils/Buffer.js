@@ -5,7 +5,7 @@
 let resultname = null;
 let resultClipLayer
 export class Buffer {
-  static singleBuffAnalysis = ({ radius, arc_points, $map, arr }) => {
+  static singleBuffAnalysis = ({ radius, arc_points, $map, arr, loadData }) => {
     const gArc = new Zondy.Object.Arc(arc_points);
     //构成线的折线
     const gAnyLine = new Zondy.Object.AnyLine([gArc]);
@@ -45,26 +45,26 @@ export class Buffer {
     //设置缓冲结果的名称以及存放地址
     featureBufBySR.resultName = resultname;
     //调⽤Zondy.Service.AnalysisBase基类的execute⽅法执⾏要素缓冲分析，AnalysisSuccess为回调函数。
-    featureBufBySR.execute(this.bufferAnalysisSuccess($map,arr), 'post', false, 'json');
+    featureBufBySR.execute(this.bufferAnalysisSuccess($map, arr, loadData), 'post', false, 'json');
   }
-  static bufferAnalysisSuccess = ($map,arr) => {
+  static bufferAnalysisSuccess = ($map, arr, loadData) => {
     return (result) => {
       var clspath = result.results[0].Value;
       //实例化ClipByLayer类
       var clipParam = new Zondy.Service.ClipByLayer({
         //源简单要素类的URL
-        srcInfo1: clspath,
-        srcInfo2: "gdbp://MapGisLocal/wuhan/sfcls/居民区",
+        srcInfo1: "gdbp://MapGisLocal/wuhan/sfcls/居民区",
+        srcInfo2: clspath,
         //裁剪框简单要素类的URL
         //设置结果URL
         desInfo: "gdbp://MapGisLocal/wuhan/ds/clip/sfcls/clipresult" + this.getCurrentTime(),
         infoOptType: 0
       });
       //调⽤基类的execute⽅法，执⾏图层裁剪分析。AnalysisSuccess为结果回调函数
-      clipParam.execute(this.clipSuccess($map,arr), "post", false, "json");
+      clipParam.execute(this.clipSuccess($map, arr, loadData), "post", false, "json");
     }
   }
-  static clipSuccess = ($map,arr) => {
+  static clipSuccess = ($map, arr, loadData) => {
     return (data) => {
       const newpath = data.results[0].Value
       $map.removeLayer(resultClipLayer);
@@ -80,18 +80,19 @@ export class Buffer {
         $map.addLayer(resultClipLayer);
         this.queryVectorLayer({
           url: newpath,
-          success: this.handleClipSuccess(arr)
+          success: this.handleClipSuccess(arr, loadData)
         })
       } else {
         alert('叠加分析失败，请检查参数！');
       }
     }
   }
-  static handleClipSuccess(arr) {
+  static handleClipSuccess(arr, loadData) {
     return (res) => {
       res.SFEleArray.forEach(item => {
         arr.push({ name: item.AttValue[4], tel: item.AttValue[5] })
       })
+      loadData()
     }
   }
   static queryVectorLayer({ url, success }) {
