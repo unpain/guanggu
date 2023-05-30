@@ -4,24 +4,24 @@
       <div class="form sign-in">
         <h2>光谷智慧交通</h2>
         <label>
-          <span>username</span>
+          <span>用户名</span>
           <div class="username">
             <input type="text" v-model="username" />
           </div>
         </label>
         <label>
-          <span>Password</span>
+          <span>密码</span>
           <div class="password">
-            <input
-              :type="passwordVisible ? 'text' : 'password'"
-              v-model="password"
-            />
-            <i
-              :class="
-                passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
-              "
-              @click="togglePasswordVisibility"
-            ></i>
+            <input :type="passwordVisible ? 'text' : 'password'" v-model="password" />
+            <i :class="passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
+              " @click="togglePasswordVisibility"></i>
+          </div>
+        </label>
+        <label>
+          <span>验证码</span>
+          <div class="captcha">
+            <input type="text" v-model="userCaptcha" placeholder="请输入验证码" />
+            <canvas id="login-captchaCanvas" @click="drawCaptcha"></canvas>
           </div>
         </label>
         <p class="forgot-pass">忘记密码?</p>
@@ -53,16 +53,19 @@
           <label>
             <span>Password</span>
             <div class="password">
+              <input :type="passwordVisible ? 'text' : 'password'" v-model="password" />
+              <i :class="passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
+                " @click="togglePasswordVisibility"></i>
+            </div>
+          </label>
+          <label>
+            <span>captcha</span>
+            <div class="captcha">
               <input
-                :type="passwordVisible ? 'text' : 'password'"
-                v-model="password"
+                type="text"
+                v-model="userCaptcha"
               />
-              <i
-                :class="
-                  passwordVisible ? ' iconfont icon-eye' : 'iconfont icon-eye1'
-                "
-                @click="togglePasswordVisibility"
-              ></i>
+              <canvas id="singup-captchaCanvas" @click="drawCaptcha"></canvas>
             </div>
           </label>
           <button type="button" class="submit" @click="register">注册</button>
@@ -73,22 +76,27 @@
 </template>
 <script setup>
 import { useUserStore } from '@/stores/user'
-import { toRefs, onBeforeMount, ref } from 'vue'
-import { getInfoApi, postInfoApi } from '@/api/login'
+import { toRefs, ref } from 'vue'
+import { postInfoApi } from '@/api/login'
 import { useRouter } from 'vue-router'
 import { onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
 import { checkout } from '../utils/checkout'
+import { UseCaptcha } from '../utils/captcha.js'
 const { login } = useUserStore()
 let passwordVisible = ref(false)
+let captcha = ref('')
+let userCaptcha = ref('')
 let { username, password } = toRefs(useUserStore())
 const $router = useRouter()
 // 登陆函数
 const handleLogin = () => {
-  // 校验账号与密码是否符合要求
+  // 校验账号、密码和验证码是否符合要求
   const isValid = checkout({
     username,
     password,
+    captcha,
+    userCaptcha,
   })
   if (!isValid) {
     // 校验不通过，直接返回，不执行 postInfoApi
@@ -103,10 +111,14 @@ const handleLogin = () => {
       const token = res.data.token
       const permission = res.data.user.user_type
       const userName = res.data.user.user_name
+      const userId = res.data.user.user_id
+      username.value = ''
+      password.value = ''
       login({
         permission,
         token,
-        userName: userName.toString()
+        userName: userName,
+        userId: userId.toString(),
       })
       $router.push('/home')
     })
@@ -122,6 +134,8 @@ const register = () => {
   const isValid = checkout({
     username,
     password,
+    captcha,
+    userCaptcha,
   })
 
   if (!isValid) {
@@ -152,25 +166,49 @@ const register = () => {
       console.error(err)
     })
 }
+
+onMounted(() => {
+  // 进入页面时生成一次二维码
+  drawCaptcha()
+})
+function test() {
+  console.log(111)
+}
+// 实现密码显隐的函数
+const togglePasswordVisibility = () => {
+  passwordVisible.value = !passwordVisible.value
+}
+// 生成验证码
+const { Captcha } = UseCaptcha()
+const drawCaptcha = () => {
+  var canvas
+  var type = document.querySelector('.cont').classList.value
+  // 判断一下是在登录界面还是在注册界面
+  if (type == 'cont') {
+    canvas = document.getElementById('login-captchaCanvas')
+  } else {
+    canvas = document.getElementById('singup-captchaCanvas')
+  }
+  Captcha.creatCaptcha({
+    captcha,
+    canvas,
+  })
+}
 // 注册与登陆切换时，将值清空
 const goToSignUp = () => {
   username.value = ''
   password.value = ''
-}
-onMounted(() => {
-  // 获取DOM，实现登陆与注册左右滑动的效果
-  document.querySelector('.img__btn').addEventListener('click', function () {
-    document.querySelector('.cont').classList.toggle('s--signup')
-  })
-})
-// 实现密码显隐的函数
-const togglePasswordVisibility = () => {
-  passwordVisible.value = !passwordVisible.value
+  userCaptcha.value = ''
+  // 实现登录界面与注册界面的切换
+  var cont = document.querySelector('.cont')
+  cont.classList.toggle('s--signup') //s--signup类的切换
+  drawCaptcha()
 }
 </script>
 <style scoped>
 @import url(../assets/style.css);
 @import url('https://at.alicdn.com/t/c/font_4027375_qbadyjgwaun.css');
+
 .login {
   width: 100vw;
   height: 100vh;
@@ -182,15 +220,29 @@ const togglePasswordVisibility = () => {
   background-size: cover;
   background-position: center;
 }
+
 .password {
   display: flex;
   align-items: center;
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }
+
 .password .iconfont {
   font-size: 20px;
 }
+
 .username {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+#singup-captchaCanvas,
+#login-captchaCanvas {
+  width: 100;
+  height: 30px;
+  background: rgba(255, 255, 255, 1);
+}
+.captcha {
+  display: flex;
+  align-items: center;
   border-bottom: 2px solid rgba(0, 0, 0, 0.5);
 }
 </style>

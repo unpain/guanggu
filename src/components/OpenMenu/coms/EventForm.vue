@@ -84,8 +84,9 @@
 </template>
 
 <script setup>
-import { ref, watch, defineEmits, defineProps } from 'vue'
+import { ref, watch,toRefs} from 'vue'
 import { ElMessage } from 'element-plus'
+import { usePopupStore } from '../../../stores/popup'
 
 const props = defineProps({
   evtForm: {
@@ -93,6 +94,7 @@ const props = defineProps({
     required: true
   }
 })
+
 const isBan = ref(false)
 watch(props, props => {
   const res = props.evtForm
@@ -105,6 +107,10 @@ watch(props, props => {
     evtForm.value[evtFormKey[index]] = res[key]
   })
   isBan.value = true
+})
+const { isReset } = toRefs(usePopupStore())
+watch(isReset, () => {
+  ruleForms.value.resetFields()
 })
 
 const evtForm = ref({
@@ -239,6 +245,7 @@ const submit = () => {
     }
   })
 }
+
 const cancel = () => {
   emit('cancel')
   ruleForms.value.resetFields()
@@ -246,7 +253,7 @@ const cancel = () => {
 </script>
 
 <style scoped>
-::v-deep .el-input.is-disabled .el-input__wrapper {
+:deep .el-input.is-disabled .el-input__wrapper {
   background: #fff;
 }
 .el-select {

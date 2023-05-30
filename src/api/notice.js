@@ -11,7 +11,9 @@ const postNoticeApi = (data) => {
   return opInfo({
     url: '/notice',
     method: 'POST',
-    data: data
+    data: {
+      info:data
+    }
   })
 }
 

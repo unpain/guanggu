@@ -30,6 +30,8 @@ import { Query } from '../untils/Query';
 import EventList from '../components/EventList.vue';
 import EventDiagram from '../components/EventDiagram.vue';
 import {getEchartsData} from '../components/OpenMenu/hooks/getEchartsData'
+import {useMark} from '../components/OpenMenu/hooks/useMark'
+let {markSource,markLayer,setStyle}=useMark()
 let queryData = ref([]);
 const dialogTableVisible = ref(false);
 var source = new ol.source.Vector({});
@@ -46,6 +48,7 @@ let arr = ref([]);
 onMounted(() => {
   $map = inject('$map');
   $map.addLayer(layer);
+  $map.addLayer(markLayer);
 });
 /* 激活查询事件创建画笔 */
 function queryEvent() {
@@ -83,6 +86,8 @@ function handleDraw(feature) {
 function handleQuery(res) {
   if (res) {
     queryData.value.push(res.map((item) => item.values_.values_));
+    markSource.addFeatures(res)
+    setStyle()
   } else {
     queryData.value.push(null);
   }

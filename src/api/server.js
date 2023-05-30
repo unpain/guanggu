@@ -13,7 +13,7 @@ server.use(jsonServer.bodyParser);
 // 添加自定义路由处理
 /* user 请求 */
 //登录
-server.post(`/all`, (req, res) => {
+server.post(`/all`, (req, res, next) => {
   const { username, password, op } = req.body;
   const user = database.user.find(
     (u) => u.user_name === username && u.user_password === password
@@ -28,7 +28,7 @@ server.post(`/all`, (req, res) => {
     (u) => u.user_name === username && u.user_password === password
   ) || database.trafficDepartment.findIndex(
     (u) => u.user_name === username && u.user_password === password
-  );
+  )
   if (user && op === 'login') {
     // 登录成功，生成JWT令牌并返回给客户端
     const token = jsonwebtoken.sign({ username, role: user.user_role }, 'secret');
@@ -36,10 +36,41 @@ server.post(`/all`, (req, res) => {
       database.user[userIndex].user_onlinestatus = true
     } else if (user.user_type == 'admin' && userIndex !== -1) {
       database.admin[userIndex].user_onlinestatus = true
-    } else if (user.user_type == 'trafficDepartment' && userIndex !== -1) {
+    } else if (user.user_type == 'department' && userIndex !== -1) {
       database.trafficDepartment[userIndex].user_onlinestatus = true
     }
     res.json({ token, user, data: database });
+  } else if (op === 'modify') {
+    let { password, id } = req.body
+    let user_info = database.user.find(
+      (u) => u.user_id == id
+    ) || database.admin.find(
+      (u) => u.user_id == id
+    ) || database.trafficDepartment.find(
+      (u) => u.user_id == id
+    )
+    let user_index = database.user.findIndex(
+      (u) => u.user_id == id
+    ) !== -1 ? database.user.findIndex(
+      (u) => u.user_id == id
+    ) : database.admin.findIndex(
+      (u) => u.user_id == id
+    ) !== -1 ? database.admin.findIndex(
+      (u) => u.user_id == id
+    ) : database.trafficDepartment.findIndex(
+      (u) => u.user_id == id
+    ) !== -1 ? database.trafficDepartment.findIndex(
+      (u) => u.user_id == id
+    ) : null
+    if (user_info.user_type == 'user' && user_index !== -1) {
+      database.user[user_index].user_password = password
+    } else if (user_info.user_type == 'admin' && user_index !== -1) {
+      database.admin[user_index].user_password = password
+    } else if (user_info.user_type == 'department' && user_index !== -1) {
+      database.trafficDepartment[user_index].user_password = password
+    }
+    res.json({ status: 'success', index: user_info })
+    next()
   } else if (!user && op === 'login') {
     // 登录失败，返回错误信息
     res.status(401).json({ error: 'Invalid credentials' });
@@ -49,15 +80,27 @@ server.post(`/all`, (req, res) => {
       user_name: req.body.username,
       user_password: req.body.password,
       user_type: 'user',
-      user_onlinestatus: 1,
+      user_onlinestatus: 0,
       user_other: 1
     })
     res.json({ data: database });
+  } else if (!user && req.body.type) {
+    let type = req.body.type
+    database[type].push({
+      user_id: Math.max(...database[type].map(item => Number(item.user_id))) + 1,
+      user_name: req.body.username,
+      user_password: req.body.password,
+      user_type: type === 'user' ? type : 'department',
+      user_onlinestatus: 0,
+      user_other: 1
+    })
+    res.json({ status: 'success' })
+    next()
   }
 });
 //获取用户信息
 server.get(`/all`, (req, res, next) => {
-  let keywords 
+  let keywords
   let type
   if (req.query.params) {
     keywords = JSON.parse(req.query.params).key
@@ -220,7 +263,6 @@ server.delete(`/trafficDepartment/:id`, (req, res, next) => {
 });
 
 
-
 /* event 请求 */
 /* 获取所有事件 */
 server.get(`/event`, (req, res, next) => {
@@ -261,8 +303,16 @@ server.get('/notice', (req, res, next) => {
 
 /* 添加公告 */
 server.post('/notice', (req, res, next) => {
-  const notice = req.body.notice
-  database.notice.push(notice)
+  const info = req.body.info
+  database.notice.push({
+    notice_id:Math.max(...database.notice.map(item => Number(item.notice_id))) + 1,
+    user_id:info.id,
+    notice_title:info.title,
+    notice_content:info.content,
+    notice_addr:info.addr,
+    notice_time:info.time
+  })
+  res.json({status:'success'})
   next()
 })
 
@@ -271,6 +321,7 @@ server.delete('/notice/:id', (req, res, next) => {
   const noticeId = req.params.id
   const noticeIndex = database.notice.findIndex(item => item.notice_id == noticeId)
   database.notice.splice(noticeIndex, 1)
+  res.json({status:'success'})
   next()
 })
 // 拦截需要验证的请求，并验证JWT令牌
