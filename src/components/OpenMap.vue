@@ -22,7 +22,7 @@ onMounted(() => {
   const map = new ol.Map({
     target: 'map',
     // layers: [gaode_image,gaode_vector, docLayer],
-    layers: [gaode_vector, gaode_image, docLayer],
+    layers: [ gaode_image,gaode_vector, docLayer],
     view: new ol.View({
       center: [114.38, 30.49],
       zoom: 13,

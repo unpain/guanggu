@@ -16,9 +16,17 @@
     <RoadCondition />
     <EventAddition />
     <VideoMonitor />
-    <AddEvent />
-    <UpdateEvent />
-    <queryEventBuyCanvas />
+    <el-sub-menu
+      v-permission="['department', 'admin']"
+      index="5"
+      expand-close-icon="none"
+      expand-open-icon="none"
+    >
+      <template #title>事件管理</template>
+      <AddEvent />
+      <UpdateEvent />
+      <queryEventBuyCanvas />
+    </el-sub-menu>
     <AddNotice />
     <el-menu-item
       index="9"
@@ -26,17 +34,14 @@
       @click="showRoadCondition"
       >路况信息</el-menu-item
     >
+    <el-menu-item
+      index="9"
+      v-permission="['department', 'admin']"
+      @click="showRoadCondition"
+      >路况信息</el-menu-item
+    >
     <MapToolbox />
-    <el-menu-item class="search" index="10">
-      <el-input
-        placeholder="请输入查询的交通事故信息"
-        class="input-with-select"
-      >
-        <template #append>
-          <el-button>查询</el-button>
-        </template>
-      </el-input>
-    </el-menu-item>
+    <queryEventBuyInput></queryEventBuyInput>
     <el-select :placeholder="userPermission.userName" style="width: 90px">
       <el-option label="退出登录" value="1" @click="toLogin" />
       <el-option label="修改密码" value="2" @click="modifyPassword" />
@@ -254,9 +259,10 @@ import UpdateEvent from './coms/UpdateEvent.vue'
 import RoadCondition from './coms/RoadCondition.vue'
 import EventAddition from '../EventAddition.vue'
 import AddNotice from './coms/AddNotice.vue'
-import { onMounted, onBeforeMount, ref, toRefs, inject } from 'vue'
+import { inject, onMounted, onBeforeMount, ref, toRefs } from 'vue'
 import MapToolbox from '../MapToolbox.vue'
 import queryEventBuyCanvas from '../queryEventBuyCanvas.vue'
+import queryEventBuyInput from '../queryEventBuyInput.vue'
 import {
   getEventApi,
   modifyEventStatusApi,
@@ -270,13 +276,14 @@ import { ElMessage } from 'element-plus'
 
 const $router = useRouter()
 let roadFlag = ref(false)
-let { eventList, mapEvent } = toRefs(useEventStore())
+let { eventList, clickEvent, mapEvent } = toRefs(useEventStore())
 let { setRoadTag } = useEventStore()
 let { userPermission } = toRefs(useUserStore())
 let currentPage = ref(1) // 当前页数
 let pageSize = ref(5) // 每页显示的条数
 let totalItems = ref(0) // 总条数
 let tableData = ref([]) // 表格数据
+
 let modifyFlag = ref(false)
 let password = ref('')
 let confirmPassword = ref('')
@@ -441,7 +448,11 @@ const handleSelect = () => {
     if (layer.values_.class == 666) {
       $map.removeLayer(layer)
     }
+    if (layer.values_.id == 777) {
+      layer.getSource().clear()
+    }
   })
+  ol.Observable.unByKey(clickEvent.value)
 }
 </script>
 <style scoped>

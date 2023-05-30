@@ -1,6 +1,6 @@
 /** @format */
 
-function setCanvas(map) {
+export function setCanvas(map) {
   const canvas = document.createElement('canvas');
   let size = 40;
   canvas.width = size;

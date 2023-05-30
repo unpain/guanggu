@@ -1,10 +1,5 @@
 <template>
-  <el-menu-item
-    index="5"
-    v-permission="['department', 'admin']"
-    @click="addEvent"
-    >事件添加</el-menu-item
-  >
+  <el-menu-item index="5-1" @click="addEvent">事件添加</el-menu-item>
   <ThePopup :popupId="'add'" :source="source" @popup="handlePopup">
     <template #title>添加事件</template>
     <EventForm @submit="submitAdd" @cancel="cancelAdd" />

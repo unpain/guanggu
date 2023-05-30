@@ -12,5 +12,6 @@ export const useEventStore = defineStore('event', () => {
   const setRoadTag = boolean => {
     roadTag.value = boolean
   }
-  return { eventId, eventList, mapEvent, getMapEvent, roadTag,setRoadTag }
+  let clickEvent=ref({})
+  return { eventId, eventList, mapEvent, getMapEvent, roadTag,setRoadTag, clickEvent };
 })

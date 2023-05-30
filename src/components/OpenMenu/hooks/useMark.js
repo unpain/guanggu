@@ -19,7 +19,7 @@ export const useMark = () => {
   const setStyle = (state, fid) => {
     markSource.forEachFeature(e => {
       if (e.id_ == fid) {
-        setSrc(state)
+        setSrc(state);
         let markStyle = ref(
           new ol.style.Style({
             image: new ol.style.Icon({
@@ -33,13 +33,13 @@ export const useMark = () => {
               //透明度
               opacity: 1,
               //图标的url
-              src: src.value
-            })
+              src: src.value,
+            }),
           })
-        )
-        e.setStyle(markStyle.value)
+        );
+        e.setStyle(markStyle.value);
       } else {
-        setSrc(e.values_.values_['处理状态'])
+        setSrc(e.values_.values_['处理状态']);
         let markStyle = ref(
           new ol.style.Style({
             image: new ol.style.Icon({
@@ -53,13 +53,13 @@ export const useMark = () => {
               //透明度
               opacity: 1,
               //图标的url
-              src: src.value
-            })
+              src: src.value,
+            }),
           })
-        )
-        e.setStyle(markStyle.value)
+        );
+        e.setStyle(markStyle.value);
       }
-    })
+    });
   }
   return {
     markLayer,
