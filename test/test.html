@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>验证码生成器</title>
+  <script type="text/javascript">
+    // 生成随机字符
+    function generateRandomString(length) {
+      var charSet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      var randomString = '';
+      for (var i = 0; i < length; i++) {
+        var randomIndex = Math.floor(Math.random() * charSet.length);
+        randomString += charSet.charAt(randomIndex);
+      }
+      return randomString;
+    }
+
+    // 绘制验证码
+    function drawCaptcha() {
+      var canvas = document.getElementById('captchaCanvas');
+      var context = canvas.getContext('2d');
+      var captchaLength = 6; // 验证码长度
+      var captchaText = generateRandomString(captchaLength);
+
+      // 清除画布
+      context.clearRect(0, 0, canvas.width, canvas.height);
+
+      // 设置绘制样式
+      context.font = 'bold 40px Arial';
+      context.fillStyle = 'black';
+      context.textAlign = 'center';
+      context.textBaseline = 'middle';
+
+      // 绘制验证码文本
+      context.fillText(captchaText, canvas.width / 2, canvas.height / 2);
+
+      // 添加干扰线
+      for (var i = 0; i < 10; i++) {
+        context.beginPath();
+        context.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        context.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+        context.strokeStyle = '#888';
+        context.lineWidth = 1;
+        context.stroke();
+      }
+    }
+
+    // 页面加载时生成验证码
+    window.onload = function() {
+      drawCaptcha();
+    }
+  </script>
+</head>
+<body>
+  <h1>验证码生成器</h1>
+  <canvas id="captchaCanvas" width="200" height="100"></canvas>
+  <br>
+  <button onclick="drawCaptcha()">刷新验证码</button>
+</body>
+</html>

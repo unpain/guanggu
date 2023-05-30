@@ -33,9 +33,9 @@
     <el-icon :style="{ position: 'fixed', right: '30px', cursor: 'pointer' }" size="20" @click="closeNoticeTable">
       <CloseBold />
     </el-icon>
-    <template #title>公告详情</template>
-    <el-table :data="tableData" height="600" :style="{ 'min-height': '300px', width: '1100px' }" :border="true"
-      :cell-style="{ height: '100px',fontSize:'20px' }">
+    <el-text :style="{ 'text-align': center,fontSize:'20px' }">公告详情</el-text>
+    <el-table :data="tableData" height="600" :style="{ 'min-height': '300px', width: '1100px',marginTop:'20px' }" :border="true"
+      :cell-style="{ height: '100px', fontSize: '20px' }">
       <el-table-column type="expand" :border="true">
         <template #default="props">
           <div m="4"

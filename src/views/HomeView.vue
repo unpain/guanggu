@@ -19,8 +19,4 @@ import DirectoryTree from '../components/DirectoryTree.vue'
 
 
 </script>
-<style scoped>
-
-/* 000 */
-
-</style>
+<style scoped></style>

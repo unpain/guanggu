@@ -228,7 +228,7 @@ input {
 .cont.s--signup .sign-in {
   transition-timing-function: ease-in-out;
   transition-duration: 1.2s;
-  transform: translate3d(640px, 0, 0);
+  transform: translate3d(700px, 0, 0);
 }
 
 .sign-up {
