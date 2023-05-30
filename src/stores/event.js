@@ -4,5 +4,6 @@ import { defineStore } from "pinia";
 export const useEventStore = defineStore('event', () => {
   let eventId = ref(0)
   let eventList = ref([])
-  return { eventId, eventList }
+  let clickEvent=ref({})
+  return { eventId, eventList, clickEvent };
 })

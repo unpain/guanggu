@@ -6,11 +6,11 @@
     direction="btt"
     :close-on-click-modal="false"
     :modal="false"
-    modal-class="covers1"
     :show-close="false"
     :with-header="false"
     :size="active ? '55%' : '11%'"
-    style="width: 75%; margin: 0 auto; min-width: 1000px"
+     :append-to-body="false"
+    style="width: 75%; margin: 0 auto; min-width: 1000px;"
   >
     <div class="button">
       <div class="item">
@@ -54,7 +54,7 @@
         </el-button>
       </div>
     </div>
-    <div class="container">
+    <div :class="active ? 'container' : 'dispppear'">
       <div class="example-pagination-block">
         <div class="example-demonstration">
           <el-table :data="tableData" stripe style="width: 100%">
@@ -88,12 +88,8 @@ const props = defineProps({
   },
 });
 const dialogTableVisible = ref(null);
-const emit = defineEmits([
-  'sourceClear',
-  'handleHeatMap',
-  'handleEventDiagram',
-]);
-const active = ref(1);
+
+let active = ref(1);
 const tableData = ref([]);
 const arr = ref({});
 const currentPage = ref(1);
@@ -101,16 +97,19 @@ const pageSize = 5;
 const totalItems = ref(null);
 const mockDate = ref([]);
 watch(props, () => {
-  tableData.value = props.queryData;
-  mockDate.value = tableData.value;
-  totalItems.value = mockDate.value.length;
-  props.queryData.map((item) => {
-    arr.value = item;
-    return arr.value;
-  });
+  if (props.queryData) {
+    tableData.value = props.queryData;
+    mockDate.value = tableData.value;
+    
+    totalItems.value = mockDate.value.length;
+    props.queryData.map((item) => {
+      arr.value = item;
+      return arr.value;
+    });
 
-  fetchDate();
-  drawer.value = true;
+    fetchDate();
+    drawer.value = true;
+  }
 });
 
 function handleSizeChange(val) {
@@ -121,6 +120,7 @@ function handleCurrentChange(val) {
   currentPage.value = val;
   fetchDate();
 }
+
 function fetchDate() {
   const start = (currentPage.value - 1) * pageSize;
   const end = start + pageSize;
@@ -128,8 +128,18 @@ function fetchDate() {
   tableData.value = items;
 }
 function setActive() {
-  active.value = active.value ? 0 : 1;
+  if (active.value) {
+    active.value = 0;
+  } else {
+    active.value = 1;
+  }
 }
+/* 定义自定义事件 */
+const emit = defineEmits([
+  'sourceClear',
+  'handleHeatMap',
+  'handleEventDiagram',
+]);
 function setTableDisappear() {
   drawer.value = false;
   emit('sourceClear');
@@ -140,7 +150,6 @@ function creatHeatMap() {
 function creatEventDiagram() {
   dialogTableVisible.value = true;
   emit('handleEventDiagram', dialogTableVisible.value);
- 
 }
 </script>
 <style scoped>
@@ -155,7 +164,4 @@ function creatEventDiagram() {
   border-top: 5px solid #86acd2;
 }
 
-::v-deep .covers1 {
-  position: absolute;
-}
 </style>

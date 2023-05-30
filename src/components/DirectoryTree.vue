@@ -16,7 +16,7 @@
       :modal="false"
       modal-class="cover"
       :show-close="false"
-      custom-class="draw"
+      class="draw"
       size="270px"
     >
       <el-tree
@@ -72,7 +72,6 @@ const data = ref([
   },
 ]);
 function handelClick(a, b) {
-  console.log(a, b);
   let active = b.checkedKeys.some((item) => item == a.id);
   $map
     .getLayers()

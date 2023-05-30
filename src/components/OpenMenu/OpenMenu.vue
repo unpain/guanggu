@@ -19,26 +19,22 @@
     <VideoMonitor />
     <AddEvent />
     <UpdateEvent />
-  <queryEventBuyCanvas ></queryEventBuyCanvas>
+    <queryEventBuyCanvas></queryEventBuyCanvas>
 
     <el-menu-item index="8" v-permission="['department', 'admin']"
       >发布公告</el-menu-item
     >
-    <el-menu-item index="9" v-permission="['department', 'admin']"
-      @click="showRoadCondition">路况信息</el-menu-item
+    <el-menu-item
+      index="9"
+      v-permission="['department', 'admin']"
+      @click="showRoadCondition"
+      >路况信息</el-menu-item
     >
-  
+
     <MapToolbox />
-    <el-menu-item class="scerch">
-      <el-input
-        placeholder="请输入查询的交通事故信息"
-        class="input-with-select"
-      >
-        <template #append>
-          <el-button>查询</el-button>
-        </template>
-      </el-input>
-    </el-menu-item>
+
+    <queryEventBuyInput></queryEventBuyInput>
+
     <el-select :placeholder="userPermission.userName" style="width: 90px">
       <el-option label="退出登录" value="1" />
       <el-option label="修改密码" value="2" />
@@ -87,7 +83,7 @@
             { text: '碾压', value: '碾压' },
             { text: '翻车', value: '翻车' },
             { text: '失火', value: '失火' },
-            { text: '其他', value: '其他' }
+            { text: '其他', value: '其他' },
           ]"
           :filter-method="filterHandler"
           resizable="true"
@@ -123,7 +119,7 @@
           :filters="[
             { text: '未处理', value: '未处理' },
             { text: '已完成', value: '已完成' },
-            { text: '已忽略', value: '已忽略' }
+            { text: '已忽略', value: '已忽略' },
           ]"
           :filter-method="filterHandler"
           resizable="true"
@@ -177,39 +173,44 @@
 </template>
 
 <script setup>
-import VideoMonitor from './coms/VideoMonitor.vue'
-import AddEvent from './coms/AddEvent.vue'
-import UpdateEvent from './coms/UpdateEvent.vue'
-import EventAddition from '../EventAddition.vue'
-import { onBeforeMount, ref, toRefs } from 'vue'
-import MapToolbox from '../MapToolbox.vue'
+import VideoMonitor from './coms/VideoMonitor.vue';
+import AddEvent from './coms/AddEvent.vue';
+import UpdateEvent from './coms/UpdateEvent.vue';
+import EventAddition from '../EventAddition.vue';
+import { inject, onBeforeMount, onMounted, ref, toRefs } from 'vue';
+import MapToolbox from '../MapToolbox.vue';
 
-import queryEventBuyCanvas from '../queryEventBuyCanvas.vue'
+import queryEventBuyCanvas from '../queryEventBuyCanvas.vue';
+import queryEventBuyInput from '../queryEventBuyInput.vue';
 import {
   getEventApi,
   modifyEventStatusApi,
-  deleteEventApi
-} from '../../api/event'
-import { useEventStore } from '@/stores/event'
-import { useUserStore } from '@/stores/user'
-import { useRouter } from 'vue-router'
-import { computed } from 'vue'
+  deleteEventApi,
+} from '../../api/event';
+import { useEventStore } from '@/stores/event';
+import { useUserStore } from '@/stores/user';
+import { useRouter } from 'vue-router';
+import { computed } from 'vue';
 
-const $router = useRouter()
-let roadFlag = ref(false)
-let { eventList } = toRefs(useEventStore())
-let { userPermission } = toRefs(useUserStore())
-let currentPage = ref(1) // 当前页数
-let pageSize = ref(5) // 每页显示的条数
-let totalItems = ref(0) // 总条数
-let tableData = ref([]) // 表格数据
+const $router = useRouter();
+let roadFlag = ref(false);
+let { eventList,clickEvent } = toRefs(useEventStore());
+let { userPermission } = toRefs(useUserStore());
+let currentPage = ref(1); // 当前页数
+let pageSize = ref(5); // 每页显示的条数
+let totalItems = ref(0); // 总条数
+let tableData = ref([]); // 表格数据
+let $map;
+onMounted(() => {
+  $map = inject('$map');
+});
 const showRoadCondition = () => {
-  roadFlag.value = true
-}
+  roadFlag.value = true;
+};
 const changeEventStatus = (id, status) => {
   modifyEventStatusApi(id, status).then(() => {
-    getEventApi().then(res => {
-      eventList.value = res.data.event.map(item => {
+    getEventApi().then((res) => {
+      eventList.value = res.data.event.map((item) => {
         return {
           event_id: item.event_id,
           user_id: item.user_id,
@@ -225,43 +226,43 @@ const changeEventStatus = (id, status) => {
               ? '已完成'
               : item.event_status == 2
               ? '已忽略'
-              : null
-        }
-      })
-      totalItems.value = eventList.value.length
-      fetchData()
-    })
-  })
-}
-const handleSizeChange = val => {
-  pageSize.value = val
-  fetchData()
-}
-const handleCurrentChange = val => {
-  currentPage.value = val
-  fetchData()
-}
+              : null,
+        };
+      });
+      totalItems.value = eventList.value.length;
+      fetchData();
+    });
+  });
+};
+const handleSizeChange = (val) => {
+  pageSize.value = val;
+  fetchData();
+};
+const handleCurrentChange = (val) => {
+  currentPage.value = val;
+  fetchData();
+};
 const fetchData = () => {
-  const start = (currentPage.value - 1) * pageSize.value
-  const end = start + pageSize.value
-  const items = eventList.value.slice(start, end)
-  tableData.value = items
-}
+  const start = (currentPage.value - 1) * pageSize.value;
+  const end = start + pageSize.value;
+  const items = eventList.value.slice(start, end);
+  tableData.value = items;
+};
 const filterHandler = (value, row, column) => {
-  const property = column['property']
-  return row[property] === value
-}
+  const property = column['property'];
+  return row[property] === value;
+};
 const closeRoadTable = () => {
-  roadFlag.value = false
-}
+  roadFlag.value = false;
+};
 const toManage = () => {
-  $router.push('/admin')
-}
-const deleteEvent = id => {
-  deleteEventApi(id).then(res => {
+  $router.push('/admin');
+};
+const deleteEvent = (id) => {
+  deleteEventApi(id).then((res) => {
     if (res.data.status === 'success') {
-      getEventApi().then(res => {
-        eventList.value = res.data.event.map(item => {
+      getEventApi().then((res) => {
+        eventList.value = res.data.event.map((item) => {
           return {
             event_id: item.event_id,
             user_id: item.user_id,
@@ -277,18 +278,18 @@ const deleteEvent = id => {
                 ? '已完成'
                 : item.event_status == 2
                 ? '已忽略'
-                : null
-          }
-        })
-        totalItems.value = eventList.value.length
-        fetchData()
-      })
+                : null,
+          };
+        });
+        totalItems.value = eventList.value.length;
+        fetchData();
+      });
     }
-  })
-}
+  });
+};
 onBeforeMount(() => {
-  getEventApi().then(res => {
-    eventList.value = res.data.event.map(item => {
+  getEventApi().then((res) => {
+    eventList.value = res.data.event.map((item) => {
       return {
         event_id: item.event_id,
         user_id: item.user_id,
@@ -304,13 +305,30 @@ onBeforeMount(() => {
             ? '已完成'
             : item.event_status == 2
             ? '已忽略'
-            : null
-      }
-    })
-    totalItems.value = eventList.value.length
-    fetchData()
-  })
-})
+            : null,
+      };
+    });
+    totalItems.value = eventList.value.length;
+    fetchData();
+  });
+});
+function handleSelect() {
+  const allDraws = $map.interactions.array_;
+  $map.removeInteraction(allDraws[9]);
+  const allLayers = $map.getLayers().getArray();
+  allLayers.forEach((layer) => {
+    if (layer.values_.id == 666) {
+      $map.removeLayer(layer);
+    }
+    if (layer.values_.id == 777) {
+      layer.getSource().clear();
+    }
+  });
+  
+  ol.Observable.unByKey(clickEvent.value)
+
+ 
+}
 </script>
 <style scoped>
 .el-menu-demo {
