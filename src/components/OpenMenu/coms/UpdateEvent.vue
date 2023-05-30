@@ -31,7 +31,7 @@ import { useEventStore } from '../../../stores/event'
 
 let $map
 let docLayer
-const { layer, source, setStyle } = useMark()
+const { markLayer, markSource, setStyle } = useMark()
 const service = {
   name: 'guanggu',
   layerId: 2
@@ -53,17 +53,17 @@ const checkEvent = () => {
   Query.queryByLayer({
     service,
     callback: res => {
-      source.addFeatures(res)
+      markSource.addFeatures(res)
       setStyle()
     }
   })
-  $map.addLayer(layer)
+  $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)
 }
 
 const offUpdate = () => {
-  $map.removeLayer(layer)
+  $map.removeLayer(markLayer)
   $map.un('click', mapClick)
 }
 
