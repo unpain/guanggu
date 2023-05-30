@@ -273,7 +273,7 @@ server.get(`/event`, (req, res, next) => {
 server.post(`/event`, (req, res, next) => {
   const event = req.body.event
   database.event.push(event)
-  res.json({ event: database.event })
+  res.json({ status: 'success' })
   next()
 })
 //修改事件状态
@@ -305,14 +305,14 @@ server.get('/notice', (req, res, next) => {
 server.post('/notice', (req, res, next) => {
   const info = req.body.info
   database.notice.push({
-    notice_id:Math.max(...database.notice.map(item => Number(item.notice_id))) + 1,
-    user_id:info.id,
-    notice_title:info.title,
-    notice_content:info.content,
-    notice_addr:info.addr,
-    notice_time:info.time
+    notice_id: Math.max(...database.notice.map(item => Number(item.notice_id))) + 1,
+    user_id: info.id,
+    notice_title: info.title,
+    notice_content: info.content,
+    notice_addr: info.addr,
+    notice_time: info.time
   })
-  res.json({status:'success'})
+  res.json({ status: 'success' })
   next()
 })
 
@@ -321,7 +321,7 @@ server.delete('/notice/:id', (req, res, next) => {
   const noticeId = req.params.id
   const noticeIndex = database.notice.findIndex(item => item.notice_id == noticeId)
   database.notice.splice(noticeIndex, 1)
-  res.json({status:'success'})
+  res.json({ status: 'success' })
   next()
 })
 // 拦截需要验证的请求，并验证JWT令牌

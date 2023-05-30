@@ -28,8 +28,7 @@
         <el-form-item label="发生时间" required>
           <el-col :span=" 11 ">
             <el-form-item prop="date1">
-              <el-date-picker v-model=" ruleForm.date1 " type="date" label="选择日期" placeholder="选择日期"
-                style="width: 100%" />
+              <el-date-picker v-model=" ruleForm.date1 " type="date" label="选择日期" placeholder="选择日期" style="width: 100%" />
             </el-form-item>
           </el-col>
           <el-col class="text-center" :span=" 2 ">
@@ -49,7 +48,7 @@
     <div class="event-footer">
       <el-form-item>
         <el-button type="primary" @click=" submitEvent "> 确认 </el-button>
-        <el-button @click="resetForm($refs.ruleFormRef)">重置</el-button>
+        <el-button @click="resetForm">重置</el-button>
       </el-form-item>
     </div>
   </div>
@@ -60,14 +59,15 @@ import { computed } from 'vue'
 import { reactive, ref, toRefs, onBeforeMount } from 'vue'
 import { useEventStore } from '@/stores/event'
 import { getEventApi, postNewEventApi } from '@/api/event'
+import { watch } from 'vue'
 let { eventId } = toRefs(useEventStore())
-const ruleFormRef = ref()
+const ruleFormRef = ref(null)
 const ruleForm = reactive({
   type: '',
   address: '',
   architecture: '',
-  date1: '',
-  date2: '',
+  date1: new Date,
+  date2: new Date,
   desc: '',
 })
 function submitEvent() {
@@ -84,16 +84,19 @@ function submitEvent() {
         event_describe: ruleForm.address,
         event_status: 0,
       }).then(res => {
-        console.log(res.data)
-        hideForm()
+        if (res.data.status === 'success') {
+          hideForm()
+        }
         ElMessage.success('提交成功!')
       })
     } else {
       console.log('提交失败，请确认表单内容!')
     }
   })
-  hideForm()
 }
+watch(ruleForm, () => {
+  console.log(time.value)
+})
 var time = computed(() => {
   const date = ruleForm.date2.getDate()
   const year = ruleForm.date2.getFullYear()
@@ -122,7 +125,7 @@ const showForm = () => {
   formVisible.value = true // 显示表单
 }
 const hideForm = () => {
-  resetForm()
+  ruleFormRef.value.resetFields()
   formVisible.value = false // 隐藏表单
 }
 
