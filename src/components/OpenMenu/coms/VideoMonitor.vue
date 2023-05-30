@@ -41,17 +41,23 @@ let $map
 const markStyle = new ol.style.Style({
   image: new ol.style.Icon({
     anchor: [0.5, 19],
-    anchorOrigin: 'center',
+    anchorOrigin: 'top-right',
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
-    offsetOrigin: 'center',
-    // offset:[0,10],
+    offsetOrigin: 'top-right',
     //图标缩放比例
     scale: 1.5,
     //透明度
     opacity: 1,
     //图标的url
     src: 'src/assets/images/monitoring.svg'
+  }),
+  fill: new ol.style.Fill({
+    color: 'raba(0,0,0,1)'
+  }),
+  stroke: new ol.style.Stroke({
+    color: 'rgba(255, 255, 255, 1)',
+    width: 100
   })
 })
 const { markLayer, markSource } = useMark()
@@ -63,13 +69,6 @@ const service = {
 }
 onMounted(() => {
   $map = inject('$map')
-  Query.queryByLayer({
-    service,
-    callback: res => {
-      markLayer.setStyle(markStyle)
-      markSource.addFeatures(res)
-    }
-  })
 })
 //popup子组件传过来的用来激活弹窗
 let $popup
@@ -80,6 +79,13 @@ const handlePopup = popup => {
 const { getMapEvent } = useEventStore()
 //查看监控
 const checkMonitor = () => {
+  Query.queryByLayer({
+    service,
+    callback: res => {
+      markLayer.setStyle(markStyle)
+      markSource.addFeatures(res)
+    }
+  })
   $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)

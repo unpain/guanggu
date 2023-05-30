@@ -35,6 +35,11 @@ onMounted(() => {
   //     zoom: 14,
   //   })
   // }, 1000)
+  map.on('pointermove', function (e) {
+    var pixel = map.getEventPixel(e.originalEvent)
+    var hit = map.hasFeatureAtPixel(pixel)
+    map.getTargetElement().style.cursor = hit ? 'pointer' : ''
+  })
   app.provide('$map', map)
 })
 </script>

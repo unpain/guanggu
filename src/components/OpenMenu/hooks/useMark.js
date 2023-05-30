@@ -24,11 +24,10 @@ export const useMark = () => {
           new ol.style.Style({
             image: new ol.style.Icon({
               anchor: [0.5, 19],
-              anchorOrigin: 'center',
+              anchorOrigin: 'top-right',
               anchorXUnits: 'fraction',
               anchorYUnits: 'pixels',
-              offsetOrigin: 'center',
-              // offset:[0,10],
+              offsetOrigin: 'top-right',
               //图标缩放比例
               scale: 1.2,
               //透明度
@@ -45,11 +44,10 @@ export const useMark = () => {
           new ol.style.Style({
             image: new ol.style.Icon({
               anchor: [0.5, 19],
-              anchorOrigin: 'center',
+              anchorOrigin: 'top-right',
               anchorXUnits: 'fraction',
               anchorYUnits: 'pixels',
-              offsetOrigin: 'center',
-              // offset:[0,10],
+              offsetOrigin: 'top-right',
               //图标缩放比例
               scale: 1.2,
               //透明度

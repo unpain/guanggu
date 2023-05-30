@@ -34,11 +34,17 @@ const layer = new ol.layer.Vector({
 })
 onMounted(() => {
   $map = inject('$map')
+})
+const { roadTag } = toRefs(useEventStore())
+const { setRoadTag } = useEventStore()
+const checkRoadConditions = () => {
   Query.queryByLayer({
     service,
     callback: getQueryRes
   })
-})
+  setRoadTag(true)
+  $map.addLayer(layer)
+}
 const getQueryRes = e => {
   source.addFeatures(e)
   source.forEachFeature(e => {
@@ -60,12 +66,7 @@ const getQueryRes = e => {
     e.setStyle(stateStyle)
   })
 }
-const { roadTag } = toRefs(useEventStore())
-const { setRoadTag } = useEventStore()
-const checkRoadConditions = () => {
-  setRoadTag(true)
-  $map.addLayer(layer)
-}
+
 const clearRoadConditions = () => {
   setRoadTag(false)
   $map.removeLayer(layer)
