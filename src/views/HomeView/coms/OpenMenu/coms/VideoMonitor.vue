@@ -51,13 +51,6 @@ const markStyle = new ol.style.Style({
     opacity: 1,
     //图标的url
     src: 'src/assets/images/monitoring.svg'
-  }),
-  fill: new ol.style.Fill({
-    color: 'raba(0,0,0,1)'
-  }),
-  stroke: new ol.style.Stroke({
-    color: 'rgba(255, 255, 255, 1)',
-    width: 100
   })
 })
 const { markLayer, markSource } = useMark()
