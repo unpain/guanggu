@@ -14,13 +14,13 @@ export function setCanvas(map) {
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, radius, 0, Math.PI * 2);
     ctx.closePath();
-    ctx.fillStyle = '#ff2d51';
+    ctx.fillStyle = '409eff8f';
     ctx.fill();
     /* 设置第二个圆 */
     ctx.beginPath();
     ctx.arc(size / 2, size / 2, 8, 0, Math.PI * 2);
     ctx.closePath();
-    ctx.fillStyle = '#0D5EFF';
+    ctx.fillStyle = '#0D5EFF5f';
     ctx.fill();
     if (radius > 14) {
       increase = false;

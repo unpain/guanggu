@@ -25,7 +25,9 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref, onMounted, inject } from 'vue';
+
+import { ElMessage } from 'element-plus'
+import { ref, onMounted, inject,h } from 'vue';
 import { createDraw } from '../untils/createDraw';
 import { Query } from '../untils/Query';
 import EventList from '../components/EventList.vue';
@@ -64,6 +66,15 @@ function queryEvent() {
     $map.addInteraction(draw);
   }
 }
+/* 消息提示 */
+
+const open = () => {
+   ElMessage({
+    message: '该区域未发生过交通事故',
+    type: 'success',
+  })
+}
+
 /* 获取查询事件的要素 */
 function handleDraw(feature) {
   queryData.value = [];
@@ -92,6 +103,7 @@ function handleQuery(res) {
     setStyle()
       $map.addLayer(markLayer);
   } else {
+    open()
     queryData.value.push(null);
   }
 }
