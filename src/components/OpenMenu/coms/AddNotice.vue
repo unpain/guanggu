@@ -361,7 +361,7 @@ onMounted(() => {
 })
 </script>
 <style scoped>
-i {
+.el-icon {
   color: #81c5fc;
 }
 </style>

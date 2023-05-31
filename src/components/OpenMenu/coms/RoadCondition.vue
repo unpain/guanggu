@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, inject, toRefs } from 'vue'
+import {  onMounted, inject, toRefs } from 'vue'
 import { useQuery } from '../hooks/useQuery'
 import { useEventStore } from '../../../stores/event'
 

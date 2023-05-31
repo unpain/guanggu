@@ -304,7 +304,7 @@ let tableData = ref([]) // 表格数据
 let modifyFlag = ref(false)
 let password = ref('')
 let confirmPassword = ref('')
-let color = ref('#1f98ee')
+let color = ref('#3E83CC')
 
 const showRoadCondition = () => {
   roadFlag.value = true
@@ -476,12 +476,8 @@ const handleSelect = () => {
 .el-menu-demo {
   align-items: center;
   white-space: nowrap;
-  box-shadow: 0px 0px 7px #333;
 }
 
-.el-menu--horizontal {
-  border-bottom: none;
-}
 .container {
   position: fixed;
   top: 50%;
@@ -507,6 +503,10 @@ const handleSelect = () => {
 }
 .el-menu {
   height: 60px;
+  box-shadow: 0px 0px 5px #333;
+}
+.el-menu--horizontal {
+  border-bottom: none;
 }
 ::v-deep .el-sub-menu__title {
   padding: 0 15px;
