@@ -49,7 +49,7 @@ function closeMeasure() {
   $map.removeInteraction(res)
   // 清除DOM
   const element = document.querySelectorAll('.tooltip')
-  element.forEach(item => item.remove())
+  element.forEach((item) => item.remove())
 }
 // 导出图片的函数
 function saveImage() {
@@ -83,7 +83,7 @@ function saveImage() {
 }
 
 .tooltip-static {
-  background-color: #ffcc33;
+  background-color: #d40625;
   color: white;
   border: 1px solid white;
 }
@@ -101,6 +101,6 @@ function saveImage() {
 }
 
 .tooltip-static:before {
-  border-top-color: #ffcc33;
+  border-top-color: #d40625;
 }
 </style>

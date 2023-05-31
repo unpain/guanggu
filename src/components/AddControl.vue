@@ -124,10 +124,17 @@ function toggleLayer() {
 /* 鼠标位置控件层样式设置 */
 #mouse-position {
   position: fixed;
-  left: 200px;
-  bottom: 15px;
-  width: 200px;
-  height: 20px;
+  left: 5px;
+  bottom: 50px;
+  width: 150px;
+  height: 25px;
+  color: #fff;
+  text-align: center;
+  line-height: 25px;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  background-color: rgba(114, 161, 219, 0.7);
+
   /*在地图容器中的层，要设置z-index的值让其显示在地图上层*/
 }
 /* 鼠标位置信息自定义样式设置 */
