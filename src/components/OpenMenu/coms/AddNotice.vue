@@ -1,221 +1,111 @@
 <template>
-  <el-menu-item index="7" v-permission="['user']" @click="viewNotice"
-    >查看公告</el-menu-item
-  >
-  <el-sub-menu
-    index="8"
-    v-permission="['department', 'admin']"
-    expand-close-icon="none"
-    expand-open-icon="none"
-  >
+  <el-menu-item index="7" v-permission="['user']" @click="viewNotice">查看公告</el-menu-item>
+  <el-sub-menu index="8" v-permission="['department', 'admin']" expand-close-icon="none" expand-open-icon="none">
     <template #title>公告管理</template>
     <el-menu-item index="8-1" @click="startDrawBuffer">发布公告</el-menu-item>
-    <el-menu-item
-      index="8-2"
-      v-permission="['department', 'admin']"
-      @click="viewNotice"
-      >查看公告</el-menu-item
-    >
+    <el-menu-item index="8-2" v-permission="['department', 'admin']" @click="viewNotice">查看公告</el-menu-item>
   </el-sub-menu>
-  <el-card
-    v-if="addNoticeVisible"
-    :style="{
-      width: '800px',
-      hieght: '800px',
-      position: 'fixed',
-      top: '20%',
-      left: '50%',
-      transform: 'translate(' + '-50%,' + '0)',
-      'z-index': '100',
-      textAlign: 'center'
-    }"
-  >
-    <el-icon
-      :style="{ position: 'fixed', right: '30px', cursor: 'pointer' }"
-      size="20"
-      @click="cancelSubmitNotice"
-    >
+  <el-card v-if="addNoticeVisible" :style="{
+    width: '800px',
+    hieght: '800px',
+    position: 'fixed',
+    top: '20%',
+    left: '50%',
+    transform: 'translate(' + '-50%,' + '0)',
+    'z-index': '100',
+    textAlign: 'center'
+  }">
+    <el-icon :style="{ position: 'fixed', right: '30px', cursor: 'pointer' }" size="20" @click="cancelSubmitNotice">
       <CloseBold />
     </el-icon>
     <div class="title" :style="{ 'padding-bottom': '20px' }">
       <span>发布公告</span>
     </div>
-    <el-table
-      :data="tableData"
-      :style="{ 'min-height': '300px' }"
-      :cell-style="{ height: '43px' }"
-      border="true"
-    >
-      <el-table-column
-        prop="name"
-        label="影响地点"
-        resizable="true"
-        align="center"
-      ></el-table-column>
-      <el-table-column
-        prop="tel"
-        label="电话"
-        resizable="true"
-        align="center"
-      ></el-table-column>
+    <el-table :data="tableData" :style="{ 'min-height': '300px' }" :cell-style="{ height: '43px' }" border="true">
+      <el-table-column prop="name" label="影响地点" resizable="true" align="center"></el-table-column>
+      <el-table-column prop="tel" label="电话" resizable="true" align="center"></el-table-column>
     </el-table>
-    <el-pagination
-      :current-page="currentPage"
-      :page-sizes="[5, 10]"
-      :page-size="pageSize"
-      layout="sizes, prev, pager, next, jumper"
-      :total="totalAddr"
-      @size-change="handleSizeChangeOfAddr"
-      @current-change="handleCurrentChangeOfAddr"
-    ></el-pagination>
-    <div
-      class="input-container"
-      :style="{
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: '20px',
-        marginBottom: '20px',
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: '20px'
-      }"
-    >
+    <el-pagination :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pageSize"
+      layout="sizes, prev, pager, next, jumper" :total="totalAddr" @size-change="handleSizeChangeOfAddr"
+      @current-change="handleCurrentChangeOfAddr"></el-pagination>
+    <div class="input-container" :style="{
+      display: 'flex',
+      flexDirection: 'column',
+      marginTop: '20px',
+      marginBottom: '20px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: '20px'
+    }">
       <el-input v-model="title" placeholder="请输入公告名称"></el-input>
-      <el-input
-        v-model="content"
-        :rows="6"
-        type="textarea"
-        placeholder="请输入公告内容"
-      ></el-input>
+      <el-input v-model="content" :rows="6" type="textarea" placeholder="请输入公告内容"></el-input>
     </div>
-    <div
-      class="button-group"
-      :style="{
-        display: 'flex',
-        justifyContent: 'start',
-        alignItems: 'center'
-      }"
-    >
-      <el-button
-        @click="issueNotice"
-        color="#5aabfc"
-        size="large"
-        :dark="isDark"
-        plain
-        >发布</el-button
-      >
-      <el-button
-        @click="cancelSubmitNotice"
-        color="#ff5353"
-        size="large"
-        :dark="isDark"
-        plain
-        >取消</el-button
-      >
+    <div class="button-group" :style="{
+      display: 'flex',
+      justifyContent: 'start',
+      alignItems: 'center'
+    }">
+      <el-button @click="issueNotice" color="#5aabfc" size="large" :dark="isDark" plain>发布</el-button>
+      <el-button @click="cancelSubmitNotice" color="#ff5353" size="large" :dark="isDark" plain>取消</el-button>
     </div>
   </el-card>
-  <el-card
-    v-if="viewNoticeVisible"
-    :stripe="true"
-    :style="{
-      width: '1200px',
-      hieght: '800px',
-      position: 'fixed',
-      top: '20%',
-      left: '50%',
-      transform: 'translate(' + '-50%,' + '0)',
-      'z-index': '100',
-      textAlign: 'center'
-    }"
-  >
-    <el-icon
-      :style="{ position: 'fixed', right: '30px', cursor: 'pointer' }"
-      size="20"
-      @click="closeNoticeTable"
-    >
+  <el-card v-if="viewNoticeVisible" :stripe="true" :style="{
+    width: '60%',
+    hieght: '75%',
+    position: 'fixed',
+    top: '20%',
+    left: '50%',
+    transform: 'translate(' + '-50%,' + '0)',
+    'z-index': '100',
+    textAlign: 'center'
+  }">
+    <el-icon :style="{ position: 'fixed', right: '30px', cursor: 'pointer' }" size="20" @click="closeNoticeTable">
       <CloseBold />
     </el-icon>
-    <el-text :style="{ 'text-align': center, fontSize: '20px' }"
-      >公告详情</el-text
-    >
-    <el-table
-      :data="tableData"
-      height="600"
-      :style="{ 'min-height': '300px', width: '1100px', marginTop: '20px' }"
-      :border="true"
-      :cell-style="{ height: '100px', fontSize: '20px' }"
-    >
+    <el-text :style="{ 'text-align': center, fontSize: '20px' }">公告详情</el-text>
+    <el-table :data="tableData" height="600" :style="{ 'min-height': '300px', width: '100%', marginTop: '20px' }"
+      :border="true" :cell-style="{ height: '100px', fontSize: '20px' }">
       <el-table-column type="expand" :border="true">
         <template #default="props">
-          <div
-            m="4"
-            :style="{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'start',
-              gap: '20px'
-            }"
-          >
+          <div m="4" :style="{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'start',
+            gap: '20px'
+          }">
             <div class="content" :style="{ width: '1100px' }">
               <h3 :style="{ marginLeft: '20px' }">公告内容:<br /></h3>
-              <p
-                m="t-0 b-2"
-                :style="{
-                  marginLeft: '20px',
-                  wordWrap: 'break-word',
-                  fontWeight: 'normal'
-                }"
-              >
+              <p m="t-0 b-2" :style="{
+                marginLeft: '20px',
+                wordWrap: 'break-word',
+                fontWeight: 'normal'
+              }">
                 {{ props.row.notice_content }}
               </p>
             </div>
-            <h3
-              :style="{ marginLeft: '20px', width: '50%', fontWeight: 'bold' }"
-            >
+            <h3 :style="{ marginLeft: '20px', width: '50%', fontWeight: 'bold' }">
               影响地点:<br />
-              <el-table
-                :data="props.row.notice_addr"
-                :style="{ fontWeight: 'normal', color: '#000' }"
-                :border="true"
-                :row-style="{ backgroundColor: '#fabef5' }"
-                :header-cell-style="{
+              <el-table :data="props.row.notice_addr" :style="{ fontWeight: 'normal', color: '#000' }" :border="true"
+                :row-style="{ backgroundColor: '#fabef5' }" :header-cell-style="{
                   backgroundColor: '#81c5fc',
                   color: '#000'
-                }"
-              >
+                }">
                 <el-table-column label="地点" prop="name" :border="true" />
                 <el-table-column label="电话" prop="tel" :border="true" />
               </el-table>
             </h3>
           </div>
+          <el-button v-permission="['admin']" :style="{ marginTop: '30px',marginLeft:'20px', display: 'inline-block' }" size="large"
+            color="#ff5353" isDark="true" plain @click="deleteNotice(props.row.notice_id)">删除该公告</el-button>
         </template>
       </el-table-column>
-      <el-table-column
-        prop="notice_title"
-        label="标题"
-        resizable="true"
-        align="center"
-        :border="true"
-      ></el-table-column>
-      <el-table-column
-        prop="notice_time"
-        label="电话"
-        resizable="true"
-        align="center"
-        :border="true"
-      ></el-table-column>
+      <el-table-column prop="notice_title" label="标题" resizable="true" align="center" :border="true"></el-table-column>
+      <el-table-column prop="notice_time" label="电话" resizable="true" align="center" :border="true"></el-table-column>
     </el-table>
-    <el-pagination
-      :current-page="currentPage"
-      :page-sizes="[5, 10]"
-      :page-size="pageSize"
-      layout="sizes, prev, pager, next, jumper"
-      :total="totalNotice"
-      @size-change="handleSizeChangeOfNotice"
-      @current-change="handleCurrentChangeOfNotice"
-      :style="{ marginTop: '20px' }"
-    ></el-pagination>
+    <el-pagination :current-page="currentPage" :page-sizes="[5, 10]" :page-size="pageSize"
+      layout="sizes, prev, pager, next, jumper" :total="totalNotice" @size-change="handleSizeChangeOfNotice"
+      @current-change="handleCurrentChangeOfNotice" :style="{ marginTop: '20px' }"></el-pagination>
   </el-card>
 </template>
 <script setup>
@@ -257,11 +147,22 @@ const showNotice = () => {
 }
 
 const viewNotice = () => {
-  console.log(1)
   getNoticeApi().then(res => {
     noticeArr.value = res.data.notice
     fetchNotice()
     viewNoticeVisible.value = true
+  })
+}
+
+const deleteNotice = (id) => {
+  deleteNoticeApi(id).then(res => {
+    if (res.data.status === 'success') {
+      getNoticeApi().then(res => {
+        noticeArr.value = res.data.notice
+        fetchNotice()
+        ElMessage.success('删除成功!')
+      })
+    }
   })
 }
 
