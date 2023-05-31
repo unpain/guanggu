@@ -2,7 +2,7 @@
   <UserManage />
 </template>
 <script setup>
-import UserManage from '@/components/UserManage/UserManage.vue'
+import UserManage from './coms/UserManage/UserManage.vue'
 </script>
 <style scoped>
 </style>
