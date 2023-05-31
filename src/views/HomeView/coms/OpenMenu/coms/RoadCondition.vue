@@ -18,7 +18,7 @@
 <script setup>
 import {  onMounted, inject, toRefs } from 'vue'
 import { useQuery } from '../hooks/useQuery'
-import { useEventStore } from '../../../stores/event'
+import { useEventStore } from '../../../../../stores/event'
 
 let $map
 const { Query } = useQuery()

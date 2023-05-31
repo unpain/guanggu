@@ -1,18 +1,17 @@
 <!-- @format -->
 
 <template>
-  <el-menu-item class="scerch" index="11">
-    <el-input
-      v-model="keyword"
-      placeholder="请输入事故信息"
-      class="input-with-select"
-      @keyup.enter="queryByAttribute"
-    >
-      <template #append>
-        <el-button @click="queryByAttribute">查询</el-button>
-      </template>
-    </el-input>
-  </el-menu-item>
+  <el-input
+    v-model="keyword"
+    placeholder="请输入事故信息"
+    class="input-with-select"
+    @keyup.enter="queryByAttribute"
+  >
+    <template #append>
+      <el-button @click="queryByAttribute">查询</el-button>
+    </template>
+  </el-input>
+
   <ThePopup :popupId="'1011'" @popup="handlePopup">
     <template #title>事件详细信息</template>
     <table>
@@ -25,11 +24,11 @@
 </template>
 <script setup>
 import { onMounted, inject, ref, toRefs } from 'vue'
-import { Query } from '../untils/Query'
-import { setCanvas } from '../untils/setCanvas'
+import { Query } from '../../../../../utils/Query'
+import { setCanvas } from '../../../../../utils/setCanvas'
 import { useEventStore } from '@/stores/event'
 import { ElMessage } from 'element-plus'
-import ThePopup from './OpenMenu/coms/ThePopup.vue'
+import ThePopup from '../../../../../components/ThePopup.vue'
 let { clickEvent } = toRefs(useEventStore())
 let $popup
 const eventListData = ref({})

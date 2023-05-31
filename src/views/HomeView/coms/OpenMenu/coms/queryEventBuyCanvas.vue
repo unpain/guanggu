@@ -31,12 +31,12 @@
 <script setup>
 import { ElMessage } from 'element-plus'
 import { ref, onMounted, inject, h } from 'vue'
-import { createDraw } from '../untils/createDraw'
-import { Query } from '../untils/Query'
-import EventList from '../components/EventList.vue'
-import EventDiagram from '../components/EventDiagram.vue'
-import { getEchartsData } from '../components/OpenMenu/hooks/getEchartsData'
-import { useMark } from '../components/OpenMenu/hooks/useMark'
+import { createDraw } from '../../../../../utils/createDraw'
+import { Query } from '../../../../../utils/Query'
+import EventList from '../../../../../components/EventList.vue'
+import EventDiagram from '../../../../../components/EventDiagram.vue'
+import { getEchartsData } from '../hooks/getEchartsData'
+import { useMark } from '../hooks/useMark'
 let { markSource, markLayer, setStyle } = useMark()
 let queryData = ref([])
 const dialogTableVisible = ref(false)

@@ -275,17 +275,17 @@ import VideoMonitor from './coms/VideoMonitor.vue'
 import AddEvent from './coms/AddEvent.vue'
 import UpdateEvent from './coms/UpdateEvent.vue'
 import RoadCondition from './coms/RoadCondition.vue'
-import EventAddition from '../EventAddition.vue'
+import EventAddition from './coms/EventAddition.vue'
 import AddNotice from './coms/AddNotice.vue'
 import { inject, onMounted, onBeforeMount, ref, toRefs } from 'vue'
-import MapToolbox from '../MapToolbox.vue'
-import queryEventBuyCanvas from '../queryEventBuyCanvas.vue'
-import queryEventBuyInput from '../queryEventBuyInput.vue'
+import MapToolbox from './coms/MapToolbox.vue'
+import queryEventBuyCanvas from './coms/queryEventBuyCanvas.vue'
+import queryEventBuyInput from './coms/queryEventBuyInput.vue'
 import {
   getEventApi,
   modifyEventStatusApi,
   deleteEventApi
-} from '../../api/event'
+} from '../../../../api/event'
 import { modifyUserApi } from '@/api/opUser'
 import { useEventStore } from '@/stores/event'
 import { useUserStore } from '@/stores/user'

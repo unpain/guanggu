@@ -86,7 +86,7 @@
 <script setup>
 import { ref, watch,toRefs} from 'vue'
 import { ElMessage } from 'element-plus'
-import { usePopupStore } from '../../../stores/popup'
+import { usePopupStore } from '../stores/popup'
 
 const props = defineProps({
   evtForm: {

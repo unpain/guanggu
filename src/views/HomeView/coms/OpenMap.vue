@@ -2,8 +2,8 @@
   <div id="map"></div>
 </template>
 <script setup>
-import { app } from '../main'
-import { gaode_vector, gaode_image } from '../tianditu_libs/gaode'
+import { app } from '@/main'
+import { gaode_vector, gaode_image } from '@/tianditu_libs/gaode'
 import {
   TiandiMap_vec,
   TiandiMap_cva,
@@ -11,7 +11,7 @@ import {
   TiandiMap_cia,
   TiandiMap_ter,
   TiandiMap_cta
-} from '../tianditu_libs/tianditu'
+} from '@/tianditu_libs/tianditu'
 import { onMounted, ref, toRefs } from 'vue'
 
 const docLayer = new Zondy.Map.Doc('', 'guanggu', {})

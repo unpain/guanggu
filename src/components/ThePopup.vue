@@ -17,7 +17,7 @@
 
 <script setup>
 import { onMounted, inject, defineEmits, defineProps } from 'vue'
-import { usePopupStore } from '../../../stores/popup'
+import { usePopupStore } from '../stores/popup'
 
 // 父组件传过来的id
 const props = defineProps({

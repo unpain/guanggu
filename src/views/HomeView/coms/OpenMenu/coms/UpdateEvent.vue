@@ -12,13 +12,13 @@
 
 <script setup>
 import { ref, inject, onMounted } from 'vue'
-import EventForm from './EventForm.vue'
-import ThePopup from './ThePopup.vue'
+import EventForm from '../../../../../components/EventForm.vue'
+import ThePopup from '../../../../../components/ThePopup.vue'
 import { useQuery } from '../hooks/useQuery'
 import { usePoint } from '../hooks/usePoint'
 import { useMark } from '../hooks/useMark'
 import { ElMessage } from 'element-plus'
-import { useEventStore } from '../../../stores/event'
+import { useEventStore } from '@/stores/event'
 
 let $map
 let docLayer

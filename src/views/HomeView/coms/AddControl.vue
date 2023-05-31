@@ -3,13 +3,13 @@
   <i class="iconfont icon-tuceng" @click="toggleLayer"></i>
   <div class="change-layer" style="display: none">
     <img
-      src="../assets/images/vector.png"
+      src="src/assets/images/vector.png"
       alt=""
       class="pic"
       @click="displayVector"
     />
     <img
-      src="../assets/images/image.png"
+      src="src/assets/images/image.png"
       alt=""
       class="pic"
       @click="displayImage"
@@ -18,7 +18,7 @@
 </template>
 <script setup>
 import { watch, ref } from 'vue'
-import { gaode_image, gaode_vector } from '../tianditu_libs/gaode'
+import { gaode_image, gaode_vector } from '../../../tianditu_libs/gaode'
 import { inject, onMounted } from 'vue'
 let $map
 onMounted(() => {

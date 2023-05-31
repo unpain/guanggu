@@ -19,7 +19,7 @@
         <template #default>
           <video
             class="video"
-            src="../../../data/video/莲花新洲路口正中（190.192.11.133）.mp4"
+            src="src/data/video/莲花新洲路口正中（190.192.11.133）.mp4"
             controls
             autoplay
             muted
@@ -34,8 +34,8 @@
 import { ref, inject, onMounted } from 'vue'
 import { useQuery } from '../hooks/useQuery'
 import { useMark } from '../hooks/useMark'
-import ThePopup from './ThePopup.vue'
-import { useEventStore } from '../../../stores/event'
+import ThePopup from '@/components/ThePopup.vue'
+import { useEventStore } from '@/stores/event'
 
 let $map
 const markStyle = new ol.style.Style({

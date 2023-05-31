@@ -142,10 +142,10 @@
     >
     <el-table
       :data="tableData"
-      height="600"
-      :style="{ 'min-height': '300px', width: '100%', marginTop: '20px' }"
+      height="456"
+      :style="{ 'min-height': '350px', width: '100%', marginTop: '20px' }"
       :border="true"
-      :cell-style="{ height: '100px', fontSize: '20px' }"
+      :cell-style="{ height: '52px', fontSize: '16px' }"
     >
       <el-table-column type="expand" :border="true">
         <template #default="props">
@@ -224,7 +224,7 @@
     </el-table>
     <el-pagination
       :current-page="currentPage"
-      :page-sizes="[5, 10]"
+      :page-sizes="[8, 16]"
       :page-size="pageSize"
       layout="sizes, prev, pager, next, jumper"
       :total="totalNotice"
@@ -236,8 +236,8 @@
 </template>
 <script setup>
 import { onMounted, inject, toRefs, ref, watch } from 'vue'
-import { createDraw } from '@/untils/createDraw'
-import { Buffer } from '@/untils/Buffer'
+import { createDraw } from '@/utils/createDraw'
+import { Buffer } from '@/utils/Buffer'
 import { useNoticeStore } from '@/stores/notice'
 import { postNoticeApi, getNoticeApi, deleteNoticeApi } from '@/api/notice'
 import { computed } from 'vue'
@@ -248,7 +248,7 @@ let $map
 let addNoticeVisible = ref(false)
 let viewNoticeVisible = ref(false)
 let currentPage = ref(1) // 当前页数
-let pageSize = ref(5) // 每页显示的条数
+let pageSize = ref(8) // 每页显示的条数
 let totalAddr = ref(0) // 总条数
 let totalNotice = ref(0) // 总条数
 let tableData = ref([]) // 表格数据
