@@ -1,6 +1,6 @@
 <template>
   <el-menu-item index="7" v-permission="['user']" @click="viewNotice"
-    ><i class="iconfont icon-chakan1"></i> 查看公告</el-menu-item
+    ><i class="iconfont icon-chakan2"></i> 查看公告</el-menu-item
   >
   <el-sub-menu
     index="8"
@@ -120,8 +120,8 @@
     v-if="viewNoticeVisible"
     :stripe="true"
     :style="{
-      width: '1200px',
-      hieght: '800px',
+      width: '60%',
+      hieght: '75%',
       position: 'fixed',
       top: '20%',
       left: '50%',
@@ -143,7 +143,7 @@
     <el-table
       :data="tableData"
       height="600"
-      :style="{ 'min-height': '300px', width: '1100px', marginTop: '20px' }"
+      :style="{ 'min-height': '300px', width: '100%', marginTop: '20px' }"
       :border="true"
       :cell-style="{ height: '100px', fontSize: '20px' }"
     >
@@ -191,6 +191,20 @@
               </el-table>
             </h3>
           </div>
+          <el-button
+            v-permission="['admin']"
+            :style="{
+              marginTop: '30px',
+              marginLeft: '20px',
+              display: 'inline-block'
+            }"
+            size="large"
+            color="#ff5353"
+            isDark="true"
+            plain
+            @click="deleteNotice(props.row.notice_id)"
+            >删除该公告</el-button
+          >
         </template>
       </el-table-column>
       <el-table-column
@@ -259,11 +273,22 @@ const showNotice = () => {
 }
 
 const viewNotice = () => {
-  console.log(1)
   getNoticeApi().then(res => {
     noticeArr.value = res.data.notice
     fetchNotice()
     viewNoticeVisible.value = true
+  })
+}
+
+const deleteNotice = id => {
+  deleteNoticeApi(id).then(res => {
+    if (res.data.status === 'success') {
+      getNoticeApi().then(res => {
+        noticeArr.value = res.data.notice
+        fetchNotice()
+        ElMessage.success('删除成功!')
+      })
+    }
   })
 }
 

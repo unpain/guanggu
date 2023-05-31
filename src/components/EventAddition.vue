@@ -84,11 +84,9 @@
 </template>
 <script setup>
 import { ElMessage } from 'element-plus'
-import { computed } from 'vue'
 import { reactive, ref, toRefs, onBeforeMount } from 'vue'
 import { useEventStore } from '@/stores/event'
 import { getEventApi, postNewEventApi } from '@/api/event'
-import { watch } from 'vue'
 let { eventId } = toRefs(useEventStore())
 const ruleFormRef = ref(null)
 const ruleForm = reactive({
@@ -124,18 +122,6 @@ function submitEvent() {
     }
   })
 }
-// watch(ruleForm, () => {
-//   console.log(time.value)
-// })
-// var time = computed(() => {
-//   const date = ruleForm.date2.getDate()
-//   const year = ruleForm.date2.getFullYear()
-//   const month = ruleForm.date2.getMonth()
-//   const hour = ruleForm.date2.getHours()
-//   const minute = ruleForm.date2.getMinutes()
-//   const second = ruleForm.date2.getSeconds()
-//   return `${year}-${month}-${date} ${hour}:${minute}:${second}`
-// })
 const rules = reactive({
   type: [
     {
@@ -160,9 +146,8 @@ const hideForm = () => {
 }
 
 onBeforeMount(() => {
-  getEventApi().then(res => {
-    eventId.value = Math.max(...res.data.event.map(item => item.event_id)) + 1
-    // console.log(Math.max(...res.data.event.map(item => item.event_id)))
+  getEventApi().then((res) => {
+    eventId.value = Math.max(...res.data.event.map((item) => item.event_id)) + 1
   })
 })
 </script>

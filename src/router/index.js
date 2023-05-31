@@ -5,8 +5,6 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      // name: 'home',
-      // component: ()=>import('@/views/HomeView.vue'),
       redirect: '/login'
     },
     {
@@ -31,7 +29,7 @@ const router = createRouter({
       children: [
         {
           path: 'admin',
-          redirect:'admin/user'
+          redirect: 'admin/user'
         },
         {
           path: 'admin/user',
@@ -45,7 +43,22 @@ const router = createRouter({
         }
       ]
     }
-  ]
+  ],
 })
-
+router.beforeEach((to, from, next) => {
+  if (to.path == '/admin/user') {
+    if (localStorage.getItem('userPermission')) {
+      let token = JSON.parse(localStorage.getItem('userPermission')).token
+      if (token) {
+        next()
+      } else {
+        next({ path: '/login' })
+      }
+    } else {
+      next({ path: '/login' })
+    }
+  } else {
+    next()
+  }
+})
 export default router
