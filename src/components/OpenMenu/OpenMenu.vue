@@ -23,14 +23,15 @@
           index="5"
           expand-close-icon="none"
           expand-open-icon="none"
+          :teleported="false"
         >
           <template #title
             ><i class="iconfont icon-shijian"></i>事件管理</template
           >
           <AddEvent />
           <UpdateEvent />
-          <queryEventBuyCanvas />
         </el-sub-menu>
+        <queryEventBuyCanvas />
         <AddNotice />
         <el-menu-item
           index="9"
@@ -556,5 +557,4 @@ const handleSelect = () => {
 .fade-leave-to {
   opacity: 0;
 }
-
 </style>

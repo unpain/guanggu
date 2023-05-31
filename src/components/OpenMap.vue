@@ -22,7 +22,7 @@ onMounted(() => {
   const map = new ol.Map({
     target: 'map',
     // layers: [gaode_image,gaode_vector, docLayer],
-    layers: [ gaode_image,gaode_vector, docLayer],
+    layers: [gaode_image, gaode_vector, docLayer],
     view: new ol.View({
       center: [114.38, 30.49],
       zoom: 13,
@@ -31,8 +31,8 @@ onMounted(() => {
   })
   // setTimeout(() => {
   //   map.getView().animate({
-  //     center: [114.40088809833583, 30.4663210497187],
-  //     zoom: 14,
+  //     center: [114.38, 30.49],
+  //     zoom: 13
   //   })
   // }, 1000)
   map.on('pointermove', function (e) {
@@ -52,5 +52,4 @@ onMounted(() => {
   position: fixed;
   bottom: 0;
 }
-
 </style>

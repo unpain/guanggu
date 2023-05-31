@@ -6,8 +6,8 @@
     class="box-card"
     body-style="width: 75%; margin: -12px auto; min-width: 1000px"
   >
-    <template #header >
-      <div class="card-header" >
+    <template #header>
+      <div class="card-header">
         <div class="item">
           <el-button
             @click="creatHeatMap"
@@ -30,16 +30,16 @@
             @click="setActive"
             style="margin-left: 16px"
           >
-             <el-icon><ArrowDownBold /></el-icon
-          >
+            <el-icon><ArrowDownBold /></el-icon>
           </el-button>
           <el-button
             type="success"
             :class="active ? '' : 'dispppear'"
             @click="setActive"
             style="margin-left: 16px"
-          > <el-icon><ArrowUpBold /></el-icon>
-           </el-button>
+          >
+            <el-icon><ArrowUpBold /></el-icon>
+          </el-button>
           <el-button
             type="primary"
             @click="setTableDisappear"
@@ -80,7 +80,7 @@
 </template>
 
 <script setup>
-const active1 = ref(false);
+const active1 = ref(false)
 
 import { onMounted, ref, watch } from 'vue'
 const props = defineProps({
@@ -90,13 +90,13 @@ const props = defineProps({
 })
 const dialogTableVisible = ref(null)
 
-let active = ref(1);
-const tableData = ref([]);
-const arr = ref({});
-const currentPage = ref(1);
-const pageSize = 4;
-const totalItems = ref(null);
-const mockDate = ref([]);
+let active = ref(1)
+const tableData = ref([])
+const arr = ref({})
+const currentPage = ref(1)
+const pageSize = 4
+const totalItems = ref(null)
+const mockDate = ref([])
 watch(props, () => {
   if (props.queryData) {
     tableData.value = props.queryData
@@ -108,8 +108,8 @@ watch(props, () => {
       return arr.value
     })
 
-    fetchDate();
-    active1.value = true;
+    fetchDate()
+    active1.value = true
     setActive()
   }
 })
@@ -139,12 +139,12 @@ function setActive() {
 /* 定义自定义事件 */
 const emit = defineEmits(['sourceClear', 'handleHeatMap', 'handleEventDiagram'])
 function setTableDisappear() {
-  active1.value = false;
-  emit('sourceClear');
+  active1.value = false
+  emit('sourceClear')
 }
 function creatHeatMap() {
-  setActive();
-  emit('handleHeatMap');
+  setActive()
+  emit('handleHeatMap')
 }
 function creatEventDiagram() {
   dialogTableVisible.value = true

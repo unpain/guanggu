@@ -4,7 +4,7 @@
   <el-menu-item class="scerch" index="11">
     <el-input
       v-model="keyword"
-      placeholder="请输入查询的交通事故信息"
+      placeholder="请输入事故信息"
       class="input-with-select"
       @keyup.enter="queryByAttribute"
     >
@@ -24,15 +24,15 @@
   </ThePopup>
 </template>
 <script setup>
-import { onMounted, inject, ref, toRefs } from 'vue';
-import { Query } from '../untils/Query';
-import { setCanvas } from '../untils/setCanvas';
-import { useEventStore } from '@/stores/event';
-import { ElMessage } from 'element-plus';
-import ThePopup from './OpenMenu/coms/ThePopup.vue';
-let { clickEvent } = toRefs(useEventStore());
-let $popup;
-const eventListData = ref({});
+import { onMounted, inject, ref, toRefs } from 'vue'
+import { Query } from '../untils/Query'
+import { setCanvas } from '../untils/setCanvas'
+import { useEventStore } from '@/stores/event'
+import { ElMessage } from 'element-plus'
+import ThePopup from './OpenMenu/coms/ThePopup.vue'
+let { clickEvent } = toRefs(useEventStore())
+let $popup
+const eventListData = ref({})
 
 Query.queryByLayer({
   service: {
@@ -51,17 +51,17 @@ let type = JSON.parse(localStorage.getItem('userPermission')).permission
 let keyword = ref([])
 
 function queryByAttribute() {
-  var queryStruct = new Zondy.Service.QueryFeatureStruct();
-  queryStruct.IncludeGeometry = true;
-  queryStruct.IncludeAttribute = true;
-  queryStruct.IncludeWebGraphic = false;
+  var queryStruct = new Zondy.Service.QueryFeatureStruct()
+  queryStruct.IncludeGeometry = true
+  queryStruct.IncludeAttribute = true
+  queryStruct.IncludeWebGraphic = false
   var queryParam = new Zondy.Service.QueryParameter({
     resultFormat: 'json',
-    struct: queryStruct,
-  });
-  queryParam.pageIndex = 0;
-  queryParam.recordNumber = 2000;
-  var condition;
+    struct: queryStruct
+  })
+  queryParam.pageIndex = 0
+  queryParam.recordNumber = 2000
+  var condition
   if (type == 'user') {
     condition =
       "处理状态 != 2 AND (事件类型 LIKE '%" +
@@ -92,19 +92,19 @@ function queryByAttribute() {
 
   queryService.query(querySuccess, queryError)
 }
-let map;
-let source;
-let layer;
+let map
+let source
+let layer
 
 onMounted(() => {
   map = inject('$map')
   source = new ol.source.Vector({})
   layer = new ol.layer.Vector({
     source,
-    id: 777,
-  });
-  map.addLayer(layer);
-});
+    id: 777
+  })
+  map.addLayer(layer)
+})
 
 function querySuccess(res) {
   if (keyword.value == '') {
@@ -119,51 +119,50 @@ function querySuccess(res) {
       let style1 = new ol.style.Style({
         image: new ol.style.Icon({
           img: canvas,
-          imgSize: [canvas.width, canvas.height],
-        }),
-      });
+          imgSize: [canvas.width, canvas.height]
+        })
+      })
       const open2 = () => {
         ElMessage({
           message: `查询到与${keyword.value}相关的交通事故共${ol_features.length}起`,
-          type: 'success',
-        });
-      };
-      open2();
-      source.addFeatures(ol_features);
-      layer.setStyle(style1);
+          type: 'success'
+        })
+      }
+      open2()
+      source.addFeatures(ol_features)
+      layer.setStyle(style1)
 
       let setPosit = map.on('click', function (event) {
-        var pixel = event.pixel;
+        var pixel = event.pixel
         // 检查坐标位置是否有要素
         map.forEachFeatureAtPixel(pixel, function (feature, layer) {
           // 处理被点击的要素
-          eventListData.value = feature.values_.values_;
-          delete eventListData.value.mpLayer;
+          eventListData.value = feature.values_.values_
+          delete eventListData.value.mpLayer
           if (eventListData.value.处理状态 == 0) {
-            eventListData.value.处理状态 = '未处理';
+            eventListData.value.处理状态 = '未处理'
           } else if (eventListData.value.处理状态 == 1) {
-            eventListData.value.处理状态 = '处理中';
+            eventListData.value.处理状态 = '处理中'
           } else if (eventListData.value.处理状态 == 2) {
-            eventListData.value.处理状态 = '已归档';
+            eventListData.value.处理状态 = '已归档'
           }
           if (type == 'user') {
-            delete eventListData.value.事件类型;
-            delete eventListData.value.车牌号;
-            delete eventListData.value.驾驶员;
+            delete eventListData.value.事件类型
+            delete eventListData.value.车牌号
+            delete eventListData.value.驾驶员
           }
-          let position = feature.getGeometry().flatCoordinates;
-          $popup.setPosition(position);
-        });
-      });
-      clickEvent.value = setPosit;
+          let position = feature.getGeometry().flatCoordinates
+          $popup.setPosition(position)
+        })
+      })
+      clickEvent.value = setPosit
     } else {
-      
       const open3 = () => {
         ElMessage({
-         message: `未查询到与${keyword.value}相关的交通事故`,
-          type: 'warning',
-        });
-      };
+          message: `未查询到与${keyword.value}相关的交通事故`,
+          type: 'warning'
+        })
+      }
       open3()
     }
   }

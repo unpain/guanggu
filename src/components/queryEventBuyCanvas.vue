@@ -1,7 +1,12 @@
 <!-- @format -->
 
 <template>
-  <el-menu-item @click="queryEvent" index="5-3">事件查询</el-menu-item>
+  <el-menu-item
+    @click="queryEvent"
+    index="6"
+    v-permission="['department', 'admin']"
+    ><i class="iconfont icon-query1"></i> 事件查询</el-menu-item
+  >
   <!-- 查询事件表格组件 -->
   <!-- 下面三个函数监听子组件的之定义事件 -->
   <EventList
@@ -13,7 +18,6 @@
   <el-dialog
     style="width: 650px"
     v-model="dialogTableVisible"
-    :append-to-body="true"
     title="事件统计图"
   >
     <!-- Echarts图表组件 -->
@@ -25,21 +29,20 @@
   </el-dialog>
 </template>
 <script setup>
-
 import { ElMessage } from 'element-plus'
-import { ref, onMounted, inject,h } from 'vue';
-import { createDraw } from '../untils/createDraw';
-import { Query } from '../untils/Query';
-import EventList from '../components/EventList.vue';
-import EventDiagram from '../components/EventDiagram.vue';
-import {getEchartsData} from '../components/OpenMenu/hooks/getEchartsData'
-import {useMark} from '../components/OpenMenu/hooks/useMark'
-let {markSource,markLayer,setStyle}=useMark()
-let queryData = ref([]);
-const dialogTableVisible = ref(false);
-var source = new ol.source.Vector({});
-var heatMapsource = new ol.source.Vector({});
-let eventNumber=ref(0)
+import { ref, onMounted, inject, h } from 'vue'
+import { createDraw } from '../untils/createDraw'
+import { Query } from '../untils/Query'
+import EventList from '../components/EventList.vue'
+import EventDiagram from '../components/EventDiagram.vue'
+import { getEchartsData } from '../components/OpenMenu/hooks/getEchartsData'
+import { useMark } from '../components/OpenMenu/hooks/useMark'
+let { markSource, markLayer, setStyle } = useMark()
+let queryData = ref([])
+const dialogTableVisible = ref(false)
+var source = new ol.source.Vector({})
+var heatMapsource = new ol.source.Vector({})
+let eventNumber = ref(0)
 var layer = new ol.layer.Vector({
   source
 })
@@ -68,9 +71,9 @@ function queryEvent() {
 /* 消息提示 */
 
 const open = () => {
-   ElMessage({
+  ElMessage({
     message: '该区域未发生过交通事故',
-    type: 'success',
+    type: 'success'
   })
 }
 
@@ -103,7 +106,7 @@ function handleQuery(res) {
     $map.addLayer(markLayer)
   } else {
     open()
-    queryData.value.push(null);
+    queryData.value.push(null)
   }
 }
 function clearAllSource() {
@@ -163,7 +166,6 @@ function handleAllFeature(res) {
   let { eventType, monthlyStatistic } = getEchartsData(arr)
   eventTypes.value = eventType
   monthlyStatistics.value = monthlyStatistic
-  console.log(monthlyStatistics.value)
 }
 </script>
 <style scoped></style>
