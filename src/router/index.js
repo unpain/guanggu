@@ -27,7 +27,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'admin',
-      component: () => import('@/views/AdminView.vue'),
+      component: () => import('@/views/AdminView/AdminView.vue'),
       children: [
         {
           path: 'admin',
@@ -36,16 +36,18 @@ const router = createRouter({
         {
           path: 'admin/user',
           name: 'user',
-          component: () => import('@/components/UserManage/coms/UserMenu.vue')
+          component: () =>
+            import('@/views/AdminView/coms/UserManage/coms/UserMenu.vue')
         },
         {
           path: 'admin/traffic',
           name: 'traffic',
-          component: () => import('@/components/UserManage/coms/TrafficMenu.vue')
+          component: () =>
+            import('@/views/AdminView/coms/UserManage/coms/TrafficMenu.vue')
         }
       ]
     }
-  ],
+  ]
 })
 router.beforeEach((to, from, next) => {
   if (to.path == '/admin/user') {
