@@ -5,7 +5,7 @@
     expand-close-icon="none"
     expand-open-icon="none"
   >
-    <template #title>视频监控</template>
+    <template #title><i class="iconfont icon-jiankong"></i>视频监控</template>
     <el-menu-item index="4-1" @click="checkMonitor">查看监控</el-menu-item>
     <el-menu-item index="4-2" @click="offMonitor">取消查看</el-menu-item>
   </el-sub-menu>

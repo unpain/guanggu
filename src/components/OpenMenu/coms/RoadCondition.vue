@@ -1,10 +1,10 @@
 <template>
-  <el-sub-menu index="1" expand-close-icon="none" expand-open-icon="none">
-    <template #title>实时路况</template>
-    <el-menu-item index="1-1" @click="checkRoadConditions"
+  <el-sub-menu index="2" expand-close-icon="none" expand-open-icon="none">
+    <template #title><i class="iconfont icon-road-conditions_line"></i> 实时路况</template>
+    <el-menu-item index="2-1" @click="checkRoadConditions"
       >查看路况</el-menu-item
     >
-    <el-menu-item index="1-2" @click="clearRoadConditions"
+    <el-menu-item index="2-2" @click="clearRoadConditions"
       >清除路况</el-menu-item
     >
   </el-sub-menu>

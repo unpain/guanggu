@@ -1,8 +1,5 @@
-<!-- @format -->
-
 <template>
   <el-menu
-    :default-active="activeIndex2"
     class="el-menu-demo"
     mode="horizontal"
     :background-color="color"
@@ -10,49 +7,69 @@
     active-text-color="#ffd04b"
     @select="handleSelect"
     :ellipsis="false"
-    menu-trigger="click"
+    menu-trigger="hover"
   >
-    <h4 class="log">光谷智慧交通系统</h4>
-    <RoadCondition />
-    <EventAddition />
-    <VideoMonitor />
-    <el-sub-menu
-      v-permission="['department', 'admin']"
-      index="5"
-      expand-close-icon="none"
-      expand-open-icon="none"
-    >
-      <template #title>事件管理</template>
-      <AddEvent />
-      <UpdateEvent />
-      <queryEventBuyCanvas />
-    </el-sub-menu>
-    <AddNotice />
-    <el-menu-item
-      index="9"
-      v-permission="['department', 'admin']"
-      @click="showRoadCondition"
-      >路况信息</el-menu-item
-    >
-    <el-menu-item
-      index="9"
-      v-permission="['department', 'admin']"
-      @click="showRoadCondition"
-      >路况信息</el-menu-item
-    >
-    <MapToolbox />
-    <queryEventBuyInput></queryEventBuyInput>
-    <el-select :placeholder="userPermission.userName" style="width: 90px">
-      <el-option label="退出登录" value="1" @click="toLogin" />
-      <el-option label="修改密码" value="2" @click="modifyPassword" />
-      <el-option
-        v-permission="['admin']"
-        label="用户管理"
-        value="2"
-        @click="toManage"
-      />
-    </el-select>
-    <el-color-picker v-model="color" />
+    <el-row justify="space-between" width="100%">
+      <el-col :span="18">
+        <div class="logo">
+          <el-image src="src/assets/images/bus.png" />
+          <h2>光谷智慧交通系统</h2>
+        </div>
+        <RoadCondition />
+        <EventAddition />
+        <VideoMonitor />
+        <el-sub-menu
+          v-permission="['department', 'admin']"
+          index="5"
+          expand-close-icon="none"
+          expand-open-icon="none"
+        >
+          <template #title
+            ><i class="iconfont icon-shijian"></i>事件管理</template
+          >
+          <AddEvent />
+          <UpdateEvent />
+          <queryEventBuyCanvas />
+        </el-sub-menu>
+        <AddNotice />
+        <el-menu-item
+          index="9"
+          v-permission="['department', 'admin']"
+          @click="showRoadCondition"
+        >
+          <i class="iconfont icon-info"></i> 路况信息</el-menu-item
+        >
+        <MapToolbox />
+      </el-col>
+      <el-col :span="6">
+        <queryEventBuyInput></queryEventBuyInput>
+        <el-dropdown trigger="click">
+          <span>
+            <el-avatar :size="50">{{ userPermission.userName }}</el-avatar>
+            <el-icon color="#fff"><CaretBottom /></el-icon>
+          </span>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="modifyPassword"
+                >修改密码</el-dropdown-item
+              >
+              <el-dropdown-item
+                divided
+                v-permission="['admin']"
+                @click="toManage"
+              >
+                用户管理
+              </el-dropdown-item>
+              <el-dropdown-item divided @click="toLogin">
+                退出登录
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
+        <el-color-picker v-model="color"
+      /></el-col>
+    </el-row>
+    <!-- 分割线 -->
   </el-menu>
   <transition name="fade">
     <el-card
@@ -287,7 +304,7 @@ let tableData = ref([]) // 表格数据
 let modifyFlag = ref(false)
 let password = ref('')
 let confirmPassword = ref('')
-let color = ref('#3E83CC')
+let color = ref('#1f98ee')
 
 const showRoadCondition = () => {
   roadFlag.value = true
@@ -459,8 +476,12 @@ const handleSelect = () => {
 .el-menu-demo {
   align-items: center;
   white-space: nowrap;
+  box-shadow: 0px 0px 7px #333;
 }
 
+.el-menu--horizontal {
+  border-bottom: none;
+}
 .container {
   position: fixed;
   top: 50%;
@@ -478,20 +499,41 @@ const handleSelect = () => {
     opacity: 1;
   }
 }
-
-VideoMonitor.vueVideoMonitor.vueVideoMonitor.vue .log {
-  margin: 0 0 0 20px;
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  color: #ffd04b;
 }
-
-:deep .el-sub-menu__title {
-  padding: 0 20px;
+.el-menu {
+  height: 60px;
 }
-.el-menu--horizontal > .el-menu-item.is-active {
-  border-bottom: none;
-  color: var(--el-menu-active-color);
+::v-deep .el-sub-menu__title {
+  padding: 0 15px;
 }
-.search {
-  padding: 0;
+.el-dropdown {
+  margin-left: 15px;
+}
+.el-dropdown .el-icon {
+  transform: translate(-50%, 23px);
+}
+::v-deep .el-dropdown-menu__item--divided {
+  margin: 3px 0;
+}
+.el-row {
+  width: 100%;
+}
+.el-col {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.el-col-18 {
+  justify-content: start;
+}
+.el-image {
+  margin-right: 5px;
+  height: 60px;
 }
 .close-button {
   position: fixed;

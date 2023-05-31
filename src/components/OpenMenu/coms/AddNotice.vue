@@ -1,6 +1,6 @@
 <template>
   <el-menu-item index="7" v-permission="['user']" @click="viewNotice"
-    >查看公告</el-menu-item
+    ><i class="iconfont icon-chakan1"></i> 查看公告</el-menu-item
   >
   <el-sub-menu
     index="8"
@@ -8,7 +8,9 @@
     expand-close-icon="none"
     expand-open-icon="none"
   >
-    <template #title>公告管理</template>
+    <template #title>
+      <i class="iconfont icon-gonggaoguanli"></i> 公告管理</template
+    >
     <el-menu-item index="8-1" @click="startDrawBuffer">发布公告</el-menu-item>
     <el-menu-item
       index="8-2"

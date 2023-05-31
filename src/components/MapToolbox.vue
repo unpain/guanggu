@@ -1,6 +1,8 @@
 <template>
   <el-sub-menu index="10">
-    <template #title>工具箱</template>
+    <template #title>
+      <i class="iconfont icon-tubiao_gongjuxiang"></i> 工具箱</template
+    >
     <el-menu-item index="10-1" @click="measureLine">测量距离</el-menu-item>
     <el-menu-item index="10-2" @click="measureArea">测量面积</el-menu-item>
     <el-menu-item index="10-2" @click="closeMeasure">关闭测量</el-menu-item>
@@ -19,7 +21,7 @@ import { inject, onMounted } from 'vue'
 var $map
 var source = new ol.source.Vector({})
 var vector = new ol.layer.Vector({
-  source: source,
+  source: source
 })
 
 onMounted(() => {
@@ -47,7 +49,7 @@ function closeMeasure() {
   $map.removeInteraction(res)
   // 清除DOM
   const element = document.querySelectorAll('.tooltip')
-  element.forEach(item=>item.remove())
+  element.forEach(item => item.remove())
 }
 // 导出图片的函数
 function saveImage() {
@@ -61,8 +63,7 @@ function saveImage() {
 }
 </script>
 
-<style scoped>
-
+<style>
 /**
         * 提示框的样式信息
         */

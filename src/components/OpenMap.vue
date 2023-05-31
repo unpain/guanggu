@@ -52,4 +52,5 @@ onMounted(() => {
   position: fixed;
   bottom: 0;
 }
+
 </style>
