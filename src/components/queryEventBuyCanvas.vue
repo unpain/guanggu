@@ -25,19 +25,21 @@
   </el-dialog>
 </template>
 <script setup>
-import { ref, onMounted, inject } from 'vue'
-import { createDraw } from '../untils/createDraw'
-import { Query } from '../untils/Query'
-import EventList from '../components/EventList.vue'
-import EventDiagram from '../components/EventDiagram.vue'
-import { getEchartsData } from '../components/OpenMenu/hooks/getEchartsData'
-import { useMark } from '../components/OpenMenu/hooks/useMark'
-let { markSource, markLayer, setStyle } = useMark()
-let queryData = ref([])
-const dialogTableVisible = ref(false)
-var source = new ol.source.Vector({})
-var heatMapsource = new ol.source.Vector({})
-let eventNumber = ref(0)
+
+import { ElMessage } from 'element-plus'
+import { ref, onMounted, inject,h } from 'vue';
+import { createDraw } from '../untils/createDraw';
+import { Query } from '../untils/Query';
+import EventList from '../components/EventList.vue';
+import EventDiagram from '../components/EventDiagram.vue';
+import {getEchartsData} from '../components/OpenMenu/hooks/getEchartsData'
+import {useMark} from '../components/OpenMenu/hooks/useMark'
+let {markSource,markLayer,setStyle}=useMark()
+let queryData = ref([]);
+const dialogTableVisible = ref(false);
+var source = new ol.source.Vector({});
+var heatMapsource = new ol.source.Vector({});
+let eventNumber=ref(0)
 var layer = new ol.layer.Vector({
   source
 })
@@ -63,6 +65,15 @@ function queryEvent() {
     $map.addInteraction(draw)
   }
 }
+/* 消息提示 */
+
+const open = () => {
+   ElMessage({
+    message: '该区域未发生过交通事故',
+    type: 'success',
+  })
+}
+
 /* 获取查询事件的要素 */
 function handleDraw(feature) {
   queryData.value = []
@@ -91,7 +102,8 @@ function handleQuery(res) {
     setStyle()
     $map.addLayer(markLayer)
   } else {
-    queryData.value.push(null)
+    open()
+    queryData.value.push(null);
   }
 }
 function clearAllSource() {

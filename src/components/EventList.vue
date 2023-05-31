@@ -1,63 +1,57 @@
 <!-- @format -->
 
 <template>
-  <el-drawer
-    v-model="drawer"
-    direction="btt"
-    :close-on-click-modal="false"
-    :modal="false"
-    :show-close="false"
-    :with-header="false"
-    :size="active ? '55%' : '12%'"
-    :append-to-body="true"
-    style="width: 75%; margin: 0 auto; min-width: 1000px"
+  <el-card
+    :class="active1 ? '' : 'dispppear'"
+    class="box-card"
+    body-style="width: 75%; margin: -12px auto; min-width: 1000px"
   >
-  <header>
-     <div class="button">
-      <div class="item">
-        <el-button
-          @click="creatHeatMap"
-          type="success"
-          style="margin-left: 16px"
-        >
-          生成事件热力图 </el-button
-        ><el-button
-          @click="creatEventDiagram"
-          type="primary"
-          style="margin-left: 10px"
-        >
-          生成事件统计表
-        </el-button>
+    <template #header >
+      <div class="card-header" >
+        <div class="item">
+          <el-button
+            @click="creatHeatMap"
+            type="success"
+            style="margin-left: 16px"
+          >
+            生成事件热力图 </el-button
+          ><el-button
+            @click="creatEventDiagram"
+            type="primary"
+            style="margin-left: 10px"
+          >
+            生成事件统计表
+          </el-button>
+        </div>
+        <div class="item">
+          <el-button
+            type="success"
+            :class="active ? 'dispppear' : ''"
+            @click="setActive"
+            style="margin-left: 16px"
+          >
+             <el-icon><ArrowDownBold /></el-icon
+          >
+          </el-button>
+          <el-button
+            type="success"
+            :class="active ? '' : 'dispppear'"
+            @click="setActive"
+            style="margin-left: 16px"
+          > <el-icon><ArrowUpBold /></el-icon>
+           </el-button>
+          <el-button
+            type="primary"
+            @click="setTableDisappear"
+            style="margin-left: 10px"
+          >
+            <el-icon><CloseBold /></el-icon>
+          </el-button>
+        </div>
       </div>
-      <div class="item">
-        <el-button
-          type="success"
-          :class="active ? 'dispppear' : ''"
-          @click="setActive"
-          style="margin-left: 16px"
-        >
-          <el-icon><ArrowUpBold /></el-icon>
-        </el-button>
-        <el-button
-          type="success"
-          :class="active ? '' : 'dispppear'"
-          @click="setActive"
-          style="margin-left: 16px"
-        >
-          <el-icon><ArrowDownBold /></el-icon
-        ></el-button>
-        <el-button
-          type="primary"
-          @click="setTableDisappear"
-          style="margin-left: 10px"
-        >
-          <el-icon><CloseBold /></el-icon>
-        </el-button>
-      </div>
-    </div>
-  </header>
-   
-    <div :class="active ? 'container' : 'dispppear'">
+    </template>
+
+    <div :class="active ? 'dispppear' : ''">
       <div class="example-pagination-block">
         <div class="example-demonstration">
           <el-table :data="tableData" stripe style="width: 100%">
@@ -68,21 +62,25 @@
             />
           </el-table>
         </div>
+        <div class="demonstration" :current-page="currentPage">Jump to</div>
         <el-pagination
-          :current-page="currentPage"
-          :page-size="5"
+          v-model:current-page="currentPage"
+          v-model:page-size="pageSize"
           :total="totalItems"
-          layout="prev, pager, next"
+          layout="total,sizes,prev, pager, next, jumper"
+          :disabled="disabled"
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
+          pager-count="6"
+          :page-sizes="[pageSize]"
         />
       </div>
     </div>
-  </el-drawer>
+  </el-card>
 </template>
 
 <script setup>
-const drawer = ref(false)
+const active1 = ref(false);
 
 import { onMounted, ref, watch } from 'vue'
 const props = defineProps({
@@ -92,13 +90,13 @@ const props = defineProps({
 })
 const dialogTableVisible = ref(null)
 
-let active = ref(1)
-const tableData = ref([])
-const arr = ref({})
-const currentPage = ref(1)
-const pageSize = 5
-const totalItems = ref(null)
-const mockDate = ref([])
+let active = ref(1);
+const tableData = ref([]);
+const arr = ref({});
+const currentPage = ref(1);
+const pageSize = 4;
+const totalItems = ref(null);
+const mockDate = ref([]);
 watch(props, () => {
   if (props.queryData) {
     tableData.value = props.queryData
@@ -110,8 +108,9 @@ watch(props, () => {
       return arr.value
     })
 
-    fetchDate()
-    drawer.value = true
+    fetchDate();
+    active1.value = true;
+    setActive()
   }
 })
 
@@ -140,11 +139,12 @@ function setActive() {
 /* 定义自定义事件 */
 const emit = defineEmits(['sourceClear', 'handleHeatMap', 'handleEventDiagram'])
 function setTableDisappear() {
-  drawer.value = false
-  emit('sourceClear')
+  active1.value = false;
+  emit('sourceClear');
 }
 function creatHeatMap() {
-  emit('handleHeatMap')
+  setActive();
+  emit('handleHeatMap');
 }
 function creatEventDiagram() {
   dialogTableVisible.value = true
@@ -155,11 +155,18 @@ function creatEventDiagram() {
 .dispppear {
   display: none;
 }
-.button {
+.card-header {
   display: flex;
   align-items: center;
+
   justify-content: space-between;
-  padding: 5px 200px 3px 200px;
+  padding: 10px 200px 3px 0px;
   border-top: 5px solid #86acd2;
+}
+.box-card {
+  position: absolute;
+  bottom: -90vh;
+  left: 50%;
+  transform: translateX(-50%);
 }
 </style>
