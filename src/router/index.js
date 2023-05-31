@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// import {jsonwebtoken} from '../api/server'
+// console.log(jsonwebtoken)
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

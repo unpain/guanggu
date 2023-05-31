@@ -514,4 +514,5 @@ VideoMonitor.vueVideoMonitor.vueVideoMonitor.vue .log {
 .fade-leave-to {
   opacity: 0;
 }
+
 </style>

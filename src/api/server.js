@@ -1,7 +1,8 @@
 // const { event } = require('jquery');
 const jsonServer = require('json-server');
 const database = require('./data.js')();
-const jsonwebtoken = require('jsonwebtoken')
+ const jsonwebtoken = require('jsonwebtoken')
+ console.log(jsonwebtoken)
 // 创建JSON Server实例
 const server = jsonServer.create();
 const router = jsonServer.router(database)
@@ -9,6 +10,9 @@ const middlewares = jsonServer.defaults()
 // 使用中间件
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
+
+
+
 
 // 添加自定义路由处理
 /* user 请求 */
