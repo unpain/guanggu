@@ -148,10 +148,10 @@ const register = () => {
     op: 'register',
   })
     .then((res) => {
-      if (res.data.error) {
+      if (res.data.status === 'error') {
         // 注册过程中出现问题
         const errorMessage = res.data.message
-        ElMessage.error(errorMessage)
+        ElMessage.error('重复注册,请重新注册')
         // 可以将错误信息显示给用户或进行相应的处理
       } else {
         // 注册成功

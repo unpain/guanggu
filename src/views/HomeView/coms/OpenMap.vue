@@ -29,12 +29,6 @@ onMounted(() => {
       projection: 'EPSG:4326'
     })
   })
-  // setTimeout(() => {
-  //   map.getView().animate({
-  //     center: [114.38, 30.49],
-  //     zoom: 13
-  //   })
-  // }, 1000)
   map.on('pointermove', function (e) {
     var pixel = map.getEventPixel(e.originalEvent)
     var hit = map.hasFeatureAtPixel(pixel)

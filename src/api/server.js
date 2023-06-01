@@ -1,8 +1,8 @@
 // const { event } = require('jquery');
 const jsonServer = require('json-server');
 const database = require('./data.js')();
- const jsonwebtoken = require('jsonwebtoken')
- console.log(jsonwebtoken)
+const jsonwebtoken = require('jsonwebtoken')
+console.log(jsonwebtoken)
 // 创建JSON Server实例
 const server = jsonServer.create();
 const router = jsonServer.router(database)
@@ -78,16 +78,22 @@ server.post(`/all`, (req, res, next) => {
   } else if (!user && op === 'login') {
     // 登录失败，返回错误信息
     res.status(401).json({ error: 'Invalid credentials' });
-  } else if (!user && op === 'register') {
-    database.user.push({
-      user_id: Math.max(...database.user.map(item => Number(item.user_id))) + 1,
-      user_name: req.body.username,
-      user_password: req.body.password,
-      user_type: 'user',
-      user_onlinestatus: 0,
-      user_other: 1
-    })
-    res.json({ data: database });
+  } else if (op === 'register') {
+    if (!database.user.some(
+      (u) => u.user_name === username
+    )) {
+      database.user.push({
+        user_id: Math.max(...database.user.map(item => Number(item.user_id))) + 1,
+        user_name: req.body.username,
+        user_password: req.body.password,
+        user_type: 'user',
+        user_onlinestatus: 0,
+        user_other: 1
+      })
+      res.json({ status: 'success' });
+    } else {
+      res.json({ status: 'error' })
+    }
   } else if (!user && req.body.type) {
     let type = req.body.type
     database[type].push({
