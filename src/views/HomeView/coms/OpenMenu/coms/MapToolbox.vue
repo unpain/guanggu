@@ -7,14 +7,7 @@
     <el-menu-item index="10-2" @click="measureArea">测量面积</el-menu-item>
     <el-menu-item index="10-2" @click="closeMeasure">关闭测量</el-menu-item>
     <el-menu-item index="10-2" @click="saveImage">导出图片</el-menu-item>
-    <el-sub-menu index="10-4">
-      <template #title>查询</template>
-      <el-menu-item index="10-4-1">item one</el-menu-item>
-      <el-menu-item index="10-4-2">item two</el-menu-item>
-      <el-menu-item index="10-4-3">item three</el-menu-item>
-    </el-sub-menu>
   </el-sub-menu>
-  <!-- <div id="mapCon"></div> -->
 </template>
 <script setup>
 import { inject, onMounted } from 'vue'
@@ -49,7 +42,7 @@ function closeMeasure() {
   $map.removeInteraction(res)
   // 清除DOM
   const element = document.querySelectorAll('.tooltip')
-  element.forEach((item) => item.remove())
+  element.forEach(item => item.remove())
 }
 // 导出图片的函数
 function saveImage() {

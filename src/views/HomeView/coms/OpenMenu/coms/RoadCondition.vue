@@ -1,6 +1,8 @@
 <template>
   <el-sub-menu index="2" expand-close-icon="none" expand-open-icon="none">
-    <template #title><i class="iconfont icon-road-conditions_line"></i> 实时路况</template>
+    <template #title
+      ><i class="iconfont icon-road-conditions_line"></i> 实时路况</template
+    >
     <el-menu-item index="2-1" @click="checkRoadConditions"
       >查看路况</el-menu-item
     >
@@ -16,7 +18,7 @@
 </template>
 
 <script setup>
-import {  onMounted, inject, toRefs } from 'vue'
+import { onMounted, inject, toRefs } from 'vue'
 import { useQuery } from '../hooks/useQuery'
 import { useEventStore } from '../../../../../stores/event'
 
@@ -34,14 +36,14 @@ const layer = new ol.layer.Vector({
 })
 onMounted(() => {
   $map = inject('$map')
-})
-const { roadTag } = toRefs(useEventStore())
-const { setRoadTag } = useEventStore()
-const checkRoadConditions = () => {
   Query.queryByLayer({
     service,
     callback: getQueryRes
   })
+})
+const { roadTag } = toRefs(useEventStore())
+const { setRoadTag } = useEventStore()
+const checkRoadConditions = () => {
   setRoadTag(true)
   $map.addLayer(layer)
 }

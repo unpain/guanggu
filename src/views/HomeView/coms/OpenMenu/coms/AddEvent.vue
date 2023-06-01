@@ -6,8 +6,8 @@
   </ThePopup>
 </template>
 <script setup>
-import EventForm from '../../../../../components/EventForm.vue'
-import ThePopup from '../../../../../components/ThePopup.vue'
+import EventForm from '@/components/EventForm.vue'
+import ThePopup from '@/components/ThePopup.vue'
 import { onMounted, inject } from 'vue'
 import { useDraw } from '../hooks/useDraw'
 import { usePoint } from '../hooks/usePoint'
