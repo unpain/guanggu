@@ -12,8 +12,8 @@
 
 <script setup>
 import { ref, inject, onMounted } from 'vue'
-import EventForm from '../../../../../components/EventForm.vue'
-import ThePopup from '../../../../../components/ThePopup.vue'
+import EventForm from '@/components/EventForm.vue'
+import ThePopup from '@/components/ThePopup.vue'
 import { useQuery } from '../hooks/useQuery'
 import { usePoint } from '../hooks/usePoint'
 import { useMark } from '../hooks/useMark'
@@ -31,6 +31,13 @@ const service = {
 onMounted(() => {
   $map = inject('$map')
   docLayer = $map.getLayers().getArray()[2]
+  Query.queryByLayer({
+    service,
+    callback: res => {
+      markSource.addFeatures(res)
+      setStyle()
+    }
+  })
 })
 
 let $popup
@@ -41,13 +48,6 @@ const handlePopup = popup => {
 const { getMapEvent } = useEventStore()
 const { Query } = useQuery()
 const checkEvent = () => {
-  Query.queryByLayer({
-    service,
-    callback: res => {
-      markSource.addFeatures(res)
-      setStyle()
-    }
-  })
   $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)

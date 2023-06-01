@@ -62,16 +62,6 @@ const service = {
 }
 onMounted(() => {
   $map = inject('$map')
-})
-//popup子组件传过来的用来激活弹窗
-let $popup
-const handlePopup = popup => {
-  $popup = popup
-}
-
-const { getMapEvent } = useEventStore()
-//查看监控
-const checkMonitor = () => {
   Query.queryByLayer({
     service,
     callback: res => {
@@ -79,6 +69,15 @@ const checkMonitor = () => {
       markSource.addFeatures(res)
     }
   })
+})
+//popup子组件传过来的用来激活弹窗
+let $popup
+const handlePopup = popup => {
+  $popup = popup
+}
+const { getMapEvent } = useEventStore()
+//查看监控
+const checkMonitor = () => {
   $map.addLayer(markLayer)
   let eventKey = $map.on('click', mapClick)
   getMapEvent(eventKey)
