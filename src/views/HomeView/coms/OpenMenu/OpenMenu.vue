@@ -31,7 +31,7 @@
           <AddEvent />
           <UpdateEvent />
         </el-sub-menu>
-        <queryEventBuyCanvas />
+        <QueryEventByGeom />
         <AddNotice />
         <el-menu-item
           index="9"
@@ -43,7 +43,7 @@
         <MapToolbox />
       </el-col>
       <el-col :span="6">
-        <queryEventBuyInput></queryEventBuyInput>
+        <QueryEventByInput />
         <el-dropdown trigger="click">
           <span>
             <el-avatar :size="50">{{ userPermission.userName }}</el-avatar>
@@ -54,13 +54,12 @@
               <el-dropdown-item @click="modifyPassword"
                 >修改密码</el-dropdown-item
               >
-              <el-dropdown-item
-                divided
-                v-permission="['admin']"
-                @click="toManage"
-              >
-                用户管理
-              </el-dropdown-item>
+              <div v-permission="['admin']">
+                <el-dropdown-item divided @click="toManage">
+                  用户管理
+                </el-dropdown-item>
+              </div>
+
               <el-dropdown-item divided @click="toLogin">
                 退出登录
               </el-dropdown-item>
@@ -279,8 +278,8 @@ import EventAddition from './coms/EventAddition.vue'
 import AddNotice from './coms/AddNotice.vue'
 import { inject, onMounted, onBeforeMount, ref, toRefs } from 'vue'
 import MapToolbox from './coms/MapToolbox.vue'
-import queryEventBuyCanvas from './coms/queryEventBuyCanvas.vue'
-import queryEventBuyInput from './coms/queryEventBuyInput.vue'
+import QueryEventByGeom from './coms/QueryEventByGeom.vue'
+import QueryEventByInput from './coms/QueryEventByInput.vue'
 import {
   getEventApi,
   modifyEventStatusApi,
