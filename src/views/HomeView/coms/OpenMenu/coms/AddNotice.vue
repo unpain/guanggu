@@ -216,7 +216,7 @@
       ></el-table-column>
       <el-table-column
         prop="notice_time"
-        label="电话"
+        label="日期"
         resizable="true"
         align="center"
         :border="true"
